@@ -15,11 +15,17 @@
     <Button icon="pi pi-bars" @click="visible = true" />
 </div>
         <Galleria :value="images" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
-            :showItemNavigators="true">
-            <template #item="slotProps">
+            :showItemNavigators="true" class="card flex justify-content-center">
+            <template #item="slotProps" class="a">
+                <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" style="width: 100%"/>
                 <Fieldset :legend="slotProps.item.alt">
-                <p>{{ slotProps.item.itemImageSrc }}</p>
+                    <p>{{ slotProps.item.itemImageSrc }}</p>
                 </Fieldset>
+                
+                <div>
+                    <button>x1 Pull</button>
+                    <button>x10 Pull</button>
+                </div>
             </template>
             <template #thumbnail="slotProps">
                 <img :src="slotProps.item.thumbnailImageSrc" :alt="slotProps.item.alt" style="display: block;" />
@@ -79,5 +85,10 @@ const visible = ref(false);
 </script>
 
 <style scoped>
+.b {
+    display: float;
+    position: relative;
+    margin-bottom: 90%
+}
 
 </style>
