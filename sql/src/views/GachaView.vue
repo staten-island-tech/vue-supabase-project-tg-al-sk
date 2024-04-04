@@ -16,15 +16,14 @@
 </div>
         <Galleria :value="images" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
             :showItemNavigators="true" class="card flex justify-content-center">
-            <template #item="slotProps" class="a">
-                <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" style="width: 100%"/>
-                <Fieldset :legend="slotProps.item.alt">
+            <template #item="slotProps">
+                <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" />
+                <Fieldset :legend="slotProps.item.alt" class="field">
                     <p>{{ slotProps.item.itemImageSrc }}</p>
                 </Fieldset>
-                
-                <div>
-                    <button>x1 Pull</button>
-                    <button>x10 Pull</button>
+                <div class="button">
+                    <button @click="onePull()">x1 Pull</button>
+                    <button @click="tenPull()">x10 Pull</button>
                 </div>
             </template>
             <template #thumbnail="slotProps">
@@ -42,6 +41,15 @@ import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
 import { ref, onMounted } from "vue";
 import {teachers} from '../stores/teachers.ts';
+
+function onePull() {
+    console.log("x1")
+    //let random = *wokring on it!* 
+};
+function tenPull() {
+    console.log("x10")
+};
+
 const PhotoService = {
         getData() {
             return [
@@ -82,13 +90,25 @@ const responsiveOptions = ref([
     }
 ]);
 const visible = ref(false);
+
 </script>
 
 <style scoped>
-.b {
+
+.a {
+    width: 100%;
+    justify-content: center
+}
+.field {
     display: float;
-    position: relative;
-    margin-bottom: 90%
+    position: absolute;
+    margin-bottom: 95%;
+}
+
+.button {
+    position: absolute;
+    margin-left: 70%;
+    margin-top: 80%;
 }
 
 </style>
