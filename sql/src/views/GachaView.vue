@@ -42,12 +42,27 @@ import Card from 'primevue/card';
 import { ref, onMounted } from "vue";
 import {teachers} from '../stores/teachers.ts';
 
+const pullHist = ref(0) //history/pity for 4 stars
+//the console logs are placeholders for the cards lmaooooo 
 function onePull() {
-    console.log("x1")
-    //let random = *wokring on it!* 
+console.log("x1")
+    if( Math.random() < 0.1) {
+    console.log("you got the chara!")
+    pullHist.value = 0 
+    } else if (pullHist.value == 9 ) {
+        console.log("you got the chara!")
+    } else {
+        pullHist.value = pullHist.value +1  
+        console.log(pullHist.value, "poopy")
+    } 
 };
 function tenPull() {
     console.log("x10")
+    let i = 0
+    while( i < 10 ) {
+        i++
+        onePull()
+    } 
 };
 
 const PhotoService = {
