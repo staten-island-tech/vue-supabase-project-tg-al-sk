@@ -17,8 +17,8 @@
         <Galleria :value="images" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
             :showItemNavigators="true">
             <template #item="slotProps">
-                <Fieldset :legend="slotProps.item.alt">
-                <p>{{ slotProps.item.itemImageSrc }}</p>
+                <Fieldset :legend="slotProps.item.title">
+                <p>{{ slotProps.item.text }}</p>
                 </Fieldset>
             </template>
             <template #thumbnail="slotProps">
@@ -43,7 +43,8 @@ const PhotoService = {
                     itemImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria1.jpg',
                     thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria1s.jpg',
                     alt: 'Description for Image 1',
-                    title: 'Title 1'
+                    title: 'Pool 1',
+                    text: 'Pool 1. Up rates for principal cards. '
                 },
                 {
                     itemImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2.jpg',
