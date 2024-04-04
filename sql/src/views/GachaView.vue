@@ -2,13 +2,15 @@
     <div>
 <div class="card flex justify-content-center">
     <Sidebar v-model:visible="visible" header="Available Cards">
-        <Card v-for="teacher in teachers" style="background-color: blueviolet;">
+        <Card v-for="teacher in teachers" :class="teacher.subject">
     <template #title>{{ teacher.name }}</template>
     <template #content>
-        <p class="m-0">
+        <div style="display:flex;">
+        <img :src="teacher.image" :alt="teacher.name" style="width: 10vw; height: 10vw;">
+        <p style="font-size: 12px;">
             {{ teacher.role }}
         </p>
-        <img :src="teacher.image" :alt="teacher.name" style="width: 10vw; height: auto;">
+    </div>
     </template>
 </Card>
     </Sidebar>
@@ -80,5 +82,31 @@ const visible = ref(false);
 </script>
 
 <style scoped>
-
+.english{
+    background-color: rgb(255, 0, 0);
+}
+.math{
+    background-color: rgb(68, 67, 0);
+}
+.science{
+    background-color: rgb(0, 80, 16);
+}
+.history{
+    background-color: rgb(0, 41, 77);
+}
+.russian{
+    background-color: rgb(77, 51, 62);
+}
+.physed{
+    background-color: rgb(102, 69, 8);
+}
+.tech{
+    background-color: rgb(89, 0, 255);
+}
+.principal{
+    background-color: rgb(8, 76, 194);
+}
+.default{
+    background-color: rgb(29, 34, 38);
+}
 </style>

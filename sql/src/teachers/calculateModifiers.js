@@ -100,17 +100,7 @@ function calculateSubjectModifiers(subject) {
 function calculateRarityModifiers(rarity) {
   let modifiers
   switch (rarity) {
-    case 'common':
-      modifiers = {
-        intelligence: -5,
-        knowledge: -5,
-        strength: -5,
-        charisma: -5,
-        dexterity: -5,
-        coolness: -5
-      }
-      break
-    case 'uncommon':
+    case 1: // star numbers; higher the more rare
       modifiers = {
         intelligence: 0,
         knowledge: 0,
@@ -120,7 +110,7 @@ function calculateRarityModifiers(rarity) {
         coolness: 0
       }
       break
-    case 'rare':
+    case 2:
       modifiers = {
         intelligence: 5,
         knowledge: 5,
@@ -130,7 +120,7 @@ function calculateRarityModifiers(rarity) {
         coolness: 5
       }
       break
-    case 'epic':
+    case 3:
       modifiers = {
         intelligence: 10,
         knowledge: 10,
@@ -140,7 +130,7 @@ function calculateRarityModifiers(rarity) {
         coolness: 10
       }
       break
-    case 'legendary':
+    case 4:
       modifiers = {
         intelligence: 15,
         knowledge: 15,
@@ -150,7 +140,7 @@ function calculateRarityModifiers(rarity) {
         coolness: 15
       }
       break
-    case 'mythic':
+    case 5:
       modifiers = {
         intelligence: 20,
         knowledge: 20,
@@ -160,7 +150,7 @@ function calculateRarityModifiers(rarity) {
         coolness: 20
       }
       break
-    case 'divine':
+    case 6:
       modifiers = {
         intelligence: 25,
         knowledge: 25,
