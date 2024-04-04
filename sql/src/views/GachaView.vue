@@ -42,7 +42,7 @@ import Button from 'primevue/button';
 import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
 import { ref, onMounted } from "vue";
-import {teachers} from '../stores/teachers.ts';
+import {teachers} from '../teachers/teachers.js';
 
 function onePull() {
     console.log("x1")
@@ -149,4 +149,4 @@ const visible = ref(false);
     height: 3vw;
 }
 
-</style>
+</style>../teachers/teachers.ts../teachers/teachers.js../teachers/teachers.js
