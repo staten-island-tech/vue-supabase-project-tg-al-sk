@@ -21,9 +21,9 @@
                 <Fieldset :legend="slotProps.item.alt" class="field">
                     <p>{{ slotProps.item.itemImageSrc }}</p>
                 </Fieldset>
-                <div class="button">
-                    <button @click="onePull()">x1 Pull</button>
-                    <button @click="tenPull()">x10 Pull</button>
+                <div class="buttons">
+                    <button @click="onePull()" class="button">x1 Pull</button>
+                    <button @click="tenPull()" class="button">x10 Pull</button>
                 </div>
             </template>
             <template #thumbnail="slotProps">
@@ -105,10 +105,18 @@ const visible = ref(false);
     margin-bottom: 95%;
 }
 
-.button {
+.buttons {
     position: absolute;
-    margin-left: 70%;
+    margin-left: 100%;
     margin-top: 80%;
+    margin-right: 2%;
+    width: 30vw;
+}
+
+.button {
+    margin-right: 2%;
+    width: 10vw;
+    height: 3vw;
 }
 
 </style>
