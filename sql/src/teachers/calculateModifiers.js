@@ -53,6 +53,36 @@ function calculateSubjectModifiers(subject) {
         coolness: 0
       }
       break
+      case 'physed':
+        modifiers = {
+          intelligence: 5,
+          knowledge: 10,
+          strength: 20,
+          charisma: 10,
+          dexterity: 0,
+          coolness: 0
+        }
+        break
+      case 'tech':
+        modifiers = {
+          intelligence: 20,
+          knowledge: 20,
+          strength: 0,
+          charisma: 10,
+          dexterity: 0,
+          coolness: 10
+        }
+        break
+      case 'principal':
+        modifiers = {
+          intelligence: 20,
+          knowledge: 10,
+          strength: 8,
+          charisma: 20,
+          dexterity: 0,
+          coolness: 15
+        }
+        break
     default:
       modifiers = {
         intelligence: 5,
