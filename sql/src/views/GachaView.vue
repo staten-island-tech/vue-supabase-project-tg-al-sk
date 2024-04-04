@@ -2,7 +2,7 @@
     <div>
 <div class="card flex justify-content-center">
     <Sidebar v-model:visible="visible" header="Available Cards">
-        <Card v-for="teacher in teachers">
+        <Card v-for="teacher in teachers" style="background-color: blueviolet;">
     <template #title>{{ teacher.name }}</template>
     <template #content>
         <p class="m-0">
