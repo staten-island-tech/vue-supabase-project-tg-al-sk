@@ -78,11 +78,11 @@ function onePull(pool:{
     let fourstar = pool.filter((teacher) => teacher.star === 4);
     let fivestar = pool.filter((teacher) => teacher.star === 5);
     if( Math.random() < 0.1 && Math.random() > 0.02) {
-    console.log(fourstar[Math.floor(Math.random() * pool.length)])
+    console.log(fourstar[Math.floor(Math.random() * fourstar.length)])
     pullHist.value = 0 //random chance of getting 4* every pull and resets pity if you get it 
     pullHist2.value++ 
     } else if (pullHist.value == 9 ) {
-        console.log(fourstar[Math.floor(Math.random() * pool.length)])
+        console.log(fourstar[Math.floor(Math.random() * fourstar.length)])
         pullHist.value = 0
         pullHist2.value++ //if you already did 9 pulls, your next pull must be a 4* and resets pity  
     } else {
@@ -91,14 +91,14 @@ function onePull(pool:{
         pullHist2.value++ //you got nothing and it increments :skull:
     };
     if( Math.random() < rate.value) {
-        console.log(fivestar[Math.floor(Math.random() * pool.length)])
+        console.log(fivestar[Math.floor(Math.random() * fivestar.length)])
         pullHist2.value = 0 //resets pity counter 
         rate.value = 0.01
     }
     if (pullHist2.value > 80) {
         rate.value = rate.value + 0.1
     }else if (pullHist2.value == 89) {
-        console.log(fivestar[Math.floor(Math.random() * pool.length)])
+        console.log(fivestar[Math.floor(Math.random() * fivestar.length)])
         rate.value = 0.01
         pullHist2.value = 0 //you must get a chara every 90 pulls resets pity 
     }
