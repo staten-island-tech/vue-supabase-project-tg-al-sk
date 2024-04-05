@@ -1,7 +1,7 @@
 <template>
     <div>
 <div class="card flex justify-content-center">
-    <Sidebar v-model:visible="visible" header="Available Cards">
+    <Sidebar v-model:visible="sidebarVisible" header="Available Cards">
         <Card v-for="teacher in teachers" :class="teacher.subject">
     <template #title>{{ teacher.name }}</template>
     <template #content>
@@ -14,8 +14,20 @@
     </template>
 </Card>
     </Sidebar>
-    <Button icon="pi pi-bars" @click="visible = true" />
+    <Button icon="pi pi-bars" @click="sidebarVisible = true" />
 </div>
+<p class="words">Pity Counter: {{ pullHist2 }}</p>
+    <div class="card flex justify-content-center">
+        <Button icon="pi pi-bookmark" @click="dialogVisible = true" />
+        <Dialog v-model:visible="dialogVisible" modal header="Gacha Rates" :style="{ width: '50rem' }">
+            <p>Standard Pity: You are guaranteed to get at least one 5* Teacher within 90 pulls and at least one 4* Teacher every 10 pulls.</p>
+            <br>
+            <p>4* Teacher drop rate : 10%</p>
+            <p>5* Teacher drop rate : 1%</p>
+            <br>
+            <p>Soft Pity: Once you reach 80 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
+        </Dialog>
+    </div>
         <Galleria :value="images" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
             :showItemNavigators="true" class="card flex justify-content-center">
             <template #item="slotProps">
@@ -43,9 +55,14 @@ import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
 import { ref, onMounted } from "vue";
 import {teachers} from '../teachers/teachers.js';
+import Dialog from 'primevue/dialog';
+
+const sidebarVisible = ref(false);
+const dialogVisible = ref(false); //differentiates the visibilies of the sidebar and dialog components 
 
 const pullHist = ref(0) //history/pity for 4*
 const pullHist2 = ref(0) //history for 5*
+const rate = ref(0.01) //when the pullhist2 reaches 80 this value will slowly increase to give a higehr rate of getting a 5*
 //the console logs are placeholders for the cards lmaooooo 
 function onePull() {
     if( Math.random() < 0.1 && Math.random() > 0.02) {
@@ -61,11 +78,16 @@ function onePull() {
         console.log(pullHist.value, "poopy")
         pullHist2.value++ //you got nothing and it increments :skull:
     };
-    if( Math.random() < 0.02) {
+    if( Math.random() < rate.value) {
         console.log("you got a 5*; yay! ")
         pullHist2.value = 0 //resets pity counter 
-    } else if (pullHist2.value == 89) {
+        rate.value = 0.01
+    }
+    if (pullHist2.value > 80) {
+        rate.value = rate.value + 0.1
+    }else if (pullHist2.value == 89) {
         console.log("you got a 5*; yay! ")
+        rate.value = 0.01
         pullHist2.value = 0 //you must get a chara every 90 pulls resets pity 
     }
 };
@@ -173,5 +195,7 @@ const visible = ref(false);
     width: 10vw;
     height: 3vw;
 }
-
-</style>../teachers/teachers.ts../teachers/teachers.js../teachers/teachers.js
+.words {
+    margin-left: 55%;
+}
+</style>
