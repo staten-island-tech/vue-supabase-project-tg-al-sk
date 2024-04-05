@@ -1,9 +1,4 @@
-import { config } from 'dotenv'
-config()
-
-const DB_LINK = process.env.DB_LINK
-
-import 'dotenv/config'
+const DB_LINK = 'postgres://postgres.giswnketsngukdjcvptt:aognsw8egmRrc7D1@aws-0-us-east-1.pooler.supabase.com:5432/postgres'
 
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'

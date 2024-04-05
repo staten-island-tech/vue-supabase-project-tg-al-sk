@@ -1,5 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { Auth } from '@supabase/auth-ui-react'
+import connectDB from '../connectDB'
+import {users} from '../userSchema'
 
 export default async function signUpUser(email, password) {
   const supabase = createClient(
@@ -16,6 +18,9 @@ export default async function signUpUser(email, password) {
   supabase.auth.setSession({
     access_token: data.session.access_token
   })
+
+  const {db, client} = await connectDB()
+  console.log(db)
 }
 
 // signUpUser('testing@gmail.com', 'testing')
