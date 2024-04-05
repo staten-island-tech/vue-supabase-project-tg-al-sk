@@ -1,7 +1,7 @@
 <template>
     <div>
 <div class="card flex justify-content-center">
-    <Sidebar v-model:visible="visible" header="Available Cards">
+    <Sidebar v-model:visible="sidebarVisible" header="Available Cards">
         <Card v-for="teacher in teachers" style="background-color: blueviolet;">
     <template #title>{{ teacher.name }}</template>
     <template #content>
@@ -12,8 +12,20 @@
     </template>
 </Card>
     </Sidebar>
-    <Button icon="pi pi-bars" @click="visible = true" />
+    <Button icon="pi pi-bars" @click="sidebarVisible = true" />
 </div>
+<p class="words">Pity Counter: {{ pullHist2 }}</p>
+    <div class="card flex justify-content-center">
+        <Button icon="pi pi-bookmark" @click="dialogVisible = true" />
+        <Dialog v-model:visible="dialogVisible" modal header="Gacha Rates" :style="{ width: '50rem' }">
+            <p>Standard Pity: You are guaranteed to get at least one 5* Teacher within 90 pulls and at least one 4* Teacher every 10 pulls.</p>
+            <br>
+            <p>4* Teacher drop rate : 10%</p>
+            <p>5* Teacher drop rate : 1%</p>
+            <br>
+            <p>Soft Pity: Once you reach 80 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
+        </Dialog>
+    </div>
         <Galleria :value="images" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
             :showItemNavigators="true" class="card flex justify-content-center">
             <template #item="slotProps">
@@ -41,6 +53,10 @@ import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
 import { ref, onMounted } from "vue";
 import {teachers} from '../stores/teachers.ts';
+import Dialog from 'primevue/dialog';
+
+const sidebarVisible = ref(false);
+const dialogVisible = ref(false); //differentiates the visibilies of the sidebar and dialog components 
 
 const pullHist = ref(0) //history/pity for 4*
 const pullHist2 = ref(0) //history for 5*
@@ -148,6 +164,10 @@ const visible = ref(false);
     margin-right: 2%;
     width: 10vw;
     height: 3vw;
+}
+
+.words {
+    margin-left: 55%;
 }
 
 </style>
