@@ -12,9 +12,7 @@ export default async function signUpUser(email, password) {
     email,
     password
   })
-  if (error) {
-    console.log(error)
-  }
+  console.log(data, error)
   supabase.auth.setSession({
     access_token: data.session.access_token
   })

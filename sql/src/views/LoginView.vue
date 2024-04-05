@@ -1,6 +1,6 @@
 <template>
   <!-- <TabView> -->
-  <form @click.prevent="login(username, password)">
+  <form>
     <!-- <TabPanel header="login"> -->
     <FloatLabel>
       <InputText id="usernamelogin" v-model="username" />
@@ -11,8 +11,9 @@
       <label for="passwordlogin">password</label>
     </FloatLabel>
     <!-- </TabPanel> -->
-    <Button>Submit</Button>
+    <Button @click.prevent="login(username, password)">Submit</Button>
   </form>
+  <Button @click.prevent="logout()">Sign Out</Button>
   <!-- <TabPanel header="create account">
     <FloatLabel>
     <InputText id="usernamecreate" v-model="username"/>
@@ -37,12 +38,17 @@ import Button from 'primevue/button'
 
 // @ts-ignore
 import signInUser from '../db/auth/signInUser'
+import signOutUser from '../db/auth/signOutUser'
 
 const username = ref('')
 const password = ref('')
 
 function login(username: String, password: String) {
   signInUser(username, password)
+  
+}
+function logout() {
+  signOutUser()
 }
 </script>
 
