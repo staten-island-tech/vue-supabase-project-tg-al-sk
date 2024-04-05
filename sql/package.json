@@ -13,6 +13,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@supabase/auth-ui-react": "^0.4.7",
+    "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.42.0",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.20.14",
@@ -22,6 +24,7 @@
     "postgres": "^3.4.4",
     "primeicons": "^7.0.0",
     "primevue": "^3.50.0",
+    "supabase": "^1.153.4",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
