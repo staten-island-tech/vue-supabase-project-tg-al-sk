@@ -11,6 +11,9 @@
             {{ teacher.role }}
         </p>
     </div>
+    <div style="display: flex;">
+            <p v-for="index in teacher.star" :key="index">★</p>
+        </div>
     </template>
 </Card>
     </Sidebar>
@@ -18,12 +21,12 @@
 </div>
 <p class="words">Pity Counter: {{ pullHist2 }}</p>
     <div class="card flex justify-content-center">
-        <Button icon="pi pi-bookmark" @click="dialogVisible = true" />
+        <Button icon="pi pi-info-circle" @click="dialogVisible = true" />
         <Dialog v-model:visible="dialogVisible" modal header="Gacha Rates" :style="{ width: '50rem' }">
             <p>Standard Pity: You are guaranteed to get at least one 5* Teacher within 90 pulls and at least one 4* Teacher every 10 pulls.</p>
             <br>
-            <p>4* Teacher drop rate : 10%</p>
-            <p>5* Teacher drop rate : 1%</p>
+            <p>4★ Teacher drop rate : 10%</p>
+            <p>5★ Teacher drop rate : 1%</p>
             <br>
             <p>Soft Pity: Once you reach 80 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
         </Dialog>
@@ -36,8 +39,8 @@
                     <p>{{ slotProps.item.itemImageSrc }}</p>
                 </Fieldset>
                 <div class="buttons">
-                    <button @click="onePull()" class="button">x1 Pull</button>
-                    <button @click="tenPull()" class="button">x10 Pull</button>
+                    <button @click="onePull(pools[0])" class="button">x1 Pull</button>
+                    <button @click="tenPull(pools[0])" class="button">x10 Pull</button>
                 </div>
             </template>
             <template #thumbnail="slotProps">
@@ -54,9 +57,10 @@ import Button from 'primevue/button';
 import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
 import { ref, onMounted } from "vue";
-import {teachers} from '../teachers/teachers.js';
+import {teachers} from '../teachers/teachers.ts';
+import { pools } from '@/teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
-
+console.log(pools)
 const sidebarVisible = ref(false);
 const dialogVisible = ref(false); //differentiates the visibilies of the sidebar and dialog components 
 
@@ -64,13 +68,21 @@ const pullHist = ref(0) //history/pity for 4*
 const pullHist2 = ref(0) //history for 5*
 const rate = ref(0.01) //when the pullhist2 reaches 80 this value will slowly increase to give a higehr rate of getting a 5*
 //the console logs are placeholders for the cards lmaooooo 
-function onePull() {
+function onePull(pool:{
+    subject: string,
+    star: number,
+    name: string,
+    role: string,
+    image: string
+}[]) {
+    let fourstar = pool.filter((teacher) => teacher.star === 4);
+    let fivestar = pool.filter((teacher) => teacher.star === 5);
     if( Math.random() < 0.1 && Math.random() > 0.02) {
-    console.log("you got a 4*")
+    console.log(fourstar[Math.floor(Math.random() * pool.length)])
     pullHist.value = 0 //random chance of getting 4* every pull and resets pity if you get it 
     pullHist2.value++ 
     } else if (pullHist.value == 9 ) {
-        console.log("you got a 4*")
+        console.log(fourstar[Math.floor(Math.random() * pool.length)])
         pullHist.value = 0
         pullHist2.value++ //if you already did 9 pulls, your next pull must be a 4* and resets pity  
     } else {
@@ -79,23 +91,29 @@ function onePull() {
         pullHist2.value++ //you got nothing and it increments :skull:
     };
     if( Math.random() < rate.value) {
-        console.log("you got a 5*; yay! ")
+        console.log(fivestar[Math.floor(Math.random() * pool.length)])
         pullHist2.value = 0 //resets pity counter 
         rate.value = 0.01
     }
     if (pullHist2.value > 80) {
         rate.value = rate.value + 0.1
     }else if (pullHist2.value == 89) {
-        console.log("you got a 5*; yay! ")
+        console.log(fivestar[Math.floor(Math.random() * pool.length)])
         rate.value = 0.01
         pullHist2.value = 0 //you must get a chara every 90 pulls resets pity 
     }
 };
-function tenPull() {
+function tenPull(pool:{
+    subject: string,
+    star: number,
+    name: string,
+    role: string,
+    image: string
+}[]) {
     let i = 0
     while( i < 10 ) {
         i++
-        onePull()
+        onePull(pool)
     } 
 };
 
