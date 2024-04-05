@@ -44,12 +44,37 @@ import Card from 'primevue/card';
 import { ref, onMounted } from "vue";
 import {teachers} from '../teachers/teachers.js';
 
+const pullHist = ref(0) //history/pity for 4*
+const pullHist2 = ref(0) //history for 5*
+//the console logs are placeholders for the cards lmaooooo 
 function onePull() {
-    console.log("x1")
-    //let random = *wokring on it!* 
+    if( Math.random() < 0.1 && Math.random() > 0.02) {
+    console.log("you got a 4*")
+    pullHist.value = 0 //random chance of getting 4* every pull and resets pity if you get it 
+    pullHist2.value++ 
+    } else if (pullHist.value == 9 ) {
+        console.log("you got a 4*")
+        pullHist.value = 0
+        pullHist2.value++ //if you already did 9 pulls, your next pull must be a 4* and resets pity  
+    } else {
+        pullHist.value++
+        console.log(pullHist.value, "poopy")
+        pullHist2.value++ //you got nothing and it increments :skull:
+    };
+    if( Math.random() < 0.02) {
+        console.log("you got a 5*; yay! ")
+        pullHist2.value = 0 //resets pity counter 
+    } else if (pullHist2.value == 89) {
+        console.log("you got a 5*; yay! ")
+        pullHist2.value = 0 //you must get a chara every 90 pulls resets pity 
+    }
 };
 function tenPull() {
-    console.log("x10")
+    let i = 0
+    while( i < 10 ) {
+        i++
+        onePull()
+    } 
 };
 
 const PhotoService = {
