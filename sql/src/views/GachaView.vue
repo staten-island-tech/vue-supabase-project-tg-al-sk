@@ -136,7 +136,6 @@ const responsiveOptions = ref([
         numVisible: 1
     }
 ]);
-const visible = ref(false);
 
 </script>
 
