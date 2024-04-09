@@ -13,7 +13,7 @@
     <p>{{ op }}</p>
     <p>{{ num2 }}</p>
     <p>Enter Answer</p>
-    <InputNumber v-model="value" inputId="integeronly" />
+    <InputNumber v-model="value" inputId="integeronly"/>
     <button @click="checkAns()">Enter</button>
   </div>
   <p>{{ yn }}</p>
@@ -64,6 +64,7 @@ function checkAns() {
   }
 };
 
+// setTimeout()
 
 </script>
 
