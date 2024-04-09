@@ -41,6 +41,16 @@
                 <div class="buttons">
                     <button @click="onePull(pools[0])" class="button">x1 Pull</button>
                     <button @click="tenPull(pools[0])" class="button">x10 Pull</button>
+                    <Dialog v-model:visible="pullvisible">
+                    <Card v-for="card in currentpulls">
+                    <template #title>{{card.name}}</template>
+                    <template #content>
+                        <div style="display: flex;">
+                        <p v-for="index in card.star" :key="index">★</p>
+                        </div>
+                    </template>
+                    </Card>
+                    </Dialog>
                 </div>
             </template>
             <template #thumbnail="slotProps">
@@ -56,13 +66,21 @@ import Sidebar from 'primevue/sidebar';
 import Button from 'primevue/button';
 import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive } from "vue";
 import {teachers} from '../teachers/teachers.ts';
 import { pools } from '@/teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
 console.log(pools)
 const sidebarVisible = ref(false);
 const dialogVisible = ref(false); //differentiates the visibilies of the sidebar and dialog components 
+let pullvisible = ref(false)
+let currentpulls:{
+    subject: string,
+    star: number,
+    name: string,
+    role: string,
+    image: string
+}[] = reactive([]);
 
 const pullHist = ref(0) //history/pity for 4*
 const pullHist2 = ref(0) //history for 5*
@@ -77,31 +95,47 @@ function onePull(pool:{
 }[]) {
     let fourstar = pool.filter((teacher) => teacher.star === 4);
     let fivestar = pool.filter((teacher) => teacher.star === 5);
+    let obtained = {
+    subject: '',
+    star: 0,
+    name: '',
+    role: '',
+    image: ''
+    };
     if( Math.random() < 0.1 && Math.random() > 0.02) {
-    console.log(fourstar[Math.floor(Math.random() * fourstar.length)])
+    obtained = fourstar[Math.floor(Math.random() * fourstar.length)];
     pullHist.value = 0 //random chance of getting 4* every pull and resets pity if you get it 
     pullHist2.value++ 
     } else if (pullHist.value == 9 ) {
-        console.log(fourstar[Math.floor(Math.random() * fourstar.length)])
+        obtained = fourstar[Math.floor(Math.random() * fourstar.length)];
         pullHist.value = 0
         pullHist2.value++ //if you already did 9 pulls, your next pull must be a 4* and resets pity  
     } else {
         pullHist.value++
-        console.log(pullHist.value, "poopy")
+        obtained = {subject: 'nothing', 
+            star: 3, 
+            name: 'student', 
+            role: 'useless', 
+            image: ''
+        };
+        // console.log(pullHist.value, "poopy")
         pullHist2.value++ //you got nothing and it increments :skull:
     };
     if( Math.random() < rate.value) {
-        console.log(fivestar[Math.floor(Math.random() * fivestar.length)])
+        obtained = fivestar[Math.floor(Math.random() * fivestar.length)];
         pullHist2.value = 0 //resets pity counter 
         rate.value = 0.01
     }
     if (pullHist2.value > 80) {
         rate.value = rate.value + 0.1
     }else if (pullHist2.value == 89) {
-        console.log(fivestar[Math.floor(Math.random() * fivestar.length)])
+        obtained = fivestar[Math.floor(Math.random() * fivestar.length)];
         rate.value = 0.01
         pullHist2.value = 0 //you must get a chara every 90 pulls resets pity 
     }
+    currentpulls = [obtained];
+    pullvisible.value = true;
+    return obtained;
 };
 function tenPull(pool:{
     subject: string,
@@ -110,11 +144,15 @@ function tenPull(pool:{
     role: string,
     image: string
 }[]) {
+    let arr = [];
     let i = 0
     while( i < 10 ) {
         i++
-        onePull(pool)
+        arr.push(onePull(pool))
     } 
+    currentpulls = arr;
+    pullvisible.value = true;
+    console.log(currentpulls);
 };
 
 const PhotoService = {
