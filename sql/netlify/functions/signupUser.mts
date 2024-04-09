@@ -1,21 +1,19 @@
+import createClientWrapper from '../../src/db/createClientWrapper'
+
+async function signupUser({ id, email, username }) {
+  const supabase = createClientWrapper()
+  const { error } = await supabase.from('users').insert({ id, username, email })
+  console.log(error)
+  //   const users = await supabase.from('users').select()
+  //   console.log('Users: ', users)
+}
+
 export async function handler(req: Request) {
-  const { uid } = JSON.parse(req.body);
-  console.log(uid)
+  const body = JSON.parse(req.body)
+  console.log(body)
+  signupUser(body)
   return {
-    body: "successful",
+    body: req.body,
     statusCode: 200
   }
 }
-
-// export async function handler(event) {
-// 	body = JSON.parse(event.body);
-// 	insert(body.title, body.description, body.price, body.image).catch((e) => {
-// 		throw new Error('Insert into DB error');
-// 	});
-
-// 	console.log('Successful Insert');
-// 	return {
-// 		statusCode: 200,
-// 		body: 'Successful',
-// 	};
-// }
