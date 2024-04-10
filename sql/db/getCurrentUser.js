@@ -1,7 +1,7 @@
-import createClientWrapper from './createClientWrapper'
+import supabaseClient from './supabaseClient'
 
 export default async function getCurrentUser() {
-  const supabase = createClientWrapper()
+  const supabase = supabaseClient()
 
   const { data, error } = await supabase.auth.getUser()
   // console.log(data, error)

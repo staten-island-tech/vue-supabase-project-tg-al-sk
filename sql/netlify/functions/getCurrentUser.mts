@@ -1,4 +1,4 @@
-import getUserByID from '../../src/db/getUserByID'
+import getUserByID from '../../db/getUserByID'
 
 export async function handler(req: Request) {
   const { id } = JSON.parse(req.body)

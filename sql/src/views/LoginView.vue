@@ -38,9 +38,9 @@ import Password from 'primevue/password'
 import Button from 'primevue/button'
 
 // @ts-ignore
-import signInUser from '../db/auth/signInUser'
-import signOutUser from '../db/auth/signOutUser'
-import getCurrentUser from '../db/getCurrentUser'
+import signInUser from '@/db/auth/signInUser'
+import signOutUser from '@/db/auth/signOutUser'
+import getCurrentUser from '@/db/getCurrentUser'
 
 const email = ref('')
 const password = ref('')
