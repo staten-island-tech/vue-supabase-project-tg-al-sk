@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import isSignedIn from '../db/auth/isSignedIn'
+import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
+import { watch } from 'vue';
+
+watch(window.location.href, ifNotSignedInGoToPage) 
+
+// isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
 </script>
 
 <template>
