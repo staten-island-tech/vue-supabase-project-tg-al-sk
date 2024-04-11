@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import Card from 'primevue/card';
+import { ref } from 'vue';
+
+const currency = ref()
+currency.value = 'will be added'
 </script>
 
 <template>
@@ -12,7 +17,14 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/gacha">gacha</RouterLink>
       </nav>
   </header>
-
+  <Card id="card">
+        <template #title>Currency</template>
+        <template #content>
+            <p class="m-0">
+              {{ currency }}
+            </p>
+        </template>
+    </Card>
   <RouterView />
 </template>
 
@@ -77,5 +89,11 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+}
+
+#card {
+  width: 20%;
+  height: 5%;
+  margin-left: 70%;
 }
 </style>
