@@ -13,6 +13,7 @@ currency.value = 'will be added'
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/currency">GetCurrency</RouterLink>
         <RouterLink to="/login">login</RouterLink>
+        <RouterLink to="/signup">signup</RouterLink>
         <RouterLink to="/gacha">gacha</RouterLink>
       </nav>
   </header>
