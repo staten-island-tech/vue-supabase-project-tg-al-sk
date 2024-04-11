@@ -7,7 +7,16 @@
     </p>
     <br>
     <p>For division, please round to the nearest whole number.</p>
+    <div class="card flex justify-content-center">
+        <Button label="Adjust Difficulty" @click="dialogVisible = true" />
+        <Dialog v-model:visible="dialogVisible" modal header="Adjust Difficulty" :style="{ width: '50rem' }">
+          <div class="flex-auto">
+            <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" />
+        </div>
+        </Dialog>
+    </div>
   </Fieldset>
+  
   <div>
     <p>{{ num1 }}</p>
     <p>{{ op }}</p>
@@ -24,7 +33,12 @@
 import { ref } from 'vue';
 import Fieldset from 'primevue/fieldset';
 import InputNumber from 'primevue/inputnumber';
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
 
+
+const value2 = ref(1)
+const dialogVisible = ref(false);
 const value = ref()
 const yn = ref('')
 
@@ -34,13 +48,13 @@ const op = ref('')
 const opList = ['+', '-', '*', '/']
 
 //initial random values 
-num1.value = Math.floor(Math.random() * 100)
-num2.value = Math.floor(Math.random() * 100)
+num1.value = Math.floor(Math.random() * (value2.value *100))
+num2.value = Math.floor(Math.random() * (value2.value *100))
 op.value = opList[Math.floor(Math.random()*opList.length)];
 
 function randomize() {
-  num1.value = Math.floor(Math.random() * 100)
-  num2.value = Math.floor(Math.random() * 100)
+  num1.value = Math.floor(Math.random() * (value2.value *100))
+  num2.value = Math.floor(Math.random() * (value2.value *100))
   op.value = opList[Math.floor(Math.random()*opList.length)];
   yn.value = ''
 }
@@ -64,6 +78,7 @@ function checkAns() {
   }
 };
 
+//add watch function so it changes the questinoi when the dificulty chainges 
 // setTimeout()
 
 </script>
