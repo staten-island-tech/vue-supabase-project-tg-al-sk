@@ -2,7 +2,7 @@
     <div>
 <div class="card flex justify-content-center">
     <Sidebar v-model:visible="sidebarVisible" header="Available Cards">
-        <Card v-for="teacher in teachers" :class="teacher.subject">
+        <Card v-for="teacher in teachers" :class="teacher.subject" v-bind:key="teacher.name">
     <template #title>{{ teacher.name }}</template>
     <template #content>
         <div style="display:flex;">
@@ -34,17 +34,22 @@
         <Galleria :value="images" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
             :showItemNavigators="true" class="card flex justify-content-center">
             <template #item="slotProps">
-                <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" />
                 <Fieldset :legend="slotProps.item.alt" class="field">
-                    <p>{{ slotProps.item.itemImageSrc }}</p>
+                    <p>{{ slotProps.item.text }}</p>
                 </Fieldset>
                 <div class="buttons">
                     <button @click="onePull(pools[0])" class="button">x1 Pull</button>
                     <button @click="tenPull(pools[0])" class="button">x10 Pull</button>
                     <Dialog v-model:visible="pullvisible">
-                    <Card v-for="card in currentpulls">
+                    <Card v-for="card in currentpulls" v-bind:key="card.name" :class="card.subject">
                     <template #title>{{card.name}}</template>
                     <template #content>
+                        <div style="display:flex;">
+        <img :src="card.image" :alt="card.name" style="width: 10vw; height: 10vw;">
+        <p style="font-size: 12px;">
+            {{ card.role }}
+        </p>
+    </div>
                         <div style="display: flex;">
                         <p v-for="index in card.star" :key="index">★</p>
                         </div>
@@ -69,6 +74,7 @@ import Card from 'primevue/card';
 import { ref, onMounted, reactive } from "vue";
 import {teachers} from '../teachers/teachers.ts';
 import { pools } from '@/teachers/teacherPools.ts';
+import { poolInfo } from '@/teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
 console.log(pools)
 const sidebarVisible = ref(false);
@@ -94,7 +100,7 @@ function onePull(pool:{
     image: string
 }[]) {
     let fourstar = pool.filter((teacher) => teacher.star === 4);
-    let fivestar = pool.filter((teacher) => teacher.star === 5);
+    let fivestar = pool.filter((teacher) => teacher.star === 5||6);
     let obtained = {
     subject: '',
     star: 0,
@@ -157,21 +163,7 @@ function tenPull(pool:{
 
 const PhotoService = {
         getData() {
-            return [
-                {
-                    itemImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria1.jpg',
-                    thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria1s.jpg',
-                    alt: 'Description for Image 1',
-                    title: 'Pool 1',
-                    text: 'Pool 1. Up rates for principal cards. '
-                },
-                {
-                    itemImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2.jpg',
-                    thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2s.jpg',
-                    alt: 'Description for Image 2',
-                    title: 'Title 2'
-                }
-            ];
+            return poolInfo;
         },
 
         getImages() {
@@ -220,6 +212,9 @@ const responsiveOptions = ref([
 .tech{
     background-color: rgb(89, 0, 255);
 }
+.nothing{
+    background-color: rgb(96, 57, 24);
+}
 .principal{
     background-color: rgb(8, 76, 194);
 }
@@ -233,7 +228,6 @@ const responsiveOptions = ref([
 }
 .field {
     display: float;
-    position: absolute;
     margin-bottom: 95%;
 }
 

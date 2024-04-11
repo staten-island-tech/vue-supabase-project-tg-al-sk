@@ -3,8 +3,8 @@ import { RouterLink, RouterView } from 'vue-router'
 import Card from 'primevue/card';
 import { ref } from 'vue';
 
-const currency = ref()
-currency.value = 'will be added'
+const currency = ref(0)
+// currency.value = 'will be added'
 </script>
 
 <template>
@@ -18,11 +18,11 @@ currency.value = 'will be added'
       </nav>
   </header>
   <Card id="card">
-        <template #title>Currency</template>
         <template #content>
             <p class="m-0">
               {{ currency }}
             </p>
+            <i class="pi pi-plus"></i>
         </template>
     </Card>
   <RouterView />
@@ -53,7 +53,11 @@ nav a.router-link-exact-active {
 nav a.router-link-exact-active:hover {
   background-color: transparent;
 }
-
+[class='p-card p-component']{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 nav a {
   display: inline-block;
   padding: 0 1rem;
