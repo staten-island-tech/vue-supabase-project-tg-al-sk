@@ -2,13 +2,18 @@
     <div>
 <div class="card flex justify-content-center">
     <Sidebar v-model:visible="sidebarVisible" header="Available Cards">
-        <Card v-for="teacher in teachers" style="background-color: blueviolet;">
+        <Card v-for="teacher in teachers" :class="teacher.subject" v-bind:key="teacher.name">
     <template #title>{{ teacher.name }}</template>
     <template #content>
-        <p class="m-0">
+        <div style="display:flex;">
+        <img :src="teacher.image" :alt="teacher.name" style="width: 10vw; height: 10vw;">
+        <p style="font-size: 12px;">
             {{ teacher.role }}
         </p>
-        <img :src="teacher.image" :alt="teacher.name" style="width: 10vw; height: auto;">
+    </div>
+    <div style="display: flex;">
+            <p v-for="index in teacher.star" :key="index">★</p>
+        </div>
     </template>
 </Card>
     </Sidebar>
@@ -16,12 +21,12 @@
 </div>
 <p class="words">Pity Counter: {{ pullHist2 }}</p>
     <div class="card flex justify-content-center">
-        <Button icon="pi pi-bookmark" @click="dialogVisible = true" />
+        <Button icon="pi pi-info-circle" @click="dialogVisible = true" />
         <Dialog v-model:visible="dialogVisible" modal header="Gacha Rates" :style="{ width: '50rem' }">
             <p>Standard Pity: You are guaranteed to get at least one 5* Teacher within 90 pulls and at least one 4* Teacher every 10 pulls.</p>
             <br>
-            <p>4* Teacher drop rate : 10%</p>
-            <p>5* Teacher drop rate : 1%</p>
+            <p>4★ Teacher drop rate : 10%</p>
+            <p>5★ Teacher drop rate : 1%</p>
             <br>
             <p>Soft Pity: Once you reach 80 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
         </Dialog>
@@ -29,13 +34,28 @@
         <Galleria :value="images" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
             :showItemNavigators="true" class="card flex justify-content-center">
             <template #item="slotProps">
-                <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" />
                 <Fieldset :legend="slotProps.item.alt" class="field">
-                    <p>{{ slotProps.item.itemImageSrc }}</p>
+                    <p>{{ slotProps.item.text }}</p>
                 </Fieldset>
                 <div class="buttons">
-                    <button @click="onePull()" class="button">x1 Pull</button>
-                    <button @click="tenPull()" class="button">x10 Pull</button>
+                    <button @click="onePull(pools[0])" class="button">x1 Pull</button>
+                    <button @click="tenPull(pools[0])" class="button">x10 Pull</button>
+                    <Dialog v-model:visible="pullvisible">
+                    <Card v-for="card in currentpulls" v-bind:key="card.name" :class="card.subject">
+                    <template #title>{{card.name}}</template>
+                    <template #content>
+                        <div style="display:flex;">
+        <img :src="card.image" :alt="card.name" style="width: 10vw; height: 10vw;">
+        <p style="font-size: 12px;">
+            {{ card.role }}
+        </p>
+    </div>
+                        <div style="display: flex;">
+                        <p v-for="index in card.star" :key="index">★</p>
+                        </div>
+                    </template>
+                    </Card>
+                    </Dialog>
                 </div>
             </template>
             <template #thumbnail="slotProps">
@@ -51,68 +71,99 @@ import Sidebar from 'primevue/sidebar';
 import Button from 'primevue/button';
 import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
-import { ref, onMounted } from "vue";
-import {teachers} from '../stores/teachers.ts';
+import { ref, onMounted, reactive } from "vue";
+import {teachers} from '../teachers/teachers.ts';
+import { pools } from '@/teachers/teacherPools.ts';
+import { poolInfo } from '@/teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
-
+console.log(pools)
 const sidebarVisible = ref(false);
 const dialogVisible = ref(false); //differentiates the visibilies of the sidebar and dialog components 
+let pullvisible = ref(false)
+let currentpulls:{
+    subject: string,
+    star: number,
+    name: string,
+    role: string,
+    image: string
+}[] = reactive([]);
 
 const pullHist = ref(0) //history/pity for 4*
 const pullHist2 = ref(0) //history for 5*
 const rate = ref(0.01) //when the pullhist2 reaches 80 this value will slowly increase to give a higehr rate of getting a 5*
 //the console logs are placeholders for the cards lmaooooo 
-function onePull() {
+function onePull(pool:{
+    subject: string,
+    star: number,
+    name: string,
+    role: string,
+    image: string
+}[]) {
+    let fourstar = pool.filter((teacher) => teacher.star === 4);
+    let fivestar = pool.filter((teacher) => teacher.star === 5||6);
+    let obtained = {
+    subject: '',
+    star: 0,
+    name: '',
+    role: '',
+    image: ''
+    };
     if( Math.random() < 0.1 && Math.random() > 0.02) {
-    console.log("you got a 4*")
+    obtained = fourstar[Math.floor(Math.random() * fourstar.length)];
     pullHist.value = 0 //random chance of getting 4* every pull and resets pity if you get it 
     pullHist2.value++ 
     } else if (pullHist.value == 9 ) {
-        console.log("you got a 4*")
+        obtained = fourstar[Math.floor(Math.random() * fourstar.length)];
         pullHist.value = 0
         pullHist2.value++ //if you already did 9 pulls, your next pull must be a 4* and resets pity  
     } else {
         pullHist.value++
-        console.log(pullHist.value, "poopy")
+        obtained = {subject: 'nothing', 
+            star: 3, 
+            name: 'student', 
+            role: 'useless', 
+            image: ''
+        };
+        // console.log(pullHist.value, "poopy")
         pullHist2.value++ //you got nothing and it increments :skull:
     };
     if( Math.random() < rate.value) {
-        console.log("you got a 5*; yay! ")
+        obtained = fivestar[Math.floor(Math.random() * fivestar.length)];
         pullHist2.value = 0 //resets pity counter 
         rate.value = 0.01
     }
     if (pullHist2.value > 80) {
         rate.value = rate.value + 0.1
     }else if (pullHist2.value == 89) {
-        console.log("you got a 5*; yay! ")
+        obtained = fivestar[Math.floor(Math.random() * fivestar.length)];
         rate.value = 0.01
         pullHist2.value = 0 //you must get a chara every 90 pulls resets pity 
     }
+    currentpulls = [obtained];
+    pullvisible.value = true;
+    return obtained;
 };
-function tenPull() {
+function tenPull(pool:{
+    subject: string,
+    star: number,
+    name: string,
+    role: string,
+    image: string
+}[]) {
+    let arr = [];
     let i = 0
     while( i < 10 ) {
         i++
-        onePull()
+        arr.push(onePull(pool))
     } 
+    currentpulls = arr;
+    pullvisible.value = true;
+    console.log(currentpulls);
 };
 
 const PhotoService = {
         getData() {
-            return [
-                {
-                    itemImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria1.jpg',
-                    thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria1s.jpg',
-                    alt: 'Description for Image 1',
-                    title: 'Title 1'
-                },
-                {
-                    itemImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2.jpg',
-                    thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2s.jpg',
-                    alt: 'Description for Image 2',
-                    title: 'Title 2'
-                }
-            ];
+            return poolInfo;
         },
 
         getImages() {
@@ -140,6 +191,36 @@ const responsiveOptions = ref([
 </script>
 
 <style scoped>
+.english{
+    background-color: rgb(255, 0, 0);
+}
+.math{
+    background-color: rgb(68, 67, 0);
+}
+.science{
+    background-color: rgb(0, 80, 16);
+}
+.history{
+    background-color: rgb(0, 41, 77);
+}
+.russian{
+    background-color: rgb(77, 51, 62);
+}
+.physed{
+    background-color: rgb(102, 69, 8);
+}
+.tech{
+    background-color: rgb(89, 0, 255);
+}
+.nothing{
+    background-color: rgb(96, 57, 24);
+}
+.principal{
+    background-color: rgb(8, 76, 194);
+}
+.default{
+    background-color: rgb(29, 34, 38);
+}
 
 .a {
     width: 100%;
@@ -147,7 +228,6 @@ const responsiveOptions = ref([
 }
 .field {
     display: float;
-    position: absolute;
     margin-bottom: 95%;
 }
 
@@ -164,9 +244,7 @@ const responsiveOptions = ref([
     width: 10vw;
     height: 3vw;
 }
-
 .words {
     margin-left: 55%;
 }
-
 </style>
