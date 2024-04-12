@@ -14,15 +14,20 @@ watch(route, ifNotSignedInGoToPage)
 
 <template>
   <header>
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-      <RouterLink to="/login">login</RouterLink>
-      <RouterLink to="/signup">signup</RouterLink>
-      <RouterLink to="/gacha">gacha</RouterLink>
-    </nav>
+      <nav>
+        <RouterLink to="/login">login</RouterLink>
+        <RouterLink to="/currency">GetCurrency</RouterLink>
+        <RouterLink to="/gacha">gacha</RouterLink>
+      </nav>
   </header>
-
+  <Card id="card">
+        <template #content>
+            <p class="m-0">
+              currency
+            </p>
+            <i class="pi pi-plus"></i>
+        </template>
+    </Card>
   <RouterView />
 </template>
 
@@ -51,7 +56,11 @@ nav a.router-link-exact-active {
 nav a.router-link-exact-active:hover {
   background-color: transparent;
 }
-
+[class='p-card p-component']{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 nav a {
   display: inline-block;
   padding: 0 1rem;
@@ -87,5 +96,11 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+}
+
+#card {
+  width: 20%;
+  height: 5%;
+  margin-left: 70%;
 }
 </style>
