@@ -74,8 +74,8 @@ import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
 import { ref, onMounted, reactive } from "vue";
 import {teachers} from '../teachers/teachers.ts';
-import { pools } from '@/teachers/teacherPools.ts';
-import { poolInfo } from '@/teachers/teacherPools.ts';
+import { pools } from '../teachers/teacherPools.ts';
+import { poolInfo } from '../teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
 console.log(pools)
 const sidebarVisible = ref(false);

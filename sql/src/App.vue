@@ -15,17 +15,15 @@ watch(route, ifNotSignedInGoToPage)
 <template>
   <header>
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/currency">GetCurrency</RouterLink>
         <RouterLink to="/login">login</RouterLink>
-        <RouterLink to="/signup">signup</RouterLink>
+        <RouterLink to="/currency">GetCurrency</RouterLink>
         <RouterLink to="/gacha">gacha</RouterLink>
       </nav>
   </header>
   <Card id="card">
         <template #content>
             <p class="m-0">
-              {{ currency }}
+              currency
             </p>
             <i class="pi pi-plus"></i>
         </template>

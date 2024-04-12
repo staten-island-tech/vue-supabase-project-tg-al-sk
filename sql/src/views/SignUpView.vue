@@ -1,7 +1,5 @@
 <template>
-  <!-- <TabView> -->
   <form>
-    <!-- <TabPanel header="login"> -->
     <FloatLabel>
       <InputText id="usernamelogin" v-model="username" />
       <label for="usernamelogin">Username</label>
@@ -15,20 +13,9 @@
       <label for="passwordlogin">password</label>
     </FloatLabel>
 
-    <!-- </TabPanel> -->
     <Button @click.prevent="signUp(username, email, password)">Submit</Button>
   </form>
-  <!-- <TabPanel header="create account">
-      <FloatLabel>
-      <InputText id="usernamecreate" v-model="username"/>
-      <label for="usernamecreate">Username</label>
-      </FloatLabel>
-      <FloatLabel>
-          <Password id="passwordcreate" v-model="password" toggleMask/>
-          <label for="passwordcreate">password</label>
-      </FloatLabel>
-  </TabPanel> -->
-  <!-- </TabView> -->
+
 </template>
   
   <script setup lang="ts">
