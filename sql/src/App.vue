@@ -3,8 +3,11 @@ import { RouterLink, RouterView } from 'vue-router'
 import isSignedIn from '../db/auth/isSignedIn'
 import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
 import { watch } from 'vue';
+import { useRoute } from 'vue-router';
 
-watch(window.location.href, ifNotSignedInGoToPage) 
+const route = useRoute()
+
+watch(route, ifNotSignedInGoToPage) 
 
 // isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
 </script>
