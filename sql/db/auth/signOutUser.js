@@ -1,8 +1,8 @@
-import createClientWrapper from '../createClientWrapper'
+import supabaseClient from '../supabaseClient'
 import { Auth } from '@supabase/auth-ui-react'
 
 export default async function signInUser(email, password) {
-  const supabase = createClientWrapper()
+  const supabase = supabaseClient()
 
   const { data, error } = await supabase.auth.signOut()
   // console.log(data, error)

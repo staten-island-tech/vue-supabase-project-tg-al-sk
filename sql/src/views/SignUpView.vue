@@ -40,7 +40,7 @@ import FloatLabel from 'primevue/floatlabel'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
 
-import signUpUser from '../db/auth/signUpUser'
+import signUpUser from '@/db/auth/signUpUser'
 
 const username = ref('')
 const email = ref('')

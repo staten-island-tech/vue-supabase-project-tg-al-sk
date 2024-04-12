@@ -1,7 +1,7 @@
-import createClientWrapper from '../../src/db/createClientWrapper'
+import supabaseClient from '../../db/supabaseClient'
 
 async function signupUser({ id, email, username }) {
-  const supabase = createClientWrapper()
+  const supabase = supabaseClient()
   const { error } = await supabase.from('users').insert({ id, username, email })
   console.log(error)
   //   const users = await supabase.from('users').select()

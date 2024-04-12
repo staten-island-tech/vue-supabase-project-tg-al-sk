@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import Card from 'primevue/card';
-import { ref } from 'vue';
+import isSignedIn from '../db/auth/isSignedIn'
+import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
+import { watch } from 'vue';
 
-const currency = ref(0)
-// currency.value = 'will be added'
+watch(window.location.href, ifNotSignedInGoToPage) 
+
+// isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
 </script>
 
 <template>
