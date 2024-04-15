@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+// @ts-ignore
 import isSignedIn from '../db/auth/isSignedIn'
+// @ts-ignore
 import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
-import { watch } from 'vue';
+import { watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import Card from 'primevue/card'
 
 const route = useRoute()
-
+// @ts-ignore
+isSignedIn().then((signedIn) => {
+        if(signedIn) {
+            loggedin.value = true;
+        }
+    })
 watch(route, ifNotSignedInGoToPage) 
+const loggedin = ref(false)
 
 // isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
 </script>
@@ -16,16 +25,14 @@ watch(route, ifNotSignedInGoToPage)
   <header>
       <nav>
         <RouterLink to="/login">login</RouterLink>
-        <RouterLink to="/currency">GetCurrency</RouterLink>
-        <RouterLink to="/gacha">gacha</RouterLink>
+        <RouterLink to="/currency" v-if="loggedin">GetCurrency</RouterLink>
+        <RouterLink to="/gacha" v-if="loggedin">gacha</RouterLink>
       </nav>
   </header>
   <Card id="card">
         <template #content>
-            <p class="m-0">
-              currency
-            </p>
-            <i class="pi pi-plus"></i>
+            <p>currency</p>
+            <RouterLink to="/currency" class="pi pi-plus"> </RouterLink>
         </template>
     </Card>
   <RouterView />
