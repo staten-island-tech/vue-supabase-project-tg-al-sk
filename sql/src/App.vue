@@ -7,6 +7,7 @@ import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
 import { watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Card from 'primevue/card'
+// import { useCounterStore } from './stores/counter';
 
 const route = useRoute()
 // @ts-ignore
