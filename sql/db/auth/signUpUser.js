@@ -1,5 +1,6 @@
 import supabaseClient from '../supabaseClient'
 import { Auth } from '@supabase/auth-ui-react'
+import createUserCurrencyTable from '../createUserCurrencyTable'
 
 function insertToSupabaseDB(id, username, email) {
   fetch('/.netlify/functions/signupUser', {
@@ -24,6 +25,7 @@ export default async function signUpUser(username, email, password) {
 
   const id = data.user.id
   insertToSupabaseDB(id, username, email)
+  createUserCurrencyTable(id)
 }
 
 // signUpUser('testing@gmail.com', 'testing')

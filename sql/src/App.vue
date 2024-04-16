@@ -6,8 +6,7 @@ import { watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute()
-
-watch(route, ifNotSignedInGoToPage) 
+watch(route, () => ifNotSignedInGoToPage(route)) 
 
 // isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
 </script>
