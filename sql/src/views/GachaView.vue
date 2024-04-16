@@ -31,10 +31,10 @@
             <p>Soft Pity: Once you reach 80 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
         </Dialog>
     </div>
-        <Galleria :value="images" v-model:activeIndex="poolIndex" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
-            :showItemNavigators="true" class="card flex justify-content-center">
+        <Galleria :value="images" v-model:activeIndex="poolIndex" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true"
+            class="card flex justify-content-center" thumbnailsPosition="top">
             <template #item="slotProps">
-                <Fieldset :legend="slotProps.item.alt" class="field" style="width: 100vw; height:40vh;">
+                <Fieldset :legend="slotProps.item.alt" class="field" style="width: 100vw; height:50vh;">
                     <p>{{ slotProps.item.text }}</p>
                     <div class="buttons">
                     <button @click="onePull(pools[poolIndex])" class="button">x1 Pull</button>

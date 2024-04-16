@@ -8,6 +8,9 @@
   <Dialog v-model:visible="createaccsuccess">
     <p>Account successfully created. Please log in. </p>
   </Dialog>
+  <Dialog v-model:visible="signedout">
+    <p>You have signed out. </p>
+  </Dialog>
   <TabView>
     <TabPanel header="Login">
   <form>
@@ -68,20 +71,23 @@ import signUpUser from '@/db/auth/signUpUser'
 const loginsuccess = ref(false);
 const loginfail = ref(false);
 const createaccsuccess = ref(false);
+const signedout = ref(false);
 
 const username = ref('')
 const email = ref('')
 const password = ref('')
 function signUp(username: String, email: String, password: String) {
   signUpUser(username, email, password)
+  createaccsuccess.value = true;
 }
 
 function login(email: String, password: String) {
   signInUser(email, password)
-  
+  loginsuccess.value = true;
 }
 function logout() {
   signOutUser()
+  signedout.value = true;
 }
 </script>
 
