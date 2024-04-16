@@ -1,6 +1,5 @@
-import createClientWrapper from '../createClientWrapper'
+import supabaseClient from '../supabaseClient'
 import { Auth } from '@supabase/auth-ui-react'
-import { users } from '../userSchema'
 
 function insertToSupabaseDB(id, username, email) {
   fetch('/.netlify/functions/signupUser', {
@@ -12,7 +11,7 @@ function insertToSupabaseDB(id, username, email) {
 }
 
 export default async function signUpUser(username, email, password) {
-  const supabase = createClientWrapper()
+  const supabase = supabaseClient()
 
   const { data, error } = await supabase.auth.signUp({
     email,

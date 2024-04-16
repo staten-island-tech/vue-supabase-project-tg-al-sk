@@ -1,6 +1,7 @@
 import { teachers } from "./teachers.ts";
 
 const pools = [
+    teachers.filter((teacher) => teacher.subject === 'principal'),
     teachers.filter((teacher) => teacher.subject === 'math'),
     teachers.filter((teacher) => teacher.subject === 'english'),
     teachers.filter((teacher) => teacher.subject === 'science'),
@@ -8,7 +9,6 @@ const pools = [
     teachers.filter((teacher) => teacher.subject === 'russian'),
     teachers.filter((teacher) => teacher.subject === 'physed'),
     teachers.filter((teacher) => teacher.subject === 'tech'),
-    teachers.filter((teacher) => teacher.subject === 'principal'),
     teachers.filter((teacher) => teacher.subject === 'default'),
     teachers.filter((teacher) => teacher.name === 'Michael Whalen')
 ];

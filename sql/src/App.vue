@@ -1,26 +1,29 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import Card from 'primevue/card';
-import { ref } from 'vue';
+import isSignedIn from '../db/auth/isSignedIn'
+import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
+import { watch } from 'vue';
+import { useRoute } from 'vue-router';
 
-const currency = ref(0)
-// currency.value = 'will be added'
+const route = useRoute()
+
+watch(route, ifNotSignedInGoToPage) 
+
+// isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
 </script>
 
 <template>
   <header>
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/currency">GetCurrency</RouterLink>
         <RouterLink to="/login">login</RouterLink>
-        <RouterLink to="/signup">signup</RouterLink>
+        <RouterLink to="/currency">GetCurrency</RouterLink>
         <RouterLink to="/gacha">gacha</RouterLink>
       </nav>
   </header>
   <Card id="card">
         <template #content>
             <p class="m-0">
-              {{ currency }}
+              currency
             </p>
             <i class="pi pi-plus"></i>
         </template>

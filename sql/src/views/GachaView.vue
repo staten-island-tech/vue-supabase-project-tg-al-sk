@@ -31,25 +31,24 @@
             <p>Soft Pity: Once you reach 80 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
         </Dialog>
     </div>
-        <Galleria :value="images" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
+        <Galleria :value="images" v-model:activeIndex="poolIndex" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
             :showItemNavigators="true" class="card flex justify-content-center">
             <template #item="slotProps">
-                <Fieldset :legend="slotProps.item.alt" class="field">
+                <Fieldset :legend="slotProps.item.alt" class="field" style="width: 100vw; height:40vh;">
                     <p>{{ slotProps.item.text }}</p>
-                </Fieldset>
-                <div class="buttons">
-                    <button @click="onePull(pools[0])" class="button">x1 Pull</button>
-                    <button @click="tenPull(pools[0])" class="button">x10 Pull</button>
+                    <div class="buttons">
+                    <button @click="onePull(pools[poolIndex])" class="button">x1 Pull</button>
+                    <button @click="tenPull(pools[poolIndex])" class="button">x10 Pull</button>
                     <Dialog v-model:visible="pullvisible">
                     <Card v-for="card in currentpulls" v-bind:key="card.name" :class="card.subject">
                     <template #title>{{card.name}}</template>
                     <template #content>
                         <div style="display:flex;">
-        <img :src="card.image" :alt="card.name" style="width: 10vw; height: 10vw;">
-        <p style="font-size: 12px;">
-            {{ card.role }}
-        </p>
-    </div>
+                    <img :src="card.image" :alt="card.name" style="width: 10vw; height: 10vw;">
+                    <p style="font-size: 12px;">
+                        {{ card.role }}
+                    </p>
+                </div>
                         <div style="display: flex;">
                         <p v-for="index in card.star" :key="index">★</p>
                         </div>
@@ -57,6 +56,8 @@
                     </Card>
                     </Dialog>
                 </div>
+                </Fieldset>
+                
             </template>
             <template #thumbnail="slotProps">
                 <img :src="slotProps.item.thumbnailImageSrc" :alt="slotProps.item.alt" style="display: block;" />
@@ -73,8 +74,8 @@ import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
 import { ref, onMounted, reactive } from "vue";
 import {teachers} from '../teachers/teachers.ts';
-import { pools } from '@/teachers/teacherPools.ts';
-import { poolInfo } from '@/teachers/teacherPools.ts';
+import { pools } from '../teachers/teacherPools.ts';
+import { poolInfo } from '../teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
 console.log(pools)
 const sidebarVisible = ref(false);
@@ -87,7 +88,7 @@ let currentpulls:{
     role: string,
     image: string
 }[] = reactive([]);
-
+const poolIndex  = ref(0);
 const pullHist = ref(0) //history/pity for 4*
 const pullHist2 = ref(0) //history for 5*
 const rate = ref(0.01) //when the pullhist2 reaches 80 this value will slowly increase to give a higehr rate of getting a 5*
@@ -100,7 +101,8 @@ function onePull(pool:{
     image: string
 }[]) {
     let fourstar = pool.filter((teacher) => teacher.star === 4);
-    let fivestar = pool.filter((teacher) => teacher.star === 5||6);
+    let fivestar = pool.filter((teacher) => teacher.star === 5);
+    let sixstar = pool;
     let obtained = {
     subject: '',
     star: 0,
@@ -108,7 +110,24 @@ function onePull(pool:{
     role: '',
     image: ''
     };
-    if( Math.random() < 0.1 && Math.random() > 0.02) {
+    if(pool.length === 1){
+        if(Math.random() < 0.05){ // up rate for whalen but no guarantee-???
+        obtained = sixstar[0];
+        rate.value = 0.01
+        pullHist2.value = 0
+        }else{
+            pullHist.value++
+        obtained = {subject: 'nothing', 
+            star: 3, 
+            name: 'student', 
+            role: 'useless', 
+            image: ''
+        };
+        // console.log(pullHist.value, "poopy")
+        pullHist2.value++
+        }
+    }
+    else if( Math.random() < 0.1 && Math.random() > 0.02) {
     obtained = fourstar[Math.floor(Math.random() * fourstar.length)];
     pullHist.value = 0 //random chance of getting 4* every pull and resets pity if you get it 
     pullHist2.value++ 
@@ -191,6 +210,7 @@ const responsiveOptions = ref([
 </script>
 
 <style scoped>
+
 .english{
     background-color: rgb(255, 0, 0);
 }
@@ -232,17 +252,15 @@ const responsiveOptions = ref([
 }
 
 .buttons {
-    position: absolute;
-    margin-left: 100%;
-    margin-top: 80%;
-    margin-right: 2%;
+    position: relative;
+    margin-bottom: 0;
+    margin-right: 0;
     width: 30vw;
 }
 
 .button {
-    margin-right: 2%;
     width: 10vw;
-    height: 3vw;
+    height: fit-content;
 }
 .words {
     margin-left: 55%;
