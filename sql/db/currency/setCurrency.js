@@ -1,9 +1,7 @@
 import supabaseClient from "../supabaseClient"
+import getUserByID from "../getUserByID"
 
-export default function setCurrency( golden_seagulls, diamond_seagulls) {
+export default async function setCurrency(golden_seagulls, diamond_seagulls, id) {
     const supabase = supabaseClient()
-    const {data, error} = supabase.from('currency').insert({ golden_seagulls, diamond_seagulls, id: 'egianegjaslge'})
-    console.log(data)
+    await supabase.from('currency').update({ golden_seagulls, diamond_seagulls }).eq('id', id)
 }
-
-setCurrency({ golden_seagulls: 10, diamond_seagulls: 10})
