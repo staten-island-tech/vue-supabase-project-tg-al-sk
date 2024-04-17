@@ -34,14 +34,13 @@
         
         <Carousel :value="images" :numVisible="1" :numScroll="1">
             <template #item="slotProps">
-                <Fieldset :legend="slotProps.data.alt" class="field">
+                    <Fieldset :legend="slotProps.data.alt" class="border-1 surface-border border-round m-2  p-3" style="height: 50vw;">
                     <p>{{ slotProps.data.text }}</p>
                     <div class="buttons">
                     <button @click="onePull(pools[slotProps.data.index])" class="button">x1 Pull</button>
                     <button @click="tenPull(pools[slotProps.data.index])" class="button">x10 Pull</button>
-                    
                 </div>
-                </Fieldset>
+            </Fieldset>
     </template>
         </Carousel>
         <Dialog v-model:visible="pullvisible">
