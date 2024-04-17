@@ -31,15 +31,20 @@
             <p>Soft Pity: Once you reach 80 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
         </Dialog>
     </div>
-        <Galleria :value="images" v-model:activeIndex="poolIndex" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true"
-            class="card flex justify-content-center" thumbnailsPosition="top">
+        
+        <Carousel :value="images" :numVisible="1" :numScroll="1">
             <template #item="slotProps">
-                <Fieldset :legend="slotProps.item.alt" class="field" style="width: 100vw; height:50vh;">
-                    <p>{{ slotProps.item.text }}</p>
+                <Fieldset :legend="slotProps.data.alt" class="field">
+                    <p>{{ slotProps.data.text }}</p>
                     <div class="buttons">
-                    <button @click="onePull(pools[poolIndex])" class="button">x1 Pull</button>
-                    <button @click="tenPull(pools[poolIndex])" class="button">x10 Pull</button>
-                    <Dialog v-model:visible="pullvisible">
+                    <button @click="onePull(pools[slotProps.data.index])" class="button">x1 Pull</button>
+                    <button @click="tenPull(pools[slotProps.data.index])" class="button">x10 Pull</button>
+                    
+                </div>
+                </Fieldset>
+    </template>
+        </Carousel>
+        <Dialog v-model:visible="pullvisible">
                     <Card v-for="card in currentpulls" v-bind:key="card.name" :class="card.subject">
                     <template #title>{{card.name}}</template>
                     <template #content>
@@ -55,19 +60,11 @@
                     </template>
                     </Card>
                     </Dialog>
-                </div>
-                </Fieldset>
-                
-            </template>
-            <template #thumbnail="slotProps">
-                <img :src="slotProps.item.thumbnailImageSrc" :alt="slotProps.item.alt" style="display: block;" />
-            </template>
-        </Galleria>
     </div>
 </template>
 
 <script setup lang="ts">
-import Galleria from 'primevue/galleria';
+// import Galleria from 'primevue/galleria';
 import Sidebar from 'primevue/sidebar';
 import Button from 'primevue/button';
 import Fieldset from 'primevue/fieldset';
@@ -77,6 +74,7 @@ import {teachers} from '../teachers/teachers.ts';
 import { pools } from '../teachers/teacherPools.ts';
 import { poolInfo } from '../teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
+import Carousel from 'primevue/carousel';
 console.log(pools)
 const sidebarVisible = ref(false);
 const dialogVisible = ref(false); //differentiates the visibilies of the sidebar and dialog components 
@@ -88,7 +86,6 @@ let currentpulls:{
     role: string,
     image: string
 }[] = reactive([]);
-const poolIndex  = ref(0);
 const pullHist = ref(0) //history/pity for 4*
 const pullHist2 = ref(0) //history for 5*
 const rate = ref(0.01) //when the pullhist2 reaches 80 this value will slowly increase to give a higehr rate of getting a 5*
@@ -196,16 +193,7 @@ onMounted(() => {
 });
 
 const images = ref();
-const responsiveOptions = ref([
-    {
-        breakpoint: '1300px',
-        numVisible: 4
-    },
-    {
-        breakpoint: '575px',
-        numVisible: 1
-    }
-]);
+
 
 </script>
 
