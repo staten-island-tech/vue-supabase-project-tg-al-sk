@@ -123,7 +123,7 @@ function onePull(pool:{
             star: 3, 
             name: 'student', 
             role: 'useless', 
-            image: ''
+            image: 'https://assets-global.website-files.com/646218c67da47160c64a84d5/64faebcc5b9290da561ec21f_93.png'
         };
         // console.log(pullHist.value, "poopy")
         pullHist2.value++

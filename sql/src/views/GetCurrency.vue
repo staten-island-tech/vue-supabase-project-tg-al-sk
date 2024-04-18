@@ -11,16 +11,18 @@
         <Button label="Adjust Difficulty" @click="dialogVisible = true" />
         <Dialog v-model:visible="dialogVisible" modal header="Adjust Difficulty" :style="{ width: '50rem' }">
           <div class="flex-auto">
-            <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" />
+            <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" @click="randomize()" />
         </div>
         </Dialog>
     </div>
   </Fieldset>
   
   <div>
-    <p>{{ num1 }}</p>
-    <p>{{ op }}</p>
-    <p>{{ num2 }}</p>
+    <div>
+      <p>{{ num1 }}</p>
+      <p>{{ op }}</p>
+      <p>{{ num2 }}</p>
+    </div>
     <p>Enter Answer</p>
     <InputNumber v-model="value" inputId="integeronly"/>
     <button @click="checkAns()">Enter</button>
@@ -77,9 +79,6 @@ function checkAns() {
     yn.value = 'you are incorrect.'
   }
 };
-
-//add watch function so it changes the questinoi when the dificulty chainges 
-// setTimeout()
 
 </script>
 
