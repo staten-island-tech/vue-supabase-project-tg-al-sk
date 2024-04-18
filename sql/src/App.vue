@@ -12,7 +12,9 @@ import Button from 'primevue/button';
 import IconField from 'primevue/iconfield';
 import InputText from 'primevue/inputtext';
 import Sidebar from 'primevue/sidebar';
-// import { useCounterStore } from './stores/counter';
+import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
+
+checkIfHasCurrency({ golden_seagulls: 0 })
 
 const route = useRoute()
 // @ts-ignore
