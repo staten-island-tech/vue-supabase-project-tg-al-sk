@@ -7,7 +7,6 @@ import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
 import { watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Card from 'primevue/card'
-// import { useCounterStore } from './stores/counter';
 
 const route = useRoute()
 // @ts-ignore
@@ -25,7 +24,7 @@ const loggedin = ref(false)
 <template>
   <header>
       <nav>
-        <RouterLink to="/login">login</RouterLink>
+        <RocduterLink to="/login">login</RocduterLink>
         <RouterLink to="/currency" v-if="loggedin">GetCurrency</RouterLink>
         <RouterLink to="/gacha" v-if="loggedin">gacha</RouterLink>
       </nav>
