@@ -1,12 +1,23 @@
 <template>
-  <Dialog v-model:visible="loginsuccess">
-    <p>Successfully logged in. Refresh page to reveal functions. </p>
+  <Dialog v-model:visible="loginsuccess" modal
+    :pt="{
+        root: 'border-none',
+        mask: {
+            style: 'backdrop-filter: blur(2px)'
+        }
+    }">
+    <template #container>
+      <div class="inline-flex flex-column gap-2" style="border-radius: 12px; padding: 0 0 0 0;">
+    <p>Successfully logged in. </p>
+    <Button type="button" label="Got it!" @click="refreshPage()" />
+  </div>
+  </template>
   </Dialog>
   <Dialog v-model:visible="loginfail">
     <p>Failed to login. Try typing your email or password again. </p>
   </Dialog>
   <Dialog v-model:visible="createaccsuccess">
-    <p>Account successfully created. Please log in. </p>
+    <p>Account successfully created. Please go back to log in. </p>
   </Dialog>
   <Dialog v-model:visible="signedout">
     <p>You have signed out. </p>
@@ -88,6 +99,9 @@ function login(email: String, password: String) {
 function logout() {
   signOutUser()
   signedout.value = true;
+}
+function refreshPage(){
+  location.reload();
 }
 </script>
 
