@@ -9,7 +9,9 @@
     <template #container>
       <div class="inline-flex flex-column gap-2" style="border-radius: 12px; padding: 0 0 0 0;">
     <p>Successfully logged in. </p>
-    <Button type="button" label="Got it!" @click="refreshPage()" />
+    <RouterLink to="/">
+    <Button type="button" label="Got it!"  />
+  </RouterLink>
   </div>
   </template>
   </Dialog>
@@ -19,9 +21,19 @@
   <Dialog v-model:visible="createaccsuccess">
     <p>Account successfully created. Please go back to log in. </p>
   </Dialog>
-  <Dialog v-model:visible="signedout">
-    <p>You have signed out. </p>
-  </Dialog>
+  <Dialog v-model:visible="signedout" modal
+    :pt="{
+        root: 'border-none',
+        mask: {
+            style: 'backdrop-filter: blur(2px)'
+        }
+    }">
+    <template #container>
+      <div class="inline-flex flex-column gap-2" style="border-radius: 12px; padding: 0 0 0 0;">
+    <p>Signed out. </p>
+    <Button type="button" label="Got it!"  @click="refreshPage()"/>
+  </div>
+  </template></Dialog>
   <TabView>
     <TabPanel header="Login">
   <form>
@@ -62,6 +74,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import InputText from 'primevue/inputtext'
