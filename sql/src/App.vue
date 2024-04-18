@@ -25,15 +25,17 @@ const loggedin = ref(false)
 <template>
   <header>
       <nav>
-        <RouterLink to="/login">login</RouterLink>
-        <RouterLink to="/currency" v-if="loggedin">GetCurrency</RouterLink>
-        <RouterLink to="/gacha" v-if="loggedin">gacha</RouterLink>
+        <RouterLink to="/login">Log In</RouterLink>
+        <RouterLink to="/currency" v-if="loggedin">Get Currency</RouterLink>
+        <RouterLink to="/gacha" v-if="loggedin">Gacha Pulls</RouterLink>
       </nav>
   </header>
   <Card id="card">
         <template #content>
+          <div style="display: flex;">
             <p>currency</p>
             <RouterLink to="/currency" class="pi pi-plus"> </RouterLink>
+          </div>
         </template>
     </Card>
   <RouterView />
