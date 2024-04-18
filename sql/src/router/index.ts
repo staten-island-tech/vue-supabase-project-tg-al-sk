@@ -23,11 +23,6 @@ const router = createRouter({
       name: 'Gacha',
       component: () => import('../views/GachaView.vue')
     },
-    {
-      path: '/401',
-      name: 'Unauthorized',
-      component: () => import('../views/401Error.vue')
-    }
   ]
 })
 
