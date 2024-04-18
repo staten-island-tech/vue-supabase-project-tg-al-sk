@@ -1,7 +1,15 @@
 import supabaseClient from "../supabaseClient"
-import getUserByID from "../getUserByID"
 
-export default async function setCurrency(golden_seagulls, diamond_seagulls, id) {
+export default async function setCurrency(golden_seagulls, diamond_seagulls) {
     const supabase = supabaseClient()
-    await supabase.from('currency').update({ golden_seagulls, diamond_seagulls }).eq('id', id)
+    const id = await (await supabase.auth.getUser()).data.user.id
+    console.log({golden_seagulls, diamond_seagulls, id})
+    fetch('/.netlify/functions/setCurrency', {
+        method: 'post',
+        body: JSON.stringify({
+            golden_seagulls,
+            diamond_seagulls,
+            id,
+        })
+    }) 
 }
