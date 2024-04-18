@@ -18,6 +18,7 @@ isSignedIn().then((signedIn) => {
     })
 watch(route, ifNotSignedInGoToPage) 
 const loggedin = ref(false)
+watch(route, () => ifNotSignedInGoToPage(route)) 
 
 // isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
 </script>
