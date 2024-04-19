@@ -6,7 +6,9 @@ import isSignedIn from '../db/auth/isSignedIn'
 import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
 import { watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import Card from 'primevue/card'
+import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
+
+checkIfHasCurrency({ golden_seagulls: 0 })
 
 const route = useRoute()
 // @ts-ignore
