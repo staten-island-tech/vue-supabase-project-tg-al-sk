@@ -51,6 +51,7 @@ import signInUser from '@/db/auth/signInUser'
 import signOutUser from '@/db/auth/signOutUser'
 import getCurrentUser from '@/db/getCurrentUser'
 import signUpUser from '@/db/auth/signUpUser'
+import checkIfHasCurrency from '@/db/currency/checkIfHasCurrency'
 
 const username = ref('')
 const email = ref('')
