@@ -8,24 +8,26 @@
     <br>
     <p>For division, please round to the nearest whole number.</p>
     <div class="card flex justify-content-center">
-        <Button label="Adjust Difficulty" @click="dialogVisible = true" />
+        
+    </div>
+  </Fieldset>
+  <Button label="Adjust Difficulty" @click="dialogVisible = true" />
         <Dialog v-model:visible="dialogVisible" modal header="Adjust Difficulty" :style="{ width: '50rem' }">
           <div class="flex-auto">
             <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" @click="randomize()" />
         </div>
         </Dialog>
-    </div>
-  </Fieldset>
-  
-  <div>
-    <div>
-      <p>{{ num1 }}</p>
-      <p>{{ op }}</p>
-      <p>{{ num2 }}</p>
-    </div>
-    <p>Enter Answer</p>
+  <div class="flex px-5 py-5 gap-4">
+    <span style="font-size: 1.5rem;">{{ num1 }}</span>
+    <span style="font-size: 1.5rem;" class="pi pi-plus" v-if="op==='+'"></span>
+    <span style="font-size: 1.5rem;" class="pi pi-minus" v-if="op==='-'"></span>
+    <span style="font-size: 1.5rem;" class="pi pi-times" v-if="op==='*'"></span>
+    <span style="font-size: 1.5rem;" v-if="op==='/'">➗</span>
+    <span style="font-size: 1.5rem;">{{ num2 }}</span>
+    
+    <span style="font-size: 1.5rem;" class="pi pi-equals"></span>
     <InputNumber v-model="value" inputId="integeronly"/>
-    <button @click="checkAns()">Enter</button>
+    <Button @click="checkAns()" label="Enter"></Button>
   </div>
   <p>{{ yn }}</p>
   <button @click="randomize()">Next Question</button>
