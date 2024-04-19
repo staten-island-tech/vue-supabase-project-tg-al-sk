@@ -82,7 +82,7 @@ function onePull(pool:{
 }[]) {
     let fourstar = pool.filter((teacher) => teacher.star === 4);
     let fivestar = pool.filter((teacher) => teacher.star === 5);
-    let sixstar = pool;
+    const whalen = pool.filter((teacher) => teacher.name == 'Michael Whalen');
     let obtained = {
     subject: '',
     star: 0,
@@ -91,17 +91,23 @@ function onePull(pool:{
     image: ''
     };
     if(pool.length === 1){
-        if(Math.random() < 0.05){ // up rate for whalen but no guarantee-???
-        obtained = sixstar[0];
-        rate.value = 0.01
-        pullHist2.value = 0
-        }else{
+        if(Math.random() < 0.009){ // up rate for whalen but no guarantee-???
+            obtained = whalen[0];
+            console.log(obtained)
+            rate.value = 0.01
+            pullHist2.value = 0
+        }else if(pullHist2.value == 89){
+            obtained = whalen[0];
+            console.log(obtained)
+            rate.value = 0.01
+            pullHist2.value = 0
+        } else {
             pullHist.value++
         obtained = {subject: 'nothing', 
             star: 3, 
             name: 'student', 
             role: 'useless', 
-            image: ''
+            image: 'https://assets-global.website-files.com/646218c67da47160c64a84d5/64faebcc5b9290da561ec21f_93.png'
         };
         // console.log(pullHist.value, "poopy")
         pullHist2.value++
