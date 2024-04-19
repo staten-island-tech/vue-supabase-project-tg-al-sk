@@ -1,6 +1,5 @@
 import router from '../router/index'
 import isSignedIn from '../../db/auth/isSignedIn'
-import { useCounterStore } from '../stores/counter';
 
 export default function ifNotSignedInGoToPage(route) {
     if(route.path !== '/login' && route.path !== '/signup') {

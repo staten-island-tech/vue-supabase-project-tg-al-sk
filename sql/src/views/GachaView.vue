@@ -32,33 +32,38 @@
         </Dialog>
     </div>
         
-        <Carousel :value="images" :numVisible="1" :numScroll="1">
+        <Carousel :value="images" :numVisible="1" :numScroll="1" circular>
             <template #item="slotProps">
-                    <Fieldset :legend="slotProps.data.alt" class="border-1 surface-border border-round m-2  p-3" style="height: 50vw;">
+                    <Fieldset :legend="slotProps.data.alt" class="border-1 surface-border border-round m-2  p-3" style="height: 50vh;">
                     <p>{{ slotProps.data.text }}</p>
                     <div class="buttons">
-                    <button @click="onePull(pools[slotProps.data.index])" class="button">x1 Pull</button>
-                    <button @click="tenPull(pools[slotProps.data.index])" class="button">x10 Pull</button>
+                    <Button @click="onePull(pools[slotProps.data.index])" class="button">x1 Pull</Button>
+                    <Button @click="tenPull(pools[slotProps.data.index])" class="button">x10 Pull</Button>
                 </div>
             </Fieldset>
     </template>
         </Carousel>
-        <Dialog v-model:visible="pullvisible">
-                    <Card v-for="card in currentpulls" v-bind:key="card.name" :class="card.subject">
-                    <template #title>{{card.name}}</template>
-                    <template #content>
-                        <div style="display:flex;">
-                    <img :src="card.image" :alt="card.name" style="width: 10vw; height: 10vw;">
-                    <p style="font-size: 12px;">
-                        {{ card.role }}
-                    </p>
+<Dialog v-model:visible="pullvisible" style="width: 100vw; height: 100vh;">
+    <Carousel :value="currentpulls" :numVisible="1" :numScroll="1">
+            <template #item="slotProps">
+                    <p>{{ slotProps.data.text }}</p>
+                    <Card :class="slotProps.data.subject" class="border-1 surface-border border-round m-2  p-3">
+            <template #title>{{slotProps.data.name}}</template>
+            <template #content>
+                <div style="display:flex;">
+            <img :src="slotProps.data.image" :alt="slotProps.data.name" style="width: 10vw; height: 10vw;">
+            <p style="font-size: 12px;">
+                {{ slotProps.data.role }}
+            </p>
+        </div>
+                <div style="display: flex;">
+                <p v-for="index in slotProps.data.star" :key="index">★</p>
                 </div>
-                        <div style="display: flex;">
-                        <p v-for="index in card.star" :key="index">★</p>
-                        </div>
-                    </template>
-                    </Card>
-                    </Dialog>
+            </template>
+            </Card>
+    </template>
+        </Carousel>
+            </Dialog>
     </div>
 </template>
 
@@ -246,13 +251,13 @@ const images = ref();
 
 .buttons {
     position: relative;
-    margin-bottom: 0;
-    margin-right: 0;
-    width: 30vw;
+    margin: auto auto 1rem auto;
+    width: 40vw;
+    height: fit-content;
 }
 
 .button {
-    width: 10vw;
+    width: 20vw;
     height: fit-content;
 }
 .words {
