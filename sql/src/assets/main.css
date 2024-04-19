@@ -20,3 +20,35 @@ a,
     background-color: hsla(160, 100%, 37%, 0.2);
   }
 }
+
+
+.english{
+  background-color: rgb(255, 0, 0);
+}
+.math{
+  background-color: rgb(68, 67, 0);
+}
+.science{
+  background-color: rgb(0, 80, 16);
+}
+.history{
+  background-color: rgb(0, 41, 77);
+}
+.russian{
+  background-color: rgb(77, 51, 62);
+}
+.physed{
+  background-color: rgb(102, 69, 8);
+}
+.tech{
+  background-color: rgb(89, 0, 255);
+}
+.nothing{
+  background-color: rgb(96, 57, 24);
+}
+.principal{
+  background-color: rgb(8, 76, 194);
+}
+.default{
+  background-color: rgb(29, 34, 38);
+}

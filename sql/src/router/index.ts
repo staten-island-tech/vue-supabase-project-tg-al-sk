@@ -22,6 +22,11 @@ const router = createRouter({
       path: '/gacha',
       name: 'Gacha',
       component: () => import('../views/GachaView.vue')
+    },
+    {
+      path: '/inventory',
+      name: 'Inventory',
+      component: () => import('../views/UserInventory.vue')
     }
   ]
 })

@@ -7,9 +7,11 @@
         }
     }">
     <template #container>
-      <div class="inline-flex flex-column gap-2" style="border-radius: 12px; padding: 0 0 0 0;">
+      <div class="flex flex-column px-5 py-5 gap-4">
     <p>Successfully logged in. </p>
-    <Button type="button" label="Got it!" @click="refreshPage()" />
+    <RouterLink to="/">
+    <Button type="button" label="Got it!"  />
+  </RouterLink>
   </div>
   </template>
   </Dialog>
@@ -19,54 +21,67 @@
   <Dialog v-model:visible="createaccsuccess">
     <p>Account successfully created. Please go back to log in. </p>
   </Dialog>
-  <Dialog v-model:visible="signedout">
-    <p>You have signed out. </p>
-  </Dialog>
+  <Dialog v-model:visible="signedout" modal
+    :pt="{
+        root: 'border-none',
+        mask: {
+            style: 'backdrop-filter: blur(2px)'
+        }
+    }">
+    <template #container>
+      <div class="flex flex-column px-5 py-5 gap-4" style="border-radius: 12px; padding: 0 0 0 0;">
+    <p>Signed out. </p>
+    <Button type="button" label="Got it!"  @click="refreshPage()"/>
+  </div>
+  </template></Dialog>
+  <Button label="Sign Out" icon="pi pi-sign-out" @click.prevent="logout()"/>
+  <Button label="Get Current User" @click.prevent="getCurrentUser()"/>
   <TabView>
     <TabPanel header="Login">
-  <form>
-    <FloatLabel>
-      <InputText id="emaillogin" v-model="email" />
-      <label for="emaillogin">Email</label>
-    </FloatLabel>
-    <FloatLabel>
-      <Password id="passwordlogin" v-model="password" toggleMask :feedback="false"/>
-      <label for="passwordlogin">password</label>
-    </FloatLabel>
-    <Button @click.prevent="login(email, password)">Submit</Button>
-  </form>
-  <Button @click.prevent="logout()">Sign Out</Button>
-  <Button @click.prevent="getCurrentUser()">Get Current User</Button>
+      <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6" style="min-width: 100%;">
+    <div class="text-center mb-5">
+        <img src="https://blocks.primevue.org/images/blocks/logos/hyper.svg" alt="Image" height="50" class="mb-3" />
+        <div class="text-900 text-3xl font-medium mb-3">Log In</div>
+    <div>
+        <label for="email1" class="block text-900 font-medium mb-2">Email</label>
+        <InputText id="email1" type="text" placeholder="Email address" class="w-full mb-3" v-model="email" />
+
+        <label for="password1" class="block text-900 font-medium mb-2">Password</label>
+        <InputText id="password1" type="password" placeholder="Password" class="w-full mb-3" v-model="password" />
+        <Button label="Sign In" icon="pi pi-user" class="w-full" @click.prevent="login(email, password)"></Button>
+    </div>
+</div>
+</div>
+  
 </TabPanel>
   <TabPanel header="Sign Up">
-    <form>
-    <FloatLabel>
-      <InputText id="usernamelogin" v-model="username" />
-      <label for="usernamelogin">Username</label>
-    </FloatLabel>
-    <FloatLabel>
-      <InputText id="emaillogin" v-model="email" />
-      <label for="emaillogin">Email</label>
-    </FloatLabel>
-    <FloatLabel>
-      <Password id="passwordlogin" v-model="password" toggleMask />
-      <label for="passwordlogin">password</label>
-    </FloatLabel>
-
-    <Button @click.prevent="signUp(username, email, password)">Submit</Button>
-  </form>
+    <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6" style="min-width: 100%;">
+    <div class="text-center mb-5">
+        <img src="https://blocks.primevue.org/images/blocks/logos/hyper.svg" alt="Image" height="50" class="mb-3" />
+        <div class="text-900 text-3xl font-medium mb-3">Sign Up</div>
+    <div>
+      <label for="username" class="block font-medium mb-2">Username</label>
+        <InputText id="username" type="text" placeholder="Username" class="w-full mb-3" v-model="username" />
+        <label for="email2" class="block text-900 font-medium mb-2">Email</label>
+        <InputText id="email2" type="text" placeholder="Email address" class="w-full mb-3" v-model="email" />
+        <label for="password2" class="block text-900 font-medium mb-2">Password</label>
+        <InputText id="password2" type="password" placeholder="Password" class="w-full mb-3" v-model="password" />
+        <Button label="Sign In" icon="pi pi-user" class="w-full" @click.prevent="signUp(username, email, password)"></Button>
+    </div>
+</div>
+</div>
   </TabPanel>
 </TabView>
   
+
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import InputText from 'primevue/inputtext'
-import FloatLabel from 'primevue/floatlabel'
-import Password from 'primevue/password'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 
@@ -106,4 +121,5 @@ function refreshPage(){
 </script>
 
 <style scoped>
+
 </style>
