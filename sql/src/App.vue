@@ -67,6 +67,9 @@ const sidebarVisible = ref(false);
         <RouterLink to="/gacha" >
           <Button v-tooltip.top="'Gacha >:)'" icon="pi pi-money-bill" severity="secondary" rounded/>
         </RouterLink>
+        <RouterLink to="/inventory" >
+          <Button v-tooltip.top="'Inventory'" icon="pi pi-table" severity="secondary" rounded/>
+        </RouterLink>
       </div>
     </template>
 </Toolbar></nav>

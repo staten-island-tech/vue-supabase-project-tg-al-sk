@@ -1,7 +1,7 @@
 <template>
     <div>
 <p class="words">Pity Counter: {{ pullHist2 }}</p>
-    <div class="card flex justify-content-center">
+    <div class="card flex">
         <Button icon="pi pi-info-circle" @click="dialogVisible = true" />
         <Dialog v-model:visible="dialogVisible" modal header="Gacha Rates" :style="{ width: '50rem' }">
             <p>Standard Pity: You are guaranteed to get at least one 5* Teacher within 90 pulls and at least one 4* Teacher every 10 pulls.</p>

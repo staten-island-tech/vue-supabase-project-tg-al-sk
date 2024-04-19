@@ -7,7 +7,7 @@
         }
     }">
     <template #container>
-      <div class="inline-flex flex-column gap-2" style="border-radius: 12px; padding: 0 0 0 0;">
+      <div class="flex flex-column px-5 py-5 gap-4">
     <p>Successfully logged in. </p>
     <RouterLink to="/">
     <Button type="button" label="Got it!"  />
@@ -29,7 +29,7 @@
         }
     }">
     <template #container>
-      <div class="inline-flex flex-column gap-2" style="border-radius: 12px; padding: 0 0 0 0;">
+      <div class="flex flex-column px-5 py-5 gap-4" style="border-radius: 12px; padding: 0 0 0 0;">
     <p>Signed out. </p>
     <Button type="button" label="Got it!"  @click="refreshPage()"/>
   </div>
