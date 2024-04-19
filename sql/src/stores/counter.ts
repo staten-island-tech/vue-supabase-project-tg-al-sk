@@ -1,12 +1,8 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useCounterStore = defineStore('currency', () => {
-  const currency = ref(0);
+export const useCounterStore = defineStore('loggedin', () => {
+  const loggedin = ref(false);
   // const doubleCount = computed(() => count.value * 2);
-  function increment() {
-    currency.value++;
-  }
-
-  return { currency, increment }
+  return { loggedin}
 })

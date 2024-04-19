@@ -10,17 +10,17 @@ const router = createRouter({
     },
     {
       path: '/currency',
-      name: 'currency',
+      name: 'Currency',
       component: () => import('../views/GetCurrency.vue')
     },
     {
       path: '/login',
-      name: 'login',
+      name: 'Login',
       component: () => import('../views/LoginView.vue')
     },
     {
       path: '/gacha',
-      name: 'gacha',
+      name: 'Gacha',
       component: () => import('../views/GachaView.vue')
     }
   ]

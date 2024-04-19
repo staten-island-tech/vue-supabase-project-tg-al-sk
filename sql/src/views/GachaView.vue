@@ -1,24 +1,5 @@
 <template>
     <div>
-<div class="card flex justify-content-center">
-    <Sidebar v-model:visible="sidebarVisible" header="Available Cards">
-        <Card v-for="teacher in teachers" :class="teacher.subject" v-bind:key="teacher.name">
-    <template #title>{{ teacher.name }}</template>
-    <template #content>
-        <div style="display:flex;">
-        <img :src="teacher.image" :alt="teacher.name" style="width: 10vw; height: 10vw;">
-        <p style="font-size: 12px;">
-            {{ teacher.role }}
-        </p>
-    </div>
-    <div style="display: flex;">
-            <p v-for="index in teacher.star" :key="index">★</p>
-        </div>
-    </template>
-</Card>
-    </Sidebar>
-    <Button icon="pi pi-bars" @click="sidebarVisible = true" />
-</div>
 <p class="words">Pity Counter: {{ pullHist2 }}</p>
     <div class="card flex justify-content-center">
         <Button icon="pi pi-info-circle" @click="dialogVisible = true" />
@@ -31,54 +12,54 @@
             <p>Soft Pity: Once you reach 80 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
         </Dialog>
     </div>
-        <Galleria :value="images" v-model:activeIndex="poolIndex" :responsiveOptions="responsiveOptions" :numVisible="5" :circular="true" containerStyle="max-width: 640px"
-            :showItemNavigators="true" class="card flex justify-content-center">
+        
+        <Carousel :value="images" :numVisible="1" :numScroll="1" circular>
             <template #item="slotProps">
-                <Fieldset :legend="slotProps.item.alt" class="field" style="width: 100vw; height:40vh;">
-                    <p>{{ slotProps.item.text }}</p>
+                    <Fieldset :legend="slotProps.data.alt" class="border-1 surface-border border-round m-2  p-3" style="height: 50vh;">
+                    <p>{{ slotProps.data.text }}</p>
                     <div class="buttons">
-                    <button @click="onePull(pools[poolIndex])" class="button">x1 Pull</button>
-                    <button @click="tenPull(pools[poolIndex])" class="button">x10 Pull</button>
-                    <Dialog v-model:visible="pullvisible">
-                    <Card v-for="card in currentpulls" v-bind:key="card.name" :class="card.subject">
-                    <template #title>{{card.name}}</template>
-                    <template #content>
-                        <div style="display:flex;">
-                    <img :src="card.image" :alt="card.name" style="width: 10vw; height: 10vw;">
-                    <p style="font-size: 12px;">
-                        {{ card.role }}
-                    </p>
+                    <Button @click="onePull(pools[slotProps.data.index])" class="button" label="x1 Pull"/>
+                    <Button @click="tenPull(pools[slotProps.data.index])" class="button" label="x10 Pull"/>
                 </div>
-                        <div style="display: flex;">
-                        <p v-for="index in card.star" :key="index">★</p>
-                        </div>
-                    </template>
-                    </Card>
-                    </Dialog>
+            </Fieldset>
+    </template>
+        </Carousel>
+<Dialog v-model:visible="pullvisible" style="width: 100vw; height: 100vh;">
+    <Carousel :value="currentpulls" :numVisible="1" :numScroll="1">
+            <template #item="slotProps">
+                    <p>{{ slotProps.data.text }}</p>
+                    <Card :class="slotProps.data.subject" class="border-1 surface-border border-round m-2  p-3">
+            <template #title>{{slotProps.data.name}}</template>
+            <template #content>
+                <div style="display:flex;">
+            <img :src="slotProps.data.image" :alt="slotProps.data.name" style="width: 10vw; height: 10vw;">
+            <p style="font-size: 12px;">
+                {{ slotProps.data.role }}
+            </p>
+        </div>
+                <div style="display: flex;">
+                <p v-for="index in slotProps.data.star" :key="index">★</p>
                 </div>
-                </Fieldset>
-                
             </template>
-            <template #thumbnail="slotProps">
-                <img :src="slotProps.item.thumbnailImageSrc" :alt="slotProps.item.alt" style="display: block;" />
-            </template>
-        </Galleria>
+            </Card>
+    </template>
+        </Carousel>
+            </Dialog>
     </div>
 </template>
 
 <script setup lang="ts">
-import Galleria from 'primevue/galleria';
-import Sidebar from 'primevue/sidebar';
+// import Galleria from 'primevue/galleria';
 import Button from 'primevue/button';
 import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
 import { ref, onMounted, reactive } from "vue";
-import {teachers} from '../teachers/teachers.ts';
+
 import { pools } from '../teachers/teacherPools.ts';
 import { poolInfo } from '../teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
+import Carousel from 'primevue/carousel';
 console.log(pools)
-const sidebarVisible = ref(false);
 const dialogVisible = ref(false); //differentiates the visibilies of the sidebar and dialog components 
 let pullvisible = ref(false)
 let currentpulls:{
@@ -88,7 +69,6 @@ let currentpulls:{
     role: string,
     image: string
 }[] = reactive([]);
-const poolIndex  = ref(0);
 const pullHist = ref(0) //history/pity for 4*
 const pullHist2 = ref(0) //history for 5*
 const rate = ref(0.01) //when the pullhist2 reaches 80 this value will slowly increase to give a higehr rate of getting a 5*
@@ -196,51 +176,11 @@ onMounted(() => {
 });
 
 const images = ref();
-const responsiveOptions = ref([
-    {
-        breakpoint: '1300px',
-        numVisible: 4
-    },
-    {
-        breakpoint: '575px',
-        numVisible: 1
-    }
-]);
+
 
 </script>
 
 <style scoped>
-
-.english{
-    background-color: rgb(255, 0, 0);
-}
-.math{
-    background-color: rgb(68, 67, 0);
-}
-.science{
-    background-color: rgb(0, 80, 16);
-}
-.history{
-    background-color: rgb(0, 41, 77);
-}
-.russian{
-    background-color: rgb(77, 51, 62);
-}
-.physed{
-    background-color: rgb(102, 69, 8);
-}
-.tech{
-    background-color: rgb(89, 0, 255);
-}
-.nothing{
-    background-color: rgb(96, 57, 24);
-}
-.principal{
-    background-color: rgb(8, 76, 194);
-}
-.default{
-    background-color: rgb(29, 34, 38);
-}
 
 .a {
     width: 100%;
@@ -253,16 +193,19 @@ const responsiveOptions = ref([
 
 .buttons {
     position: relative;
-    margin-bottom: 0;
-    margin-right: 0;
-    width: 30vw;
+    margin: auto auto 1rem auto;
+    width: 40vw;
+    height: fit-content;
 }
 
 .button {
-    width: 10vw;
+    width: 20vw;
     height: fit-content;
 }
 .words {
     margin-left: 55%;
+    position: fixed;
+  right: 10px;
+  top: 50px;
 }
 </style>

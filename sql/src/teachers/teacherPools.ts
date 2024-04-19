@@ -18,61 +18,71 @@ const poolInfo = [
         thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria1s.jpg',
         alt: 'Principals',
         title: 'Pool 1',
-        text: 'Pool 1. Up rates for principal cards. '
+        text: 'Pool 1. Up rates for principal cards. ',
+        index: 0
     },
     {
         thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2s.jpg',
         alt: 'Math',
         title: 'Pool 2',
-        text: 'Pool 2. Up rates for math teachers.'
+        text: 'Pool 2. Up rates for math teachers.',
+        index: 1
     },
     {
         thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2s.jpg',
         alt: 'English',
         title: 'Pool 3',
-        text: 'Pool 3. Up rates for English teachers.'
+        text: 'Pool 3. Up rates for English teachers.',
+        index: 2
     },
     {
         thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2s.jpg',
         alt: 'Science',
         title: 'Pool 4',
-        text: 'Pool 4. Up rates for science teachers.'
+        text: 'Pool 4. Up rates for science teachers.',
+        index: 3
     },
     {
         thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2s.jpg',
         alt: 'History',
         title: 'Pool 5',
-        text: 'Pool 5. Up rates for history teachers.'
+        text: 'Pool 5. Up rates for history teachers.',
+        index: 4
     },
     {
         thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2s.jpg',
         alt: 'Russian',
         title: 'Pool 6',
-        text: 'Pool 6. Up rates for Russian teachers.'
+        text: 'Pool 6. Up rates for Russian teachers.',
+        index: 5
     },
     {
         thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2s.jpg',
         alt: 'Physical Education',
         title: 'Pool 7',
-        text: 'Pool 7. Up rates for PE teachers.'
+        text: 'Pool 7. Up rates for PE teachers.',
+        index: 6
     },
     {
         thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2s.jpg',
         alt: 'Technology',
         title: 'Pool 8',
-        text: 'Pool 8. Up rates for technology teachers.'
+        text: 'Pool 8. Up rates for technology teachers.',
+        index: 7
     },
     {
         thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2s.jpg',
         alt: 'Other Staff',
         title: 'Pool 9',
-        text: 'Pool 9. Up rates for other staff.'
+        text: 'Pool 9. Up rates for other staff.',
+        index: 8
     },
     {
         thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2s.jpg',
         alt: 'WHALEN',
         title: 'Pool 10',
-        text: 'Pool 10. You can only pull for Mr. Whalen. '
+        text: 'Pool 10. You can only pull for Mr. Whalen. ',
+        index: 9
     }
 ]
 
