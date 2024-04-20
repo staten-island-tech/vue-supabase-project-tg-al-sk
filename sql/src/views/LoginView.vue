@@ -93,6 +93,7 @@ import signOutUser from '@/db/auth/signOutUser'
 import getCurrentUser from '@/db/getCurrentUser'
 // @ts-ignore
 import signUpUser from '@/db/auth/signUpUser'
+import checkIfHasCurrency from '@/db/currency/checkIfHasCurrency'
 
 const loginsuccess = ref(false);
 const loginfail = ref(false);

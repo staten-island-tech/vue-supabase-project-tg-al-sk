@@ -2,8 +2,8 @@ import calculateModifiers from './calculateModifiers.js'
 import statTypes from './statTypes.js'
 import randNum from '../utils/randNum.js'
 
-export default function calculateStats(subject, rarity) {
-  const modifiers = calculateModifiers(subject, rarity)
+export default function calculateStats(subject, star) {
+  const modifiers = calculateModifiers(subject, star)
 
   const stats = {}
   statTypes.forEach((statType) => {
