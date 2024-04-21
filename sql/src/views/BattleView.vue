@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 // import {teachers} from '../teachers/teachers'
 import allTeachers from '../teachers/allTeachers'
 allTeachers()

@@ -9,9 +9,7 @@
     <template #container>
       <div class="flex flex-column px-5 py-5 gap-4">
     <p>Successfully logged in. </p>
-    <RouterLink to="/">
-    <Button type="button" label="Got it!"  />
-  </RouterLink>
+    <Button type="button" label="Got it!" @click="refreshPage()" />
   </div>
   </template>
   </Dialog>
@@ -118,6 +116,7 @@ function logout() {
 }
 function refreshPage(){
   location.reload();
+  location.href = location.href.replace('login', '');
 }
 </script>
 
