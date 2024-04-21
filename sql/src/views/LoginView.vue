@@ -76,7 +76,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import InputText from 'primevue/inputtext'
