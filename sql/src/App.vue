@@ -147,3 +147,4 @@ nav a:first-of-type {
   top: 10px;
 }
 </style>
+../db/currency/checkIfHasEnoughCurrency
