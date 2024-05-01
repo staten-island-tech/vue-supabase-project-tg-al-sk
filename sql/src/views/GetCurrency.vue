@@ -20,7 +20,7 @@
             <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" @click="randomize()" />
         </div>
         </Dialog>
-  <div class="flex px-5 py-5 gap-4" style="width: 100vw; align-items: center; display: block;">
+  <div class="flex px-5 py-5 gap-4" style="width: 100vw; align-items: center; display: block; display: flex;">
     <span style="font-size: 1.5rem;">{{ num1 }}</span>
     <span style="font-size: 1.5rem;" class="pi pi-plus" v-if="op==='+'"></span>
     <span style="font-size: 1.5rem;" class="pi pi-minus" v-if="op==='-'"></span>
@@ -52,6 +52,8 @@ import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
 
+// @ts-ignore
+import increaseCurrency from '/db/currency/increaseCurrency';
 
 const collapsed = ref(false);
 const value2 = ref(1)
@@ -92,6 +94,7 @@ function checkAns() {
   if (ans == value.value) {
     yn.value = 'you are correct!'
     severity.value = 'success';
+    increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
   } else {
     yn.value = 'you are incorrect.'
     severity.value = 'error'
