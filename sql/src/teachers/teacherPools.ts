@@ -67,7 +67,7 @@ const poolInfo = [
         thumbnailImageSrc: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2s.jpg',
         alt: 'Technology',
         title: 'Pool 8',
-        text: 'Pool 8. Up rates for technology teachers.',
+        text: 'Pool 8. Up rates for technology teachers. Mr Whalen is not included here 😁',
         index: 7
     },
     {

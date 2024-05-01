@@ -97,10 +97,10 @@ function calculateSubjectModifiers(subject) {
   return modifiers
 }
 
-function calculateRarityModifiers(rarity) {
+function calculateStarModifiers(star) {
   let modifiers
-  switch (rarity) {
-    case 1: // star numbers; higher the more rare
+  switch (star) {
+    case 4:
       modifiers = {
         intelligence: 0,
         knowledge: 0,
@@ -110,17 +110,7 @@ function calculateRarityModifiers(rarity) {
         coolness: 0
       }
       break
-    case 2:
-      modifiers = {
-        intelligence: 5,
-        knowledge: 5,
-        strength: 5,
-        charisma: 5,
-        dexterity: 5,
-        coolness: 5
-      }
-      break
-    case 3:
+    case 5:
       modifiers = {
         intelligence: 10,
         knowledge: 10,
@@ -130,17 +120,7 @@ function calculateRarityModifiers(rarity) {
         coolness: 10
       }
       break
-    case 4:
-      modifiers = {
-        intelligence: 15,
-        knowledge: 15,
-        strength: 15,
-        charisma: 15,
-        dexterity: 15,
-        coolness: 15
-      }
-      break
-    case 5:
+    case 6:
       modifiers = {
         intelligence: 20,
         knowledge: 20,
@@ -150,24 +130,14 @@ function calculateRarityModifiers(rarity) {
         coolness: 20
       }
       break
-    case 6:
-      modifiers = {
-        intelligence: 25,
-        knowledge: 25,
-        strength: 25,
-        charisma: 25,
-        dexterity: 25,
-        coolness: 25
-      }
-      break
   }
   return modifiers
 }
 
-export default function calculateModifiers(subject, rarity) {
+export default function calculateModifiers(subject, star) {
   const subjectModifiers = calculateSubjectModifiers(subject)
-  const rarityModifiers = calculateRarityModifiers(rarity)
+  const starModifiers = calculateStarModifiers(star)
 
-  const finalModifiers = sumObjectsByKey(subjectModifiers, rarityModifiers)
+  const finalModifiers = sumObjectsByKey(subjectModifiers, starModifiers)
   return finalModifiers
 }

@@ -9,9 +9,7 @@
     <template #container>
       <div class="flex flex-column px-5 py-5 gap-4">
     <p>Successfully logged in. </p>
-    <RouterLink to="/">
-    <Button type="button" label="Got it!"  />
-  </RouterLink>
+    <Button type="button" label="Got it!" @click="refreshPage()" />
   </div>
   </template>
   </Dialog>
@@ -78,7 +76,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import InputText from 'primevue/inputtext'
@@ -93,6 +90,7 @@ import signOutUser from '@/db/auth/signOutUser'
 import getCurrentUser from '@/db/getCurrentUser'
 // @ts-ignore
 import signUpUser from '@/db/auth/signUpUser'
+import checkIfHasCurrency from '@/db/currency/checkIfHasCurrency'
 
 const loginsuccess = ref(false);
 const loginfail = ref(false);
@@ -117,6 +115,7 @@ function logout() {
 }
 function refreshPage(){
   location.reload();
+  location.href = location.href.replace('login', '');
 }
 </script>
 

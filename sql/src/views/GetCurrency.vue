@@ -1,6 +1,8 @@
 <template>
+  
   <h1>Get currency by solving math problems</h1>
-  <Fieldset legend="Directions" :toggleable="true">
+  
+  <Fieldset legend="Directions" :toggleable="true" :collapsed="collapsed">
     <p class="m-0">
       You will be shown questions consisting of addition, subtraction, multiplication, and division.
       Solve them correctly to gain Golden Seagulls! You may increase the difficulty of the questions to gain more Golden Seagulls.
@@ -8,27 +10,38 @@
     <br>
     <p>For division, please round to the nearest whole number.</p>
     <div class="card flex justify-content-center">
-        <Button label="Adjust Difficulty" @click="dialogVisible = true" />
+    </div>
+    <Button label="Got it!" @click="collapsed = true" v-if="collapsed === false"></Button>
+  </Fieldset>
+  <div style="display: flex; align-items: center; flex-direction: column;">
+  <Button label="Adjust Difficulty" @click="dialogVisible = true" />
         <Dialog v-model:visible="dialogVisible" modal header="Adjust Difficulty" :style="{ width: '50rem' }">
           <div class="flex-auto">
             <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" @click="randomize()" />
         </div>
         </Dialog>
-    </div>
-  </Fieldset>
-  
-  <div>
-    <div>
-      <p>{{ num1 }}</p>
-      <p>{{ op }}</p>
-      <p>{{ num2 }}</p>
-    </div>
-    <p>Enter Answer</p>
-    <InputNumber v-model="value" inputId="integeronly"/>
-    <button @click="checkAns()">Enter</button>
+  <div class="flex px-5 py-5 gap-4" style="width: 100vw; align-items: center; display: block;">
+    <span style="font-size: 1.5rem;">{{ num1 }}</span>
+    <span style="font-size: 1.5rem;" class="pi pi-plus" v-if="op==='+'"></span>
+    <span style="font-size: 1.5rem;" class="pi pi-minus" v-if="op==='-'"></span>
+    <span style="font-size: 1.5rem;" class="pi pi-times" v-if="op==='*'"></span>
+    <span style="font-size: 1.5rem;" v-if="op==='/'">➗</span>
+    <span style="font-size: 1.5rem;">{{ num2 }}</span>
+    
+    <span style="font-size: 1.5rem;" class="pi pi-equals"></span>
+    <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 3rem">
+    <template #incrementbuttonicon>
+        <span class="pi pi-plus" />
+    </template>
+    <template #decrementbuttonicon>
+        <span class="pi pi-minus" />
+    </template>
+</InputNumber>
   </div>
-  <p>{{ yn }}</p>
-  <button @click="randomize()">Next Question</button>
+  <Message :sticky="false" :life="3000" v-if="yn != ''" :severity="severity">{{ yn }}</Message>
+  <Button @click="checkAns()" label="Enter"/>
+  <Button @click="randomize()" label="Next Question"/>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -37,12 +50,15 @@ import Fieldset from 'primevue/fieldset';
 import InputNumber from 'primevue/inputnumber';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
+import Message from 'primevue/message';
 
 
+const collapsed = ref(false);
 const value2 = ref(1)
 const dialogVisible = ref(false);
 const value = ref()
 const yn = ref('')
+const severity = ref('');
 
 const num1 = ref(0)
 const num2 = ref(0)
@@ -75,13 +91,19 @@ function checkAns() {
 
   if (ans == value.value) {
     yn.value = 'you are correct!'
+    severity.value = 'success';
   } else {
     yn.value = 'you are incorrect.'
+    severity.value = 'error'
   }
+  value.value = null;
 };
 
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
+.p-message{
+  width: fit-content;
+  margin-right: 0px;
+}
 </style>

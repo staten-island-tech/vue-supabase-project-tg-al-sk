@@ -59,17 +59,21 @@ const sidebarVisible = ref(false);
         <Button v-tooltip.top="'Log In'" icon="pi pi-user-edit" severity="secondary" rounded />
       </RouterLink>
       <RouterLink to="">
-        <Button v-tooltip.top="'View Available Cards'" icon="pi pi-th-large" severity="secondary" rounded @click="sidebarVisible = true"/>
+        <Button v-tooltip.top="'View Available Cards'" icon="pi pi-book" severity="secondary" rounded @click="sidebarVisible = true"/>
       </RouterLink>
         <RouterLink to="/currency">
-        <Button v-tooltip.top="'Obtain Golden Seagulls'" icon="pi pi-dollar" severity="secondary" rounded/>
+        <Button v-tooltip.top="'Do math for Golden Seagulls'" icon="pi pi-calculator" severity="secondary" rounded/>
       </RouterLink>
+      <RouterLink to="/battle" >
+          <Button v-tooltip.top="'Battle for Golden Seagulls'" icon="pi pi-hammer" severity="secondary" rounded/>
+        </RouterLink>
         <RouterLink to="/gacha" >
           <Button v-tooltip.top="'Gacha >:)'" icon="pi pi-money-bill" severity="secondary" rounded/>
         </RouterLink>
         <RouterLink to="/inventory" >
-          <Button v-tooltip.top="'Inventory'" icon="pi pi-table" severity="secondary" rounded/>
+          <Button v-tooltip.top="'Inventory'" icon="pi pi-trophy" severity="secondary" rounded/>
         </RouterLink>
+        
       </div>
     </template>
 </Toolbar></nav>
