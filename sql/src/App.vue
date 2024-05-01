@@ -13,6 +13,8 @@ import IconField from 'primevue/iconfield';
 import InputText from 'primevue/inputtext';
 import Sidebar from 'primevue/sidebar';
 
+import insertGacha from '../db/gacha/insertGacha'
+insertGacha({ name: 'testGacha'})
 
 // @ts-ignore
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
@@ -154,3 +156,4 @@ nav a:first-of-type {
   top: 10px;
 }
 </style>
+../db/currency/checkIfHasEnoughCurrency
