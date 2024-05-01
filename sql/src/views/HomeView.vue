@@ -8,7 +8,7 @@
   <p>( ͡° ͜ʖ ͡°)</p>
   <p>Your current amount of Golden Seagulls is in the top right. </p>
     <div class="mb-3 font-bold text-3xl">
-        <span class="text-900">Navigation</span>
+        <span class="text-900">Toolbar Navigation</span>
     </div>
     <div class="grid">
         <div class="col-12 md:col-4 mb-4 px-5">
