@@ -4,9 +4,6 @@ import isSignedIn from '../db/auth/isSignedIn'
 import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
 import { watch } from 'vue';
 import { useRoute } from 'vue-router';
-import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
-
-checkIfHasCurrency({ golden_seagulls: 0 })
 
 const route = useRoute()
 watch(route, () => ifNotSignedInGoToPage(route)) 
@@ -106,3 +103,4 @@ nav a:first-of-type {
   margin-left: 70%;
 }
 </style>
+../db/currency/checkIfHasEnoughCurrency
