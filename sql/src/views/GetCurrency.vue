@@ -20,7 +20,7 @@
             <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" @click="randomize()" />
         </div>
         </Dialog>
-  <div class="flex px-5 py-5 gap-4" style="width: 100vw; align-items: center; display: block; display: flex;">
+  <div class="flex px-5 py-5 gap-4" style="align-items: center; display: block; display: flex; margin-left: auto; margin-right: auto;">
     <span style="font-size: 1.5rem;">{{ num1 }}</span>
     <span style="font-size: 1.5rem;" class="pi pi-plus" v-if="op==='+'"></span>
     <span style="font-size: 1.5rem;" class="pi pi-minus" v-if="op==='-'"></span>
@@ -29,13 +29,7 @@
     <span style="font-size: 1.5rem;">{{ num2 }}</span>
     
     <span style="font-size: 1.5rem;" class="pi pi-equals"></span>
-    <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 3rem">
-    <template #incrementbuttonicon>
-        <span class="pi pi-plus" />
-    </template>
-    <template #decrementbuttonicon>
-        <span class="pi pi-minus" />
-    </template>
+    <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 4rem">
 </InputNumber>
   </div>
   <Message :sticky="false" :life="3000" v-if="yn != ''" :severity="severity">{{ yn }}</Message>
@@ -55,7 +49,9 @@ import Message from 'primevue/message';
 // @ts-ignore
 import increaseCurrency from '/db/currency/increaseCurrency';
 // @ts-ignore
-import getCurrency from '/db/currency/getCurrency';
+// import getCurrency from '/db/currency/getCurrency';
+// @ts-ignore
+import checkIfHasCurrency from '/db/currency/checkIfHasCurrency';
 
 const collapsed = ref(false);
 const value2 = ref(1)
@@ -97,11 +93,13 @@ function checkAns() {
     yn.value = 'you are correct!'
     severity.value = 'success';
     increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
-    getCurrency();
+    checkIfHasCurrency({ golden_seagulls: 0 })
+    // getCurrency();
   } else {
     yn.value = 'you are incorrect.'
     severity.value = 'error'
-    getCurrency();
+    checkIfHasCurrency({ golden_seagulls: 10 })
+    // getCurrency();
   }
   value.value = null;
 };

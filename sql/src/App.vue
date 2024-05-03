@@ -31,6 +31,7 @@ isSignedIn().then((signedIn) => {
 const loggedin = ref(false)
 watch(route, () => ifNotSignedInGoToPage(route)) 
 const sidebarVisible = ref(false);
+const currencyAmt = ref(0);
 // isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
 </script>
 
@@ -45,7 +46,7 @@ const sidebarVisible = ref(false);
   <RouterView />
   <div class="currency" v-if="loggedin">
   <IconField>
-    <InputText disabled placeholder="0" style="width: 15vw;"/>
+    <InputText disabled :placeholder="currencyAmt.toString()" style="width: 15vw;"/>
     <RouterLink to="/currency" class="pi pi-plus"> </RouterLink>
 </IconField>
 </div>
