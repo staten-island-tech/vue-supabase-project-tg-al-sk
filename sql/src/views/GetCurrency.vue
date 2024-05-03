@@ -54,6 +54,8 @@ import Message from 'primevue/message';
 
 // @ts-ignore
 import increaseCurrency from '/db/currency/increaseCurrency';
+// @ts-ignore
+import getCurrency from '/db/currency/getCurrency';
 
 const collapsed = ref(false);
 const value2 = ref(1)
@@ -95,9 +97,11 @@ function checkAns() {
     yn.value = 'you are correct!'
     severity.value = 'success';
     increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
+    getCurrency();
   } else {
     yn.value = 'you are incorrect.'
     severity.value = 'error'
+    getCurrency();
   }
   value.value = null;
 };
