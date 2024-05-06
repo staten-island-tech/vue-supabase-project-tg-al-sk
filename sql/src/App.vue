@@ -76,7 +76,9 @@ const currencyAmt = ref(0);
         <RouterLink to="/inventory" >
           <Button v-tooltip.top="'Inventory'" icon="pi pi-trophy" severity="secondary" rounded/>
         </RouterLink>
-        
+        <RouterLink to="/" >
+          <Button v-tooltip.top="'Help'" icon="pi pi-question-circle" severity="secondary" rounded/>
+        </RouterLink>
       </div>
     </template>
 </Toolbar></nav>

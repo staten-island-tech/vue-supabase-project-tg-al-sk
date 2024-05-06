@@ -81,7 +81,6 @@ import TabPanel from 'primevue/tabpanel'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
-
 // @ts-ignore
 import signInUser from '@/db/auth/signInUser'
 // @ts-ignore
@@ -91,6 +90,8 @@ import getCurrentUser from '@/db/getCurrentUser'
 // @ts-ignore
 import signUpUser from '@/db/auth/signUpUser'
 import checkIfHasCurrency from '@/db/currency/checkIfHasCurrency'
+// @ts-ignore
+import isSignedIn from '../../db/auth/isSignedIn'
 
 const loginsuccess = ref(false);
 const loginfail = ref(false);
@@ -100,14 +101,23 @@ const signedout = ref(false);
 const username = ref('')
 const email = ref('')
 const password = ref('')
+
 function signUp(username: String, email: String, password: String) {
   signUpUser(username, email, password)
   createaccsuccess.value = true;
 }
 
 function login(email: String, password: String) {
-  signInUser(email, password)
-  loginsuccess.value = true;
+  signInUser(email, password).then((signedIn) => {
+        if(signedIn === true){
+          loginfail.value = false;
+          loginsuccess.value = true;
+        }else if (signedIn === false){
+          loginfail.value = true;
+          loginsuccess.value = false;
+        }
+        console.log(signedIn, 'testing')
+    })
 }
 function logout() {
   signOutUser()
