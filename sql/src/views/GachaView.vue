@@ -13,14 +13,18 @@
         </Dialog>
     </div>
         
-        <Carousel :value="images" :numVisible="1" :numScroll="1" circular>
+        <Carousel :value="images" :numVisible="1" :numScroll="1" circular @click="loadBanner()">
             <template #item="slotProps">
                     <Fieldset :legend="slotProps.data.alt" class="border-1 surface-border border-round m-2  p-3" style="height: 50vh;">
                     <p>{{ slotProps.data.text }}</p>
+                    <div>
+                        <p>{{  }}</p>
+                        <img />
+                    </div>
                     <div class="buttons">
                     <Button @click="onePull(pools[slotProps.data.index])" class="button" label="x1 Pull"/>
                     <Button @click="tenPull(pools[slotProps.data.index])" class="button" label="x10 Pull"/>
-                </div>
+                    </div>
             </Fieldset>
     </template>
         </Carousel>
@@ -60,6 +64,20 @@ import { poolInfo } from '../teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
 import Carousel from 'primevue/carousel';
 console.log(pools)
+
+function loadBanner(pool:{
+    subject: string,
+    star: number,
+    name: string,
+    role: string,
+    image: string
+}[]) { 
+    //let fivestar = pool.filter((teacher) => teacher.star === 5);
+    //console.log(fivestar)
+    let main = pool.filter((teacher) => teacher.star === 5)
+    console.log(main)
+}
+
 const dialogVisible = ref(false); //differentiates the visibilies of the sidebar and dialog components 
 let pullvisible = ref(false)
 let currentpulls:{
@@ -127,7 +145,7 @@ function onePull(pool:{
             star: 3, 
             name: 'student', 
             role: 'useless', 
-            image: ''
+            image: 'https://assets-global.website-files.com/646218c67da47160c64a84d5/64faebcc5b9290da561ec21f_93.png'
         };
         // console.log(pullHist.value, "poopy")
         pullHist2.value++ //you got nothing and it increments :skull:
@@ -202,6 +220,7 @@ const images = ref();
     margin: auto auto 1rem auto;
     width: 40vw;
     height: fit-content;
+    margin-top: 200px;
 }
 
 .button {
