@@ -58,8 +58,8 @@ const currencyAmt = ref(0);
   <nav style=" width: fit-content; position: fixed; bottom: 0;"><Toolbar v-if="loggedin">
     <template #center>
       <div style="display: flex;">
-        <RouterLink to="/login">
-        <Button v-tooltip.top="'Log In'" icon="pi pi-user-edit" severity="secondary" rounded />
+        <RouterLink to="/user">
+        <Button v-tooltip.top="'User'" icon="pi pi-user-edit" severity="secondary" rounded />
       </RouterLink>
       <RouterLink to="">
         <Button v-tooltip.top="'View Available Cards'" icon="pi pi-book" severity="secondary" rounded @click="sidebarVisible = true"/>
