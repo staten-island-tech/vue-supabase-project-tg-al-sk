@@ -18,7 +18,7 @@
                     <Fieldset :legend="slotProps.data.alt" class="border-1 surface-border border-round m-2  p-3" style="height: 50vh;">
                     <p>{{ slotProps.data.text }}</p>
                     <div class="buttons">
-                    <Button @click="onePull(pools[slotProps.data.index])" class="button" label="x1 Pull"/>
+                    <Button @click="onePull(pools[slotProps.data.index], false)" class="button" label="x1 Pull"/>
                     <Button @click="tenPull(pools[slotProps.data.index])" class="button" label="x10 Pull"/>
                 </div>
             </Fieldset>
@@ -69,6 +69,12 @@ import { pools } from '../teachers/teacherPools.ts';
 import { poolInfo } from '../teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
 import Carousel from 'primevue/carousel';
+
+import Teacher from '../teachers/Teacher'
+import insertGacha from '../../db/gacha/insertGacha'
+import increaseCurrency from '../../db/currency/increaseCurrency'
+import getCurrency from '../../db/currency/getCurrency'
+
 console.log(pools)
 const dialogVisible = ref(false); //differentiates the visibilies of the sidebar and dialog components 
 let pullvisible = ref(false)
@@ -90,13 +96,19 @@ const studentCard = {subject: 'nothing',
             role: 'useless', 
             image: ''
         };
-function onePull(pool:{
+async function onePull(pool:{
     subject: string,
     star: number,
     name: string,
     role: string,
     image: string
 }[]) {
+    const userCurrency = await getCurrency()
+    console.log(userCurrency)
+    if (userCurrency.golden_seagulls < 10) {
+        return
+    }
+    increaseCurrency({ golden_seagulls: -10 })
     let fourstar = pool.filter((teacher) => teacher.star === 4);
     let fivestar = pool.filter((teacher) => teacher.star === 5);
     // let whalen = pool.filter((teacher) => teacher.name == 'Michael Whalen');
@@ -162,22 +174,32 @@ function onePull(pool:{
 }
     currentpulls = [obtained];
     pullvisible.value = true;
+    if(obtained.star > 3) {
+        const teacher = new Teacher(obtained.name, obtained.subject, obtained.image, obtained.star)
+        console.log(teacher)
+        insertGacha(teacher)
+    }
     return obtained;
 };
-function tenPull(pool:{
+async function tenPull(pool:{
     subject: string,
     star: number,
     name: string,
     role: string,
     image: string
 }[]) {
-    let winlosses = [];
+    let winlosses:string[] = [];
+    const userCurrency = await getCurrency()
+    console.log(userCurrency)
+    if (userCurrency.golden_seagulls < 100) {
+        return
+    }
     let arr = [];
     let i = 0
     while( i < 10 ) {
         i++
         let res = onePull(pool);
-        arr.push(res);
+        arr.push(res, true);
         winlosses.push(winlose.value);
     } 
     currentpulls = arr;
