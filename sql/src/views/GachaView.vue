@@ -178,9 +178,11 @@ async function tenPull(pool:{
         i++
         arr.push(onePull(pool), true)
     } 
-    currentpulls = arr;
-    pullvisible.value = true;
-    console.log(currentpulls);
+    if(arr.length > 0) {
+        currentpulls = arr;
+        pullvisible.value = true;
+        console.log(currentpulls);
+    }
 };
 
 const PhotoService = {
