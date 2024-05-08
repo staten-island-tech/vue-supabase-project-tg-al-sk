@@ -18,8 +18,7 @@
                     <Fieldset :legend="slotProps.data.alt" class="border-1 surface-border border-round m-2  p-3" style="height: 50vh;">
                     <p>{{ slotProps.data.text }}</p>
                     <div>
-                        <p>{{  }}</p>
-                        <img />
+                        <img :src="face.img"/>
                     </div>
                     <div class="buttons">
                     <Button @click="onePull(pools[slotProps.data.index])" class="button" label="x1 Pull"/>
@@ -65,6 +64,7 @@ import Dialog from 'primevue/dialog';
 import Carousel from 'primevue/carousel';
 console.log(pools)
 
+
 function loadBanner(pool:{
     subject: string,
     star: number,
@@ -72,10 +72,12 @@ function loadBanner(pool:{
     role: string,
     image: string
 }[]) { 
+    let face = pool.find((teacher) => teacher.star === 5)
+    console.log(face)
     //let fivestar = pool.filter((teacher) => teacher.star === 5);
     //console.log(fivestar)
-    let main = pool.filter((teacher) => teacher.star === 5)
-    console.log(main)
+    // let main = pool.filter((teacher) => teacher.star === 5)
+    // console.log(main)
 }
 
 const dialogVisible = ref(false); //differentiates the visibilies of the sidebar and dialog components 
