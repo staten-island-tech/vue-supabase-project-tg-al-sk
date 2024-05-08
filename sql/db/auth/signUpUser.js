@@ -1,6 +1,7 @@
 import supabaseClient from '../supabaseClient'
 import { Auth } from '@supabase/auth-ui-react'
 import createUserCurrencyTable from '../createUserCurrencyTable'
+import createUserGachaTable from '../createUserGachaTable'
 
 async function insertToSupabaseDB(id, username, email) {
   const res = await fetch('/.netlify/functions/signupUser', {
@@ -26,7 +27,10 @@ export default async function signUpUser(username, email, password) {
   const id = data.user.id
   insertToSupabaseDB(id, username, email).then((data) => {
     // console.log(data)
-    setTimeout(() => createUserCurrencyTable(id), 3000)
+    setTimeout(() => { 
+      createUserCurrencyTable(id) 
+      createUserGachaTable(id)
+    }, 3000 )
     
   })
   
