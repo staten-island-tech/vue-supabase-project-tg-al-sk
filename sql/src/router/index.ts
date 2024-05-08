@@ -9,6 +9,11 @@ const router = createRouter({
       component: () => import('../views/HomeView.vue')
     },
     {
+      path: '/user',
+      name: 'User',
+      component: () => import('../views/UserView.vue')
+    },
+    {
       path: '/currency',
       name: 'Currency',
       component: () => import('../views/GetCurrency.vue')
@@ -24,8 +29,13 @@ const router = createRouter({
       component: () => import('../views/GachaView.vue')
     },
     {
+      path: '/inventory',
+      name: 'Inventory',
+      component: () => import('../views/UserInventory.vue')
+    },
+    {
       path: '/battle',
-      name: 'battle',
+      name: 'Battle',
       component: () => import('../views/BattleView.vue')
     }
   ]

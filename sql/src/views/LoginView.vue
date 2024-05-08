@@ -7,11 +7,9 @@
         }
     }">
     <template #container>
-      <div class="inline-flex flex-column gap-2" style="border-radius: 12px; padding: 0 0 0 0;">
+      <div class="flex flex-column px-5 py-5 gap-4">
     <p>Successfully logged in. </p>
-    <RouterLink to="/">
-    <Button type="button" label="Got it!"  />
-  </RouterLink>
+    <Button type="button" label="Got it!" @click="refreshPage(true)" />
   </div>
   </template>
   </Dialog>
@@ -21,21 +19,6 @@
   <Dialog v-model:visible="createaccsuccess">
     <p>Account successfully created. Please go back to log in. </p>
   </Dialog>
-  <Dialog v-model:visible="signedout" modal
-    :pt="{
-        root: 'border-none',
-        mask: {
-            style: 'backdrop-filter: blur(2px)'
-        }
-    }">
-    <template #container>
-      <div class="inline-flex flex-column gap-2" style="border-radius: 12px; padding: 0 0 0 0;">
-    <p>Signed out. </p>
-    <Button type="button" label="Got it!"  @click="refreshPage()"/>
-  </div>
-  </template></Dialog>
-  <Button label="Sign Out" icon="pi pi-sign-out" @click.prevent="logout()"/>
-  <Button label="Get Current User" @click.prevent="getCurrentUser()"/>
   <TabView>
     <TabPanel header="Login">
       <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6" style="min-width: 100%;">
@@ -78,47 +61,49 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
-
 // @ts-ignore
 import signInUser from '@/db/auth/signInUser'
 // @ts-ignore
-import signOutUser from '@/db/auth/signOutUser'
-// @ts-ignore
-import getCurrentUser from '@/db/getCurrentUser'
+// import getCurrentUser from '@/db/getCurrentUser' // for testing
 // @ts-ignore
 import signUpUser from '@/db/auth/signUpUser'
+// @ts-ignore
 import checkIfHasCurrency from '@/db/currency/checkIfHasCurrency'
+// @ts-ignore
+import refreshPage from '../lib/refreshPage'
 
 const loginsuccess = ref(false);
 const loginfail = ref(false);
 const createaccsuccess = ref(false);
-const signedout = ref(false);
 
 const username = ref('')
 const email = ref('')
 const password = ref('')
+
 function signUp(username: String, email: String, password: String) {
   signUpUser(username, email, password)
   createaccsuccess.value = true;
 }
 
 function login(email: String, password: String) {
-  signInUser(email, password)
-  loginsuccess.value = true;
+  // @ts-ignore
+  signInUser(email, password).then((signedIn) => {
+        if(signedIn === true){
+          loginfail.value = false;
+          loginsuccess.value = true;
+        }else if (signedIn === false){
+          loginfail.value = true;
+          loginsuccess.value = false;
+        }
+        console.log(signedIn, 'testing')
+    })
 }
-function logout() {
-  signOutUser()
-  signedout.value = true;
-}
-function refreshPage(){
-  location.reload();
-}
+
 </script>
 
 <style scoped>

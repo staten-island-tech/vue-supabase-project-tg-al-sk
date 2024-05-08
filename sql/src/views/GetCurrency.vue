@@ -1,6 +1,8 @@
 <template>
+  
   <h1>Get currency by solving math problems</h1>
-  <Fieldset legend="Directions" :toggleable="true">
+  
+  <Fieldset legend="Directions" :toggleable="true" :collapsed="collapsed" style="position: fixed; z-index: 999;">
     <p class="m-0">
       You will be shown questions consisting of addition, subtraction, multiplication, and division.
       Solve them correctly to gain Golden Seagulls! You may increase the difficulty of the questions to gain more Golden Seagulls.
@@ -8,25 +10,34 @@
     <br>
     <p>For division, please round to the nearest whole number.</p>
     <div class="card flex justify-content-center">
-        <Button label="Adjust Difficulty" @click="dialogVisible = true" />
+    </div>
+    <Button label="Got it!" @click="collapsed = true" v-if="collapsed === false"></Button>
+  </Fieldset>
+  <div style="display: flex; align-items: center; flex-direction: column;">
+  <div class="flex px-5 py-5 gap-4" style="align-items: center; display: block; display: flex; margin-left: auto; margin-right: auto;">
+    <span style="font-size: 1.5rem;">{{ num1 }}</span>
+    <span style="font-size: 1.5rem;" class="pi pi-plus" v-if="op==='+'"></span>
+    <span style="font-size: 1.5rem;" class="pi pi-minus" v-if="op==='-'"></span>
+    <span style="font-size: 1.5rem;" class="pi pi-times" v-if="op==='*'"></span>
+    <span style="font-size: 1.5rem;" v-if="op==='/'">➗</span>
+    <span style="font-size: 1.5rem;">{{ num2 }}</span>
+    
+    <span style="font-size: 1.5rem;" class="pi pi-equals"></span>
+    <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 4rem">
+</InputNumber>
+<Button @click="checkAns()" label="Enter"/>
+  </div>
+  <Message :sticky="false" :life="3000" v-if="yn != ''" :severity="severity">{{ yn }}</Message>
+  <div>
+  <Button label="Adjust Difficulty" @click="dialogVisible = true" />
         <Dialog v-model:visible="dialogVisible" modal header="Adjust Difficulty" :style="{ width: '50rem' }">
           <div class="flex-auto">
-            <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" />
+            <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" @click="randomize()" />
         </div>
-        </Dialog>
-    </div>
-  </Fieldset>
-  
-  <div>
-    <p>{{ num1 }}</p>
-    <p>{{ op }}</p>
-    <p>{{ num2 }}</p>
-    <p>Enter Answer</p>
-    <InputNumber v-model="value" inputId="integeronly"/>
-    <button @click="checkAns()">Enter</button>
-  </div>
-  <p>{{ yn }}</p>
-  <button @click="randomize()">Next Question</button>
+      </Dialog>
+  <Button @click="randomize()" label="Next Question"/>
+</div>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -35,12 +46,21 @@ import Fieldset from 'primevue/fieldset';
 import InputNumber from 'primevue/inputnumber';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
+import Message from 'primevue/message';
 
+// @ts-ignore
+import increaseCurrency from '/db/currency/increaseCurrency';
+// @ts-ignore
+// import getCurrency from '/db/currency/getCurrency';
+// @ts-ignore
+import checkIfHasCurrency from '/db/currency/checkIfHasCurrency';
 
+const collapsed = ref(false);
 const value2 = ref(1)
 const dialogVisible = ref(false);
 const value = ref()
 const yn = ref('')
+const severity = ref('');
 
 const num1 = ref(0)
 const num2 = ref(0)
@@ -73,16 +93,24 @@ function checkAns() {
 
   if (ans == value.value) {
     yn.value = 'you are correct!'
+    severity.value = 'success';
+    increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
+    checkIfHasCurrency({ golden_seagulls: 0 })
+    // getCurrency();
   } else {
     yn.value = 'you are incorrect.'
+    severity.value = 'error'
+    checkIfHasCurrency({ golden_seagulls: 10 })
+    // getCurrency();
   }
+  value.value = null;
 };
-
-//add watch function so it changes the questinoi when the dificulty chainges 
-// setTimeout()
 
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
+.p-message{
+  width: fit-content;
+  margin-right: 0px;
+}
 </style>

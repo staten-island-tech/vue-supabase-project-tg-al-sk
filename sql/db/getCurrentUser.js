@@ -6,6 +6,6 @@ export default async function getCurrentUser() {
   const { data, error } = await supabase.auth.getUser()
   // console.log(data, error)
 
-  console.log(data.user)
-  return data
+  // console.log(data.user)
+  return data.user
 }
