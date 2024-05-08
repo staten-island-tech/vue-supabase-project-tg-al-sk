@@ -21,7 +21,7 @@
                         <img :src="face.img"/>
                     </div>
                     <div class="buttons">
-                    <Button @click="onePull(pools[slotProps.data.index])" class="button" label="x1 Pull"/>
+                    <Button @click="onePull(pools[slotProps.data.index], false)" class="button" label="x1 Pull"/>
                     <Button @click="tenPull(pools[slotProps.data.index])" class="button" label="x10 Pull"/>
                     </div>
             </Fieldset>
@@ -62,6 +62,12 @@ import { pools } from '../teachers/teacherPools.ts';
 import { poolInfo } from '../teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
 import Carousel from 'primevue/carousel';
+
+import Teacher from '../teachers/Teacher'
+import insertGacha from '../../db/gacha/insertGacha'
+import increaseCurrency from '../../db/currency/increaseCurrency'
+import getCurrency from '../../db/currency/getCurrency'
+
 console.log(pools)
 
 
@@ -93,13 +99,19 @@ const pullHist = ref(0) //history/pity for 4*
 const pullHist2 = ref(0) //history for 5*
 const rate = ref(0.01) //when the pullhist2 reaches 80 this value will slowly increase to give a higehr rate of getting a 5*
 //the console logs are placeholders for the cards lmaooooo 
-function onePull(pool:{
+async function onePull(pool:{
     subject: string,
     star: number,
     name: string,
     role: string,
     image: string
 }[]) {
+    const userCurrency = await getCurrency()
+    console.log(userCurrency)
+    if (userCurrency.golden_seagulls < 10) {
+        return
+    }
+    increaseCurrency({ golden_seagulls: -10 })
     let fourstar = pool.filter((teacher) => teacher.star === 4);
     let fivestar = pool.filter((teacher) => teacher.star === 5);
     const whalen = pool.filter((teacher) => teacher.name == 'Michael Whalen');
@@ -166,9 +178,14 @@ function onePull(pool:{
     }
     currentpulls = [obtained];
     pullvisible.value = true;
+    if(obtained.star > 3) {
+        const teacher = new Teacher(obtained.name, obtained.subject, obtained.image, obtained.star)
+        console.log(teacher)
+        insertGacha(teacher)
+    }
     return obtained;
 };
-function tenPull(pool:{
+async function tenPull(pool:{
     subject: string,
     star: number,
     name: string,
@@ -179,7 +196,7 @@ function tenPull(pool:{
     let i = 0
     while( i < 10 ) {
         i++
-        arr.push(onePull(pool))
+        arr.push(onePull(pool), true)
     } 
     currentpulls = arr;
     pullvisible.value = true;

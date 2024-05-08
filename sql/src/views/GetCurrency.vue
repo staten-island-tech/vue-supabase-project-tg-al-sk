@@ -2,7 +2,7 @@
   
   <h1>Get currency by solving math problems</h1>
   
-  <Fieldset legend="Directions" :toggleable="true" :collapsed="collapsed">
+  <Fieldset legend="Directions" :toggleable="true" :collapsed="collapsed" style="position: fixed; z-index: 999;">
     <p class="m-0">
       You will be shown questions consisting of addition, subtraction, multiplication, and division.
       Solve them correctly to gain Golden Seagulls! You may increase the difficulty of the questions to gain more Golden Seagulls.
@@ -14,13 +14,7 @@
     <Button label="Got it!" @click="collapsed = true" v-if="collapsed === false"></Button>
   </Fieldset>
   <div style="display: flex; align-items: center; flex-direction: column;">
-  <Button label="Adjust Difficulty" @click="dialogVisible = true" />
-        <Dialog v-model:visible="dialogVisible" modal header="Adjust Difficulty" :style="{ width: '50rem' }">
-          <div class="flex-auto">
-            <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" @click="randomize()" />
-        </div>
-        </Dialog>
-  <div class="flex px-5 py-5 gap-4" style="width: auto; align-items: center; display: block;">
+  <div class="flex px-5 py-5 gap-4" style="align-items: center; display: block; display: flex; margin-left: auto; margin-right: auto;">
     <span style="font-size: 1.5rem;">{{ num1 }}</span>
     <span style="font-size: 1.5rem;" class="pi pi-plus" v-if="op==='+'"></span>
     <span style="font-size: 1.5rem;" class="pi pi-minus" v-if="op==='-'"></span>
@@ -28,18 +22,20 @@
     <span style="font-size: 1.5rem;" v-if="op==='/'">➗</span>
     <span style="font-size: 1.5rem;">{{ num2 }}</span>
     <span style="font-size: 1.5rem;" class="pi pi-equals"></span>
-    <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 3rem">
-    <template #incrementbuttonicon>
-        <span class="pi pi-plus" />
-    </template>
-    <template #decrementbuttonicon>
-        <span class="pi pi-minus" />
-    </template>
+    <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 4rem">
 </InputNumber>
-</div>
+<Button @click="checkAns()" label="Enter"/>
+  </div>
   <Message :sticky="false" :life="3000" v-if="yn != ''" :severity="severity">{{ yn }}</Message>
-  <Button @click="checkAns()" label="Enter"/>
+  <div>
+  <Button label="Adjust Difficulty" @click="dialogVisible = true" />
+        <Dialog v-model:visible="dialogVisible" modal header="Adjust Difficulty" :style="{ width: '50rem' }">
+          <div class="flex-auto">
+            <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" @click="randomize()" />
+        </div>
+      </Dialog>
   <Button @click="randomize()" label="Next Question"/>
+</div>
 </div>
 </template>
 
@@ -51,9 +47,12 @@ import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
 
-let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-console.log(vw, vh)
+// @ts-ignore
+import increaseCurrency from '/db/currency/increaseCurrency';
+// @ts-ignore
+// import getCurrency from '/db/currency/getCurrency';
+// @ts-ignore
+import checkIfHasCurrency from '/db/currency/checkIfHasCurrency';
 
 const collapsed = ref(false);
 const value2 = ref(1)
@@ -94,9 +93,14 @@ function checkAns() {
   if (ans == value.value) {
     yn.value = 'you are correct!'
     severity.value = 'success';
+    increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
+    checkIfHasCurrency({ golden_seagulls: 0 })
+    // getCurrency();
   } else {
     yn.value = 'you are incorrect.'
     severity.value = 'error'
+    checkIfHasCurrency({ golden_seagulls: 10 })
+    // getCurrency();
   }
   value.value = null;
 };

@@ -12,7 +12,7 @@ import Button from 'primevue/button';
 import IconField from 'primevue/iconfield';
 import InputText from 'primevue/inputtext';
 import Sidebar from 'primevue/sidebar';
-
+// @ts-ignore
 import insertGacha from '../db/gacha/insertGacha'
 // insertGacha({ name: 'testGacha'})
 
@@ -31,6 +31,7 @@ isSignedIn().then((signedIn) => {
 const loggedin = ref(false)
 watch(route, () => ifNotSignedInGoToPage(route)) 
 const sidebarVisible = ref(false);
+const currencyAmt = ref(0);
 // isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
 </script>
 
@@ -45,7 +46,7 @@ const sidebarVisible = ref(false);
   <RouterView />
   <div class="currency" v-if="loggedin">
   <IconField>
-    <InputText disabled placeholder="0" style="width: 15vw;"/>
+    <InputText disabled :placeholder="currencyAmt.toString()" style="width: 15vw;"/>
     <RouterLink to="/currency" class="pi pi-plus"> </RouterLink>
 </IconField>
 </div>
@@ -57,8 +58,8 @@ const sidebarVisible = ref(false);
   <nav style=" width: fit-content; position: fixed; bottom: 0;"><Toolbar v-if="loggedin">
     <template #center>
       <div style="display: flex;">
-        <RouterLink to="/login">
-        <Button v-tooltip.top="'Log In'" icon="pi pi-user-edit" severity="secondary" rounded />
+        <RouterLink to="/user">
+        <Button v-tooltip.top="'User'" icon="pi pi-user-edit" severity="secondary" rounded />
       </RouterLink>
       <RouterLink to="">
         <Button v-tooltip.top="'View Available Cards'" icon="pi pi-book" severity="secondary" rounded @click="sidebarVisible = true"/>
@@ -75,7 +76,9 @@ const sidebarVisible = ref(false);
         <RouterLink to="/inventory" >
           <Button v-tooltip.top="'Inventory'" icon="pi pi-trophy" severity="secondary" rounded/>
         </RouterLink>
-        
+        <RouterLink to="/" >
+          <Button v-tooltip.top="'Help'" icon="pi pi-question-circle" severity="secondary" rounded/>
+        </RouterLink>
       </div>
     </template>
 </Toolbar></nav>
