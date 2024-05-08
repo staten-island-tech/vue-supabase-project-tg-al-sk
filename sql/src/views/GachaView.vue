@@ -59,7 +59,6 @@
 </template>
 
 <script setup lang="ts">
-// import Galleria from 'primevue/galleria';
 import Button from 'primevue/button';
 import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
@@ -69,10 +68,13 @@ import { pools } from '../teachers/teacherPools.ts';
 import { poolInfo } from '../teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
 import Carousel from 'primevue/carousel';
-
+// @ts-ignore
 import Teacher from '../teachers/Teacher'
+// @ts-ignore
 import insertGacha from '../../db/gacha/insertGacha'
+// @ts-ignore
 import increaseCurrency from '../../db/currency/increaseCurrency'
+// @ts-ignore
 import getCurrency from '../../db/currency/getCurrency'
 
 console.log(pools)
@@ -111,7 +113,6 @@ async function onePull(pool:{
     increaseCurrency({ golden_seagulls: -10 })
     let fourstar = pool.filter((teacher) => teacher.star === 4);
     let fivestar = pool.filter((teacher) => teacher.star === 5);
-    // let whalen = pool.filter((teacher) => teacher.name == 'Michael Whalen');
     let obtained:{
     subject: string,
     star: number,
@@ -119,14 +120,13 @@ async function onePull(pool:{
     role: string,
     image: string
     };
-    if(pool.length === 1){
-        console.log(pool[0]);
-        if(Math.random() < 0.009){ // up rate for whalen but no guarantee-???
+    if(pool.length === 1){ // accomodate for whalen only pool
+        if(Math.random() < 0.009){ // up rate for whalen
             obtained = pool[0];
             winlose.value === 'win';
             rate.value = 0.01
             pullHist2.value = 0
-        }else if(pullHist2.value == 89){
+        }else if(pullHist2.value == 89){ // full pity
             obtained = pool[0];
             winlose.value === 'win';
             rate.value = 0.01
@@ -135,7 +135,6 @@ async function onePull(pool:{
             pullHist.value++
         obtained = studentCard;
         winlose.value === 'lose';
-        // console.log(pullHist.value, "poopy")
         pullHist2.value++
         }
     }
@@ -154,7 +153,6 @@ async function onePull(pool:{
         pullHist.value++
         obtained = studentCard;
         winlose.value === 'lose';
-        // console.log(pullHist.value, "poopy")
         pullHist2.value++ //you got nothing and it increments :skull:
     };
     if( Math.random() < rate.value) {
