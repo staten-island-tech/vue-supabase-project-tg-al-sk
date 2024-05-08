@@ -172,17 +172,20 @@ async function tenPull(pool:{
     role: string,
     image: string
 }[]) {
+    const userCurrency = await getCurrency()
+    console.log(userCurrency)
+    if (userCurrency.golden_seagulls < 100) {
+        return
+    }
     let arr = [];
     let i = 0
     while( i < 10 ) {
         i++
         arr.push(onePull(pool), true)
-    } 
-    if(arr.length > 0) {
-        currentpulls = arr;
-        pullvisible.value = true;
-        console.log(currentpulls);
     }
+    currentpulls = arr;
+    pullvisible.value = true;
+    console.log(currentpulls);
 };
 
 const PhotoService = {
