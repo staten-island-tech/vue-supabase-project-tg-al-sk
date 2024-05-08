@@ -12,6 +12,7 @@ export async function handler(req: Request) {
         const e = await supabase.from('gacha').update({ gacha: newGacha }).eq('id', body.id)
         console.log(e)
     } else {
+        console.log(currentGacha)
         const newGacha = JSON.stringify([...currentGacha, body.gacha])
         console.log(newGacha)
         const e = await supabase.from('gacha').update({ gacha: newGacha }).eq('id', body.id)
