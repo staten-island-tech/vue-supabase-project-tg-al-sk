@@ -6,6 +6,5 @@ export default async function checkIfHasCurrency({ golden_seagulls = 0, diamond_
     const supabase = supabaseClient()
     const id = await (await supabase.auth.getUser()).data.user.id
     const userCurrency = await getCurrency()
-    console.log(userCurrency)
     return userCurrency.golden_seagulls >= golden_seagulls && userCurrency.diamond_seagulls >= diamond_seagulls
 }

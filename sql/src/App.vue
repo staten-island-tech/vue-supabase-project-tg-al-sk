@@ -14,7 +14,7 @@ import InputText from 'primevue/inputtext';
 import Sidebar from 'primevue/sidebar';
 // @ts-ignore
 import insertGacha from '../db/gacha/insertGacha'
-insertGacha({ name: 'testGacha'})
+// insertGacha({ name: 'testGacha'})
 
 // @ts-ignore
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
