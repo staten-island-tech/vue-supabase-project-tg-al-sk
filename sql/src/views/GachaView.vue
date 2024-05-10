@@ -160,6 +160,7 @@ async function onePull(pool:{
     role: string,
     image: string
 }[]) {
+    currentpulls = []
     const userCurrency = await getCurrency()
     console.log(userCurrency)
     if (userCurrency.golden_seagulls < 10) {
@@ -184,6 +185,8 @@ async function tenPull(pool:{
     role: string,
     image: string
 }[]) {
+    currentpulls = []
+
     const userCurrency = await getCurrency()
     console.log(userCurrency)
     if (userCurrency.golden_seagulls < 100) {
