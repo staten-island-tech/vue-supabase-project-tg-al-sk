@@ -8,15 +8,11 @@ export async function handler(req: Request) {
     const currentGacha = JSON.parse(data.gacha)
     if(currentGacha.length === 0) {
         const newGacha = JSON.stringify([body.gacha])
-        console.log(newGacha)
         const e = await supabase.from('gacha').update({ gacha: newGacha }).eq('id', body.id)
-        console.log(e)
     } else {
         console.log(currentGacha)
         const newGacha = JSON.stringify([...currentGacha, body.gacha])
-        console.log(newGacha)
         const e = await supabase.from('gacha').update({ gacha: newGacha }).eq('id', body.id)
-        console.log(e)
     }
 
     return {
