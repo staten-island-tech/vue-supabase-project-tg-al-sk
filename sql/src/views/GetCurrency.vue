@@ -94,7 +94,7 @@ function checkAns() {
   if (ans == value.value) {
     yn.value = 'you are correct!'
     severity.value = 'success';
-    increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
+    increaseCurrency({golden_seagulls: 10});
     checkIfHasCurrency({ golden_seagulls: 0 })
     // getCurrency();
   } else {
