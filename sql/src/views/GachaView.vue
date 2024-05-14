@@ -18,7 +18,7 @@
                     <Fieldset :legend="slotProps.data.alt" class="border-1 surface-border border-round m-2  p-3" style="height: 50vh;">
                     <p>{{ slotProps.data.text }}</p>
                     <div class="buttons">
-                    <Button @click="onePull(pools[slotProps.data.index], false)" class="button" label="x1 Pull"/>
+                    <Button @click="onePull(pools[slotProps.data.index])" class="button" label="x1 Pull"/>
                     <Button @click="tenPull(pools[slotProps.data.index])" class="button" label="x10 Pull"/>
                 </div>
             </Fieldset>
@@ -98,19 +98,13 @@ const studentCard = {subject: 'nothing',
             role: 'useless', 
             image: ''
         };
-async function onePull(pool:{
+function pull(pool:{
     subject: string,
     star: number,
     name: string,
     role: string,
     image: string
 }[]) {
-    const userCurrency = await getCurrency()
-    console.log(userCurrency)
-    if (userCurrency.golden_seagulls < 10) {
-        return
-    }
-    increaseCurrency({ golden_seagulls: -10 })
     let fourstar = pool.filter((teacher) => teacher.star === 4);
     let fivestar = pool.filter((teacher) => teacher.star === 5);
     let obtained:{
@@ -169,7 +163,25 @@ async function onePull(pool:{
         rate.value = 0.01
         pullHist2.value = 0 //you must get a chara every 90 pulls resets pity 
     }
+    return obtained
 }
+
+async function onePull(pool:{
+    subject: string,
+    star: number,
+    name: string,
+    role: string,
+    image: string
+}[]) {
+    currentpulls = []
+    const userCurrency = await getCurrency()
+    console.log(userCurrency)
+    if (userCurrency.golden_seagulls < 10) {
+        return
+    }
+    increaseCurrency({ golden_seagulls: -10 })
+    const obtained = pull(pool)
+
     currentpulls = [obtained];
     pullvisible.value = true;
     if(obtained.star > 3) {
@@ -187,20 +199,33 @@ async function tenPull(pool:{
     image: string
 }[]) {
     let winlosses:string[] = [];
+    currentpulls = []
+
     const userCurrency = await getCurrency()
     console.log(userCurrency)
     if (userCurrency.golden_seagulls < 100) {
         return
     }
+    increaseCurrency({ golden_seagulls: -100 })
+    currentpulls.value = []
+
     let arr = [];
     let i = 0
     while( i < 10 ) {
         i++
-        let res = onePull(pool);
-        arr.push(res, true);
-        winlosses.push(winlose.value);
+        //let res = onePull(pool);
+        //arr.push(res, true);
+        //winlosses.push(winlose.value);
     } 
     currentpulls = arr;
+        const obtained = pull(pool)
+        currentpulls.push(obtained)
+        if(obtained.star > 3) {
+            const teacher = new Teacher(obtained.name, obtained.subject, obtained.image, obtained.star)
+            console.log(teacher)
+            insertGacha(teacher)
+        }
+    } 
     pullvisible.value = true;
     if(winlosses.includes('win') === true){
         winlose.value === 'win';
