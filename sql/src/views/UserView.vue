@@ -15,7 +15,8 @@
   <Button label="Sign Out" icon="pi pi-sign-out" @click.prevent="logout()"/>
   <div class="border-round border-1 surface-border p-4 surface-card">
     <div class="flex mb-3">
-      <Avatar icon="pi pi-user" class="mr-2" size="xlarge" shape="circle"/>
+        <Skeleton shape="circle" size="4rem" class="mr-2" v-if="useremail === ''"></Skeleton>
+      <Avatar icon="pi pi-user" class="mr-2" size="xlarge" shape="circle" v-if="useremail != ''"/>
         <div>
             <Skeleton width="10rem" class="mb-2" v-if="useremail === ''"></Skeleton>
             <p v-if="useremail != ''">{{ useremail }}</p>
@@ -25,9 +26,10 @@
             <p style="font-size: 0.8rem;" v-if="usercreated != ''">Last logged in at {{ userlastlogin }}</p>
         </div>
     </div>
-    <Skeleton width="100%" height="150px"></Skeleton>
-    <div width="100%" height="150px">
-
+    <Skeleton width="100%" height="150px" v-if="useremail === ''"></Skeleton>
+    <div style="width:100%;height:150px;background-color: rgb(40,40,40);" v-if="useremail != ''">
+      <p>cards collected:</p>
+      <p>golden seagulls:</p>
     </div>
 </div>
 </template>
