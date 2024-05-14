@@ -48,7 +48,8 @@
         <label for="email2" class="block text-900 font-medium mb-2">Email</label>
         <InputText id="email2" type="text" placeholder="Email address" class="w-full mb-3" v-model="email" />
         <label for="password2" class="block text-900 font-medium mb-2">Password</label>
-        <InputText id="password2" type="password" placeholder="Password" class="w-full mb-3" v-model="password" />
+        <InputText id="password2" type="password" placeholder="Password" class="w-full mb-3" v-model="password" :invalid="passwordlength"/>
+        <Message v-if="passwordlength" :sticky="false" :life="3000" severity="error">Your password must be longer than 6 characters. </Message>
         <Button label="Sign In" icon="pi pi-user" class="w-full" @click.prevent="signUp(username, email, password)"></Button>
     </div>
 </div>
@@ -60,12 +61,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
+import Message from 'primevue/message';
 // @ts-ignore
 import signInUser from '@/db/auth/signInUser'
 // @ts-ignore
@@ -84,6 +86,7 @@ const createaccsuccess = ref(false);
 const username = ref('')
 const email = ref('')
 const password = ref('')
+const passwordlength = ref(false);
 
 function signUp(username: String, email: String, password: String) {
   signUpUser(username, email, password)
@@ -103,7 +106,13 @@ function login(email: String, password: String) {
         console.log(signedIn, 'testing')
     })
 }
-
+watch(password, (item) => {
+  if (item.length<6){
+    passwordlength.value = true;
+  }else{
+    passwordlength.value = false;
+  }
+})
 </script>
 
 <style scoped>
