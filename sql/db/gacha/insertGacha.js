@@ -9,9 +9,6 @@ export default async function insertGacha(gacha) {
     })
     fetch('/.netlify/functions/insertGacha', {
         method: 'post',
-        body: JSON.stringify({
-            gacha: gacha,
-            id,
-        })
+        body,
     }) 
 }
