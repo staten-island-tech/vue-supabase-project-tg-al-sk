@@ -14,14 +14,19 @@
     <Button label="Got it!" @click="collapsed = true" v-if="collapsed === false"></Button>
   </Fieldset>
   <div style="display: flex; align-items: center; flex-direction: column;">
-  <div class="flex px-5 py-5 gap-4" style="align-items: center; display: block; display: flex; margin-left: auto; margin-right: auto;">
+  <Button label="Adjust Difficulty" @click="dialogVisible = true" />
+        <Dialog v-model:visible="dialogVisible" modal header="Adjust Difficulty" :style="{ width: '50rem' }">
+          <div class="flex-auto">
+            <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" @click="randomize()" />
+        </div>
+        </Dialog>
+  <div class="flex px-5 py-5 gap-4" style="width: auto; align-items: center; display: block;">
     <span style="font-size: 1.5rem;">{{ num1 }}</span>
     <span style="font-size: 1.5rem;" class="pi pi-plus" v-if="op==='+'"></span>
     <span style="font-size: 1.5rem;" class="pi pi-minus" v-if="op==='-'"></span>
     <span style="font-size: 1.5rem;" class="pi pi-times" v-if="op==='*'"></span>
     <span style="font-size: 1.5rem;" v-if="op==='/'">➗</span>
     <span style="font-size: 1.5rem;">{{ num2 }}</span>
-    
     <span style="font-size: 1.5rem;" class="pi pi-equals"></span>
     <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 4rem">
 </InputNumber>
@@ -54,6 +59,9 @@ import increaseCurrency from '/db/currency/increaseCurrency';
 // import getCurrency from '/db/currency/getCurrency';
 // @ts-ignore
 import checkIfHasCurrency from '/db/currency/checkIfHasCurrency';
+let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+console.log(vw, vh)
 
 const collapsed = ref(false);
 const value2 = ref(1)
@@ -112,5 +120,9 @@ function checkAns() {
 .p-message{
   width: fit-content;
   margin-right: 0px;
+}
+.item {
+  align-items: center;
+  widows: 100%;
 }
 </style>
