@@ -3,14 +3,14 @@
 </template>
 
 <script setup lang="ts">
-import getCurrentUser from '@/db/getCurrentUser'
-import getUserByID from '@/db/getUserByID'
+// import getCurrentUser from '@/db/getCurrentUser'
+// import getGacha from '@/db/gacha/getGacha'
 
-const userAuth = await getCurrentUser()
-// console.log(userAuth.id)
+// const id = await (await getCurrentUser()).id
+// console.log(id)
+// const gacha = await getGacha(id)
+// console.log(gacha)
 
-const user = getUserByID(userAuth.id)
-console.log(JSON.parse(JSON.stringify(user)))
 </script>
 
 <style scoped>

@@ -24,6 +24,7 @@
     "netlify-cli": "^17.19.3",
     "node": "^18.14.0",
     "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
     "postgres": "^3.4.4",
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0",

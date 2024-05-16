@@ -15,19 +15,24 @@ import Sidebar from 'primevue/sidebar';
 // @ts-ignore
 import insertGacha from '../db/gacha/insertGacha'
 // insertGacha({ name: 'testGacha'})
-
+import getCurrentUser from '../db/getCurrentUser'
 // @ts-ignore
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
+import { useUserStore } from './stores/userStore';
 
+const currentUser = getCurrentUser()
+const userStore = useUserStore()
+// userStore.setUser(currentUser) 
+console.log(userStore.getUser)
 checkIfHasCurrency({ golden_seagulls: 0 })
 
 const route = useRoute()
 // @ts-ignore
 isSignedIn().then((signedIn) => {
-        if(signedIn) {
-            loggedin.value = true;
-        }
-    })
+    if(signedIn) {
+        loggedin.value = true;
+    }
+})
 const loggedin = ref(false)
 watch(route, () => ifNotSignedInGoToPage(route)) 
 const sidebarVisible = ref(false);
@@ -159,4 +164,3 @@ nav a:first-of-type {
   top: 10px;
 }
 </style>
-../db/currency/checkIfHasEnoughCurrency
