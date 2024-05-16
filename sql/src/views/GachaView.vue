@@ -12,16 +12,18 @@
             <p>Soft Pity: Once you reach 80 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
         </Dialog>
     </div>
-        
-        <Carousel :value="images" :numVisible="1" :numScroll="1" circular @click="loadBanner()">
+    <Dialog v-model:visible="cannotPull" modal header="Gacha Rates" :style="{ width: '50rem', backgroundColor: 'red'}">
+        <div style="background-color: red;">   
+        <p>You do not have enough Golden Seagulls to pull. </p>
+        <RouterLink to="/currency" class="pi pi-plus">Get more Golden Seagulls</RouterLink>
+    </div> 
+    </Dialog>
+        <Carousel :value="images" :numVisible="1" :numScroll="1" circular>
             <template #item="slotProps">
                     <Fieldset :legend="slotProps.data.alt" class="border-1 surface-border border-round m-2  p-3" style="height: 50vh;">
                     <p>{{ slotProps.data.text }}</p>
-                    <div>
-                        <img :src="face.img"/>
-                    </div>
                     <div class="buttons">
-                    <Button @click="onePull(pools[slotProps.data.index], false)" class="button" label="x1 Pull"/>
+                    <Button @click="onePull(pools[slotProps.data.index])" class="button" label="x1 Pull"/>
                     <Button @click="tenPull(pools[slotProps.data.index])" class="button" label="x10 Pull"/>
                     </div>
             </Fieldset>
@@ -83,7 +85,7 @@ import getCurrency from '../../db/currency/getCurrency'
 console.log(pools)
 
 
-function loadBanner(pool:{
+/* function loadBanner(pool:{
     subject: string,
     star: number,
     name: string,
@@ -96,10 +98,11 @@ function loadBanner(pool:{
     //console.log(fivestar)
     // let main = pool.filter((teacher) => teacher.star === 5)
     // console.log(main)
-}
+} */
 
-const dialogVisible = ref(false); //differentiates the visibilies of the sidebar and dialog components 
+const dialogVisible = ref(false); //differentiates the visibilies of the dialog components 
 let pullvisible = ref(false)
+const cannotPull = ref(false)
 let currentpulls:{
     subject: string,
     star: number,
@@ -224,13 +227,13 @@ async function tenPull(pool:{
     // let winlosses:string[] = [];
     currentpulls = []
 
-    const userCurrency = await getCurrency()
-    console.log(userCurrency)
+    const userCurrency = await getCurrency() // these async backend functions aren't working
+    console.log(userCurrency) // but if removed gacha works without verifying whether or not can pull
     if (userCurrency.golden_seagulls < 100) {
         return
     }
     increaseCurrency({ golden_seagulls: -100 })
-    currentpulls.value = []
+    // currentpulls.value = []
 
     let arr = [];
     let i = 0
@@ -239,7 +242,7 @@ async function tenPull(pool:{
         //let res = onePull(pool);
         //arr.push(res, true);
         //winlosses.push(winlose.value);
-    } 
+    
     currentpulls = arr;
         const obtained = pull(pool)
         currentpulls.push(obtained)
@@ -248,6 +251,8 @@ async function tenPull(pool:{
             console.log(teacher)
             insertGacha(teacher)
         }
+    }
+    pullvisible.value = true;
 };
 
 const PhotoService = {
