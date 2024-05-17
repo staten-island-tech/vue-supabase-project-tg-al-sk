@@ -50,7 +50,7 @@
         <label for="password2" class="block text-900 font-medium mb-2">Password</label>
         <InputText id="password2" type="password" placeholder="Password" class="w-full mb-3" v-model="password" :invalid="passwordlength"/>
         <Message v-if="passwordlength" :sticky="false" :life="3000" severity="error">Your password must be longer than 6 characters. </Message>
-        <Button label="Sign In" icon="pi pi-user" class="w-full" @click.prevent="signUp(username, email, password)"></Button>
+        <Button label="Sign Up" icon="pi pi-user" class="w-full" @click.prevent="signUp(username, email, password)"></Button>
     </div>
 </div>
 </div>

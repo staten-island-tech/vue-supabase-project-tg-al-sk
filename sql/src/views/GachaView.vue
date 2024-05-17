@@ -12,11 +12,16 @@
             <p>Soft Pity: Once you reach 80 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
         </Dialog>
     </div>
-    <Dialog v-model:visible="cannotPull" modal header="Gacha Rates" :style="{ width: '50rem', backgroundColor: 'red'}">
-        <div style="background-color: red;">   
+    <Dialog v-model:visible="cannotPull" modal header="Gacha Rates" :style="{ width: '50vw', backgroundColor: 'red'}">
+        <template #container="{closeCallback}">
+        <div class="flex flex-column px-5 py-5 gap-4" style="background-color: rgb(70, 0, 0);">   
         <p>You do not have enough Golden Seagulls to pull. </p>
-        <RouterLink to="/currency" class="pi pi-plus">Get more Golden Seagulls</RouterLink>
-    </div> 
+        <RouterLink to="/currency">
+            <Button label="Get more Golden Seagulls"/>
+        </RouterLink>
+        <Button label="close" @click="closeCallback"/>
+    </div>
+</template>
     </Dialog>
         <Carousel :value="images" :numVisible="1" :numScroll="1" circular>
             <template #item="slotProps">
@@ -81,6 +86,8 @@ import insertGacha from '../../db/gacha/insertGacha'
 import increaseCurrency from '../../db/currency/increaseCurrency'
 // @ts-ignore
 import getCurrency from '../../db/currency/getCurrency'
+// @ts-ignore
+import currencyNow from '../lib/currencyNow'
 
 console.log(pools)
 
@@ -202,9 +209,12 @@ async function onePull(pool:{
     const userCurrency = await getCurrency()
     console.log(userCurrency)
     if (userCurrency.golden_seagulls < 10) {
+        cannotPull.value = true;
         return
     }
     increaseCurrency({ golden_seagulls: -10 })
+    // @ts-ignore
+    getCurrency().then(item => currencyNow.value = +item.golden_seagulls);
 
     const obtained = pull(pool)
 
@@ -230,9 +240,12 @@ async function tenPull(pool:{
     const userCurrency = await getCurrency() // these async backend functions aren't working
     console.log(userCurrency) // but if removed gacha works without verifying whether or not can pull
     if (userCurrency.golden_seagulls < 100) {
+        cannotPull.value = true;
         return
     }
     increaseCurrency({ golden_seagulls: -100 })
+    // @ts-ignore
+    getCurrency().then(item => currencyNow.value = +item.golden_seagulls);
     // currentpulls.value = []
 
     let arr = [];

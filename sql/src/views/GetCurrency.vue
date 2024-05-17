@@ -46,11 +46,12 @@ import InputNumber from 'primevue/inputnumber';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
-
+// @ts-ignore
+import currencyNow from '../lib/currencyNow'
 // @ts-ignore
 import increaseCurrency from '/db/currency/increaseCurrency';
 // @ts-ignore
-// import getCurrency from '/db/currency/getCurrency';
+import getCurrency from '/db/currency/getCurrency';
 // @ts-ignore
 import checkIfHasCurrency from '/db/currency/checkIfHasCurrency';
 let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
@@ -98,7 +99,8 @@ function checkAns() {
     severity.value = 'success';
     increaseCurrency({golden_seagulls: 10});
     checkIfHasCurrency({ golden_seagulls: 0 })
-    // getCurrency();
+    // @ts-ignore
+    getCurrency().then(item => currencyNow.value = +item.golden_seagulls);
   } else {
     yn.value = 'you are incorrect.'
     severity.value = 'error'
