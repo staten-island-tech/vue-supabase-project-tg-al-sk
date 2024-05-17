@@ -12,7 +12,17 @@
             <p>Soft Pity: Once you reach 80 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
         </Dialog>
     </div>
-        
+    <Dialog v-model:visible="cannotPull" modal header="Gacha Rates" :style="{ width: '50vw', backgroundColor: 'red'}">
+        <template #container="{closeCallback}">
+        <div class="flex flex-column px-5 py-5 gap-4" style="background-color: rgb(70, 0, 0);">   
+        <p>You do not have enough Golden Seagulls to pull. </p>
+        <RouterLink to="/currency">
+            <Button label="Get more Golden Seagulls"/>
+        </RouterLink>
+        <Button label="close" @click="closeCallback"/>
+    </div>
+</template>
+    </Dialog>
         <Carousel :value="images" :numVisible="1" :numScroll="1" circular>
             <template #item="slotProps">
                     <Fieldset :legend="slotProps.data.alt" class="border-1 surface-border border-round m-2  p-3" style="height: 50vh;">
@@ -20,11 +30,18 @@
                     <div class="buttons">
                     <Button @click="onePull(pools[slotProps.data.index])" class="button" label="x1 Pull"/>
                     <Button @click="tenPull(pools[slotProps.data.index])" class="button" label="x10 Pull"/>
-                </div>
+                    </div>
             </Fieldset>
     </template>
         </Carousel>
-<Dialog v-model:visible="pullvisible" style="width: 100vw; height: 100vh;">
+<Dialog v-model:visible="pullvisible" style="width: 100vw; height: 100vh;" modal
+    :pt="{
+        mask: {
+            style: 'backdrop-filter: blur(2px);padding: 2rem;'
+        }
+    }">
+    <template #container="{ closeCallback }">
+        <div style="padding: 2rem; align-items: center; height: 100%;" :class="winlose">
     <Carousel :value="currentpulls" :numVisible="1" :numScroll="1">
             <template #item="slotProps">
                     <p>{{ slotProps.data.text }}</p>
@@ -44,30 +61,55 @@
             </Card>
     </template>
         </Carousel>
+    <Button type="button" label="Close" @click="closeCallback"/>
+    </div>
+  </template>
             </Dialog>
     </div>
 </template>
 
 <script setup lang="ts">
-// import Galleria from 'primevue/galleria';
 import Button from 'primevue/button';
 import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
-import { ref, onMounted, reactive } from "vue";
+import { ref, reactive } from "vue";
 
 import { pools } from '../teachers/teacherPools.ts';
 import { poolInfo } from '../teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
 import Carousel from 'primevue/carousel';
-
+// @ts-ignore
 import Teacher from '../teachers/Teacher'
+// @ts-ignore
 import insertGacha from '../../db/gacha/insertGacha'
+// @ts-ignore
 import increaseCurrency from '../../db/currency/increaseCurrency'
+// @ts-ignore
 import getCurrency from '../../db/currency/getCurrency'
+// @ts-ignore
+import currencyNow from '../lib/currencyNow'
 
 console.log(pools)
-const dialogVisible = ref(false); //differentiates the visibilies of the sidebar and dialog components 
+
+
+/* function loadBanner(pool:{
+    subject: string,
+    star: number,
+    name: string,
+    role: string,
+    image: string
+}[]) { 
+    let face = pool.find((teacher) => teacher.star === 5)
+    console.log(face)
+    //let fivestar = pool.filter((teacher) => teacher.star === 5);
+    //console.log(fivestar)
+    // let main = pool.filter((teacher) => teacher.star === 5)
+    // console.log(main)
+} */
+
+const dialogVisible = ref(false); //differentiates the visibilies of the dialog components 
 let pullvisible = ref(false)
+const cannotPull = ref(false)
 let currentpulls:{
     subject: string,
     star: number,
@@ -79,67 +121,68 @@ const pullHist = ref(0) //history/pity for 4*
 const pullHist2 = ref(0) //history for 5*
 const rate = ref(0.01) //when the pullhist2 reaches 80 this value will slowly increase to give a higehr rate of getting a 5*
 //the console logs are placeholders for the cards lmaooooo 
+const winlose = ref('lose');
+const studentCard = {subject: 'nothing', 
+            star: 3, 
+            name: 'student', 
+            role: 'useless', 
+            image: 'https://assets-global.website-files.com/646218c67da47160c64a84d5/64faebcc5b9290da561ec21f_93.png'
+        };
+
 function pull(pool:{
     subject: string,
     star: number,
     name: string,
     role: string,
     image: string
-}[]) {
+}[]){
     let fourstar = pool.filter((teacher) => teacher.star === 4);
     let fivestar = pool.filter((teacher) => teacher.star === 5);
-    const whalen = pool.filter((teacher) => teacher.name == 'Michael Whalen');
-    let obtained = {
-    subject: '',
-    star: 0,
-    name: '',
-    role: '',
-    image: ''
+    let obtained:{
+    subject: string,
+    star: number,
+    name: string,
+    role: string,
+    image: string
     };
-    if(pool.length === 1){
-        if(Math.random() < 0.009){ // up rate for whalen but no guarantee-???
-            obtained = whalen[0];
-            console.log(obtained)
+    if(pool.length === 1){ // accomodate for whalen only pool
+        if(Math.random() < 0.009){ // up rate for whalen
+            obtained = pool[0];
+            winlose.value === 'win';
             rate.value = 0.01
             pullHist2.value = 0
-        }else if(pullHist2.value == 89){
-            obtained = whalen[0];
-            console.log(obtained)
+        }else if(pullHist2.value == 89){ // full pity
+            obtained = pool[0];
+            winlose.value === 'win';
             rate.value = 0.01
             pullHist2.value = 0
         } else {
             pullHist.value++
-        obtained = {subject: 'nothing', 
-            star: 3, 
-            name: 'student', 
-            role: 'useless', 
-            image: 'https://assets-global.website-files.com/646218c67da47160c64a84d5/64faebcc5b9290da561ec21f_93.png'
-        };
-        // console.log(pullHist.value, "poopy")
+        obtained = studentCard;
+        winlose.value === 'lose';
         pullHist2.value++
         }
     }
-    else if( Math.random() < 0.1 && Math.random() > 0.02) {
+    else{
+    if( Math.random() < 0.1 && Math.random() > 0.02) {
     obtained = fourstar[Math.floor(Math.random() * fourstar.length)];
+    winlose.value === 'lose';
     pullHist.value = 0 //random chance of getting 4* every pull and resets pity if you get it 
     pullHist2.value++ 
     } else if (pullHist.value == 9 ) {
         obtained = fourstar[Math.floor(Math.random() * fourstar.length)];
+        winlose.value === 'lose';
         pullHist.value = 0
         pullHist2.value++ //if you already did 9 pulls, your next pull must be a 4* and resets pity  
     } else {
         pullHist.value++
-        obtained = {subject: 'nothing', 
-            star: 3, 
-            name: 'student', 
-            role: 'useless', 
-            image: ''
-        };
-        // console.log(pullHist.value, "poopy")
+        obtained = studentCard;
+        winlose.value === 'lose';
         pullHist2.value++ //you got nothing and it increments :skull:
     };
     if( Math.random() < rate.value) {
         obtained = fivestar[Math.floor(Math.random() * fivestar.length)];
+        winlose.value === 'win';
         pullHist2.value = 0 //resets pity counter 
         rate.value = 0.01
     }
@@ -147,10 +190,12 @@ function pull(pool:{
         rate.value = rate.value + 0.1
     }else if (pullHist2.value == 89) {
         obtained = fivestar[Math.floor(Math.random() * fivestar.length)];
+        winlose.value === 'win';
         rate.value = 0.01
         pullHist2.value = 0 //you must get a chara every 90 pulls resets pity 
     }
     return obtained
+}
 }
 
 async function onePull(pool:{
@@ -164,9 +209,13 @@ async function onePull(pool:{
     const userCurrency = await getCurrency()
     console.log(userCurrency)
     if (userCurrency.golden_seagulls < 10) {
+        cannotPull.value = true;
         return
     }
     increaseCurrency({ golden_seagulls: -10 })
+    // @ts-ignore
+    getCurrency().then(item => currencyNow.value = +item.golden_seagulls);
+
     const obtained = pull(pool)
 
     currentpulls = [obtained];
@@ -185,20 +234,29 @@ async function tenPull(pool:{
     role: string,
     image: string
 }[]) {
+    // let winlosses:string[] = [];
     currentpulls = []
 
-    const userCurrency = await getCurrency()
-    console.log(userCurrency)
+    const userCurrency = await getCurrency() // these async backend functions aren't working
+    console.log(userCurrency) // but if removed gacha works without verifying whether or not can pull
     if (userCurrency.golden_seagulls < 100) {
+        cannotPull.value = true;
         return
     }
     increaseCurrency({ golden_seagulls: -100 })
-    currentpulls.value = []
+    // @ts-ignore
+    getCurrency().then(item => currencyNow.value = +item.golden_seagulls);
+    // currentpulls.value = []
 
     let arr = [];
     let i = 0
     while( i < 10 ) {
         i++
+        //let res = onePull(pool);
+        //arr.push(res, true);
+        //winlosses.push(winlose.value);
+    
+    currentpulls = arr;
         const obtained = pull(pool)
         currentpulls.push(obtained)
         if(obtained.star > 3) {
@@ -206,9 +264,8 @@ async function tenPull(pool:{
             console.log(teacher)
             insertGacha(teacher)
         }
-    } 
+    }
     pullvisible.value = true;
-    console.log(currentpulls);
 };
 
 const PhotoService = {
@@ -222,9 +279,7 @@ const PhotoService = {
     };
 
     
-onMounted(() => {
     PhotoService.getImages().then((data) => (images.value = data));
-});
 
 const images = ref();
 
@@ -247,6 +302,7 @@ const images = ref();
     margin: auto auto 1rem auto;
     width: 40vw;
     height: fit-content;
+    margin-top: 200px;
 }
 
 .button {
@@ -258,5 +314,11 @@ const images = ref();
     position: fixed;
   right: 10px;
   top: 50px;
+}
+.win{
+    background-color: rgb(200,150,0);
+}
+.lose{
+    background-color: #181818;
 }
 </style>

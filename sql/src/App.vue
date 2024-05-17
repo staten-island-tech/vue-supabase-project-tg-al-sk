@@ -4,7 +4,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import isSignedIn from '../db/auth/isSignedIn'
 // @ts-ignore
 import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
-import { watch, ref } from 'vue';
+import { watch, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import TeachersSidebar from './components/TeachersSidebar.vue'
 import Toolbar from 'primevue/toolbar';
@@ -15,10 +15,21 @@ import Sidebar from 'primevue/sidebar';
 // @ts-ignore
 import insertGacha from '../db/gacha/insertGacha'
 // insertGacha({ name: 'testGacha'})
-
+// @ts-ignore
+import getCurrentUser from '../db/getCurrentUser'
+// @ts-ignore
+import currencyNow from './lib/currencyNow'
+insertGacha({ name: 'testGacha'})
 // @ts-ignore
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
-
+// @ts-ignore
+import { useUserStore } from './stores/userStore';
+// @ts-ignore
+import getCurrency from '../db/currency/getCurrency'
+const currentUser = getCurrentUser()
+const userStore = useUserStore()
+// userStore.setUser(currentUser) 
+console.log(userStore.getUser)
 checkIfHasCurrency({ golden_seagulls: 0 })
 
 const route = useRoute()
@@ -31,8 +42,13 @@ isSignedIn().then((signedIn) => {
 const loggedin = ref(false)
 watch(route, () => ifNotSignedInGoToPage(route)) 
 const sidebarVisible = ref(false);
-const currencyAmt = ref(0);
+// const currencyAmt = ref(0);
 // isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
+
+onMounted(()=>{
+  // @ts-ignore
+  getCurrency().then(item => currencyNow.value = +item.golden_seagulls);
+});
 </script>
 
 <template>
@@ -46,7 +62,7 @@ const currencyAmt = ref(0);
   <RouterView />
   <div class="currency" v-if="loggedin">
   <IconField>
-    <InputText disabled :placeholder="currencyAmt.toString()" style="width: 15vw;"/>
+    <InputText disabled :placeholder="currencyNow.toString()" style="width: 15vw;"/>
     <RouterLink to="/currency" class="pi pi-plus"> </RouterLink>
 </IconField>
 </div>
@@ -159,4 +175,3 @@ nav a:first-of-type {
   top: 10px;
 }
 </style>
-../db/currency/checkIfHasEnoughCurrency

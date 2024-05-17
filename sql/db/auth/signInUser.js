@@ -1,5 +1,5 @@
 import supabaseClient from '../supabaseClient'
-import { Auth } from '@supabase/auth-ui-react'
+import { useUserStore } from '../../src/stores/userStore'
 
 export default async function signInUser(email, password) {
   const supabase = supabaseClient()
@@ -10,7 +10,10 @@ export default async function signInUser(email, password) {
     password
   })
   // console.log(error)
-  console.log(await supabase.auth.getUser())
+  // console.log(await supabase.auth.getUser())
+  const userStore = useUserStore()
+  userStore.setUser(await supabase.auth.getUser())
+  console.log(userStore.getUser)
   if (!error) {
     supabase.auth.setSession({
       access_token: data.session.access_token

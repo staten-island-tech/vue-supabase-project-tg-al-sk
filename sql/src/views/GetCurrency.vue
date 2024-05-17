@@ -14,14 +14,13 @@
     <Button label="Got it!" @click="collapsed = true" v-if="collapsed === false"></Button>
   </Fieldset>
   <div style="display: flex; align-items: center; flex-direction: column;">
-  <div class="flex px-5 py-5 gap-4" style="align-items: center; display: block; display: flex; margin-left: auto; margin-right: auto;">
+  <div class="flex px-5 py-5 gap-4" style="width: auto; align-items: center; display: block;">
     <span style="font-size: 1.5rem;">{{ num1 }}</span>
     <span style="font-size: 1.5rem;" class="pi pi-plus" v-if="op==='+'"></span>
     <span style="font-size: 1.5rem;" class="pi pi-minus" v-if="op==='-'"></span>
     <span style="font-size: 1.5rem;" class="pi pi-times" v-if="op==='*'"></span>
     <span style="font-size: 1.5rem;" v-if="op==='/'">➗</span>
     <span style="font-size: 1.5rem;">{{ num2 }}</span>
-    
     <span style="font-size: 1.5rem;" class="pi pi-equals"></span>
     <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 4rem">
 </InputNumber>
@@ -47,13 +46,17 @@ import InputNumber from 'primevue/inputnumber';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
-
+// @ts-ignore
+import currencyNow from '../lib/currencyNow'
 // @ts-ignore
 import increaseCurrency from '/db/currency/increaseCurrency';
 // @ts-ignore
-// import getCurrency from '/db/currency/getCurrency';
+import getCurrency from '/db/currency/getCurrency';
 // @ts-ignore
 import checkIfHasCurrency from '/db/currency/checkIfHasCurrency';
+let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+console.log(vw, vh)
 
 const collapsed = ref(false);
 const value2 = ref(1)
@@ -94,9 +97,10 @@ function checkAns() {
   if (ans == value.value) {
     yn.value = 'you are correct!'
     severity.value = 'success';
-    increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
+    increaseCurrency({golden_seagulls: 10});
     checkIfHasCurrency({ golden_seagulls: 0 })
-    // getCurrency();
+    // @ts-ignore
+    getCurrency().then(item => currencyNow.value = +item.golden_seagulls);
   } else {
     yn.value = 'you are incorrect.'
     severity.value = 'error'
@@ -112,5 +116,9 @@ function checkAns() {
 .p-message{
   width: fit-content;
   margin-right: 0px;
+}
+.item {
+  align-items: center;
+  widows: 100%;
 }
 </style>
