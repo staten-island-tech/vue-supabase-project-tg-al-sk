@@ -1,11 +1,11 @@
 import supabaseClient from "../supabaseClient"
+import getCurrentUser from "../getCurrentUser"
 
-export default async function getGacha(gacha) {
+export default async function getGacha() {
     const supabase = supabaseClient()
-    const id = await (await supabase.auth.getUser()).data.user.id
+    const user = await getCurrentUser()
     const body = JSON.stringify({
-        gacha: gacha,
-        id,
+        id: user.id,
     })
     const res = await fetch('/.netlify/functions/getGacha', {
         method: 'post',
