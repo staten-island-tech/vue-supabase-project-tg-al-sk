@@ -33,8 +33,7 @@ console.log(userStore.getUser)
 checkIfHasCurrency({ golden_seagulls: 0 })
 
 const route = useRoute()
-// @ts-ignore
-isSignedIn().then((signedIn) => {
+isSignedIn().then((signedIn:boolean) => {
         if(signedIn) {
             loggedin.value = true;
         }
@@ -42,24 +41,22 @@ isSignedIn().then((signedIn) => {
 const loggedin = ref(false)
 watch(route, () => ifNotSignedInGoToPage(route)) 
 const sidebarVisible = ref(false);
-// const currencyAmt = ref(0);
 // isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
 
 onMounted(()=>{
-  // @ts-ignore
-  getCurrency().then(item => userStore.setCurrency(item.golden_seagulls));
-  // console.log(userStore.user.currency)
+  
+  getCurrency().then(function(item:{
+    last_updated: String, 
+    golden_seagulls: Number, 
+    id: String, 
+    diamond_seagulls: Number
+  }){
+    userStore.setCurrency(item.golden_seagulls)
+  });
 });
 </script>
 
 <template>
-  <!--<header>
-      <nav>
-        <RouterLink to="/login">Log In</RouterLink>
-        <RouterLink to="/currency" v-if="loggedin">Get Currency</RouterLink>
-        <RouterLink to="/gacha" v-if="loggedin">Gacha Pulls</RouterLink>
-      </nav>
-  </header>-->
   <RouterView />
   <div class="currency" v-if="loggedin">
 <InputGroup>

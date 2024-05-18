@@ -94,8 +94,7 @@ function signUp(username: String, email: String, password: String) {
 }
 
 function login(email: String, password: String) {
-  // @ts-ignore
-  signInUser(email, password).then((signedIn) => {
+  signInUser(email, password).then((signedIn:boolean) => {
         if(signedIn === true){
           loginfail.value = false;
           loginsuccess.value = true;

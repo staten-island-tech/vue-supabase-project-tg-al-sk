@@ -1,4 +1,5 @@
 <template>
+    <h1>Gacha</h1>
     <div>
 <p class="words">Pity Counter: {{ pullHist2 }}</p>
     <div class="card flex">
@@ -73,6 +74,7 @@ import Button from 'primevue/button';
 import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
 import { ref } from "vue";
+import type { Ref } from 'vue'
 // @ts-ignore
 import { useUserStore } from "../stores/userStore"
 import { pools } from '../teachers/teacherPools.ts';
@@ -87,6 +89,8 @@ import insertGacha from '../../db/gacha/insertGacha'
 import increaseCurrency from '../../db/currency/increaseCurrency'
 // @ts-ignore
 import getCurrency from '../../db/currency/getCurrency'
+
+import type { Cards, CurrencyObj } from '@/lib/interfaces.ts';
 
 // console.log(pools)
 
@@ -109,7 +113,7 @@ const userStore = useUserStore();
 const dialogVisible = ref(false); //differentiates the visibilies of the dialog components 
 let pullvisible = ref(false)
 const cannotPull = ref(false)
-const currentpulls = ref([]);
+const currentpulls: Ref<Cards[]> = ref([]);
 const pullHist = ref(0) //history/pity for 4*
 const pullHist2 = ref(0) //history for 5*
 const rate = ref(0.01) //when the pullhist2 reaches 80 this value will slowly increase to give a higehr rate of getting a 5*
@@ -122,22 +126,10 @@ const studentCard = {subject: 'nothing',
             image: 'https://assets-global.website-files.com/646218c67da47160c64a84d5/64faebcc5b9290da561ec21f_93.png'
         };
 
-function pull(pool:{
-    subject: string,
-    star: number,
-    name: string,
-    role: string,
-    image: string
-}[]){
+function pull(pool:Cards[]){
     let fourstar = pool.filter((teacher) => teacher.star === 4);
     let fivestar = pool.filter((teacher) => teacher.star === 5);
-    let obtained:{
-    subject: string,
-    star: number,
-    name: string,
-    role: string,
-    image: string
-    };
+    let obtained:Cards;
     if(pool.length === 1){ // accomodate for whalen only pool
         if(Math.random() < 0.009){ // up rate for whalen
             obtained = pool[0];
@@ -191,13 +183,7 @@ function pull(pool:{
     return obtained
 }
 
-async function onePull(pool:{
-    subject: string,
-    star: number,
-    name: string,
-    role: string,
-    image: string
-}[]) {
+async function onePull(pool:Cards[]) {
     currentpulls.value = []
     const userCurrency = await getCurrency()
     console.log(userCurrency)
@@ -206,29 +192,21 @@ async function onePull(pool:{
         return
     }
     increaseCurrency({ golden_seagulls: -10 })
-    // @ts-ignore
-    getCurrency().then(item => userStore.setCurrency(item.golden_seagulls));
+    getCurrency().then(function(item:CurrencyObj){
+    userStore.setCurrency(item.golden_seagulls)
+  });
 
     const obtained = pull(pool)
-    // @ts-ignore
     currentpulls.value = [obtained];
     pullvisible.value = true;
-    // @ts-ignore
     if(obtained.star > 3) {
-        // @ts-ignore
         const teacher = new Teacher(obtained.name, obtained.subject, obtained.image, obtained.star)
         console.log(teacher)
         insertGacha(teacher)
     }
     return obtained;
 };
-async function tenPull(pool:{
-    subject: string,
-    star: number,
-    name: string,
-    role: string,
-    image: string
-}[]) {
+async function tenPull(pool:Cards[]) {
     // let winlosses:string[] = [];
     currentpulls.value = []
 
@@ -239,31 +217,22 @@ async function tenPull(pool:{
         return
     }
     increaseCurrency({ golden_seagulls: -100 })
-    // @ts-ignore
-    getCurrency().then(item => userStore.setCurrency(item.golden_seagulls));
+    getCurrency().then(function(item:CurrencyObj){
+    userStore.setCurrency(item.golden_seagulls)
+  });
     // currentpulls.value = []
 
-    let arr:{
-    subject: string,
-    star: number,
-    name: string,
-    role: string,
-    image: string
-}[] = [];
+    let arr:Cards[] = [];
     let i = 0
     while( i < 10 ) {
         i++
         //let res = onePull(pool);
         //arr.push(res, true);
         //winlosses.push(winlose.value);
-    // @ts-ignore
     currentpulls.value = arr;
         const obtained = pull(pool)
-        // @ts-ignore
         currentpulls.value.push(obtained)
-        // @ts-ignore
         if(obtained.star > 3) {
-            // @ts-ignore
             const teacher = new Teacher(obtained.name, obtained.subject, obtained.image, obtained.star)
             console.log(teacher)
             insertGacha(teacher)

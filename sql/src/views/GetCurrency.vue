@@ -54,6 +54,7 @@ import increaseCurrency from '/db/currency/increaseCurrency';
 import getCurrency from '/db/currency/getCurrency';
 // @ts-ignore
 import checkIfHasCurrency from '/db/currency/checkIfHasCurrency';
+import type { CurrencyObj } from '@/lib/interfaces.ts';
 
 const userStore = useUserStore();
 
@@ -102,8 +103,9 @@ function checkAns() {
     severity.value = 'success';
     increaseCurrency({golden_seagulls: 10});
     checkIfHasCurrency({ golden_seagulls: 0 })
-    // @ts-ignore
-    getCurrency().then(item => userStore.setCurrency(item.golden_seagulls));
+    getCurrency().then(function(item:CurrencyObj){
+    userStore.setCurrency(item.golden_seagulls)
+  });
   } else {
     yn.value = 'you are incorrect.'
     severity.value = 'error'
