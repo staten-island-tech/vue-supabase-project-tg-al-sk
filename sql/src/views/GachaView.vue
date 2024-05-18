@@ -17,9 +17,9 @@
         <div class="flex flex-column px-5 py-5 gap-4" style="background-color: rgb(70, 0, 0);">   
         <p>You do not have enough Golden Seagulls to pull. </p>
         <RouterLink to="/currency">
-            <Button label="Get more Golden Seagulls"/>
+            <Button label="Get more Golden Seagulls" severity="secondary" icon="pi pi-plus"/>
         </RouterLink>
-        <Button label="close" @click="closeCallback"/>
+        <Button label="close" @click="closeCallback" severity="danger"/>
     </div>
 </template>
     </Dialog>
@@ -72,8 +72,9 @@
 import Button from 'primevue/button';
 import Fieldset from 'primevue/fieldset';
 import Card from 'primevue/card';
-import { ref, reactive } from "vue";
-
+import { ref } from "vue";
+// @ts-ignore
+import { useUserStore } from "../stores/userStore"
 import { pools } from '../teachers/teacherPools.ts';
 import { poolInfo } from '../teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';
@@ -86,10 +87,8 @@ import insertGacha from '../../db/gacha/insertGacha'
 import increaseCurrency from '../../db/currency/increaseCurrency'
 // @ts-ignore
 import getCurrency from '../../db/currency/getCurrency'
-// @ts-ignore
-import currencyNow from '../lib/currencyNow'
 
-console.log(pools)
+// console.log(pools)
 
 
 /* function loadBanner(pool:{
@@ -106,17 +105,11 @@ console.log(pools)
     // let main = pool.filter((teacher) => teacher.star === 5)
     // console.log(main)
 } */
-
+const userStore = useUserStore();
 const dialogVisible = ref(false); //differentiates the visibilies of the dialog components 
 let pullvisible = ref(false)
 const cannotPull = ref(false)
-let currentpulls:{
-    subject: string,
-    star: number,
-    name: string,
-    role: string,
-    image: string
-}[] = reactive([]);
+const currentpulls = ref([]);
 const pullHist = ref(0) //history/pity for 4*
 const pullHist2 = ref(0) //history for 5*
 const rate = ref(0.01) //when the pullhist2 reaches 80 this value will slowly increase to give a higehr rate of getting a 5*
@@ -194,8 +187,8 @@ function pull(pool:{
         rate.value = 0.01
         pullHist2.value = 0 //you must get a chara every 90 pulls resets pity 
     }
-    return obtained
 }
+    return obtained
 }
 
 async function onePull(pool:{
@@ -205,7 +198,7 @@ async function onePull(pool:{
     role: string,
     image: string
 }[]) {
-    currentpulls = []
+    currentpulls.value = []
     const userCurrency = await getCurrency()
     console.log(userCurrency)
     if (userCurrency.golden_seagulls < 10) {
@@ -214,13 +207,15 @@ async function onePull(pool:{
     }
     increaseCurrency({ golden_seagulls: -10 })
     // @ts-ignore
-    getCurrency().then(item => currencyNow.value = +item.golden_seagulls);
+    getCurrency().then(item => userStore.setCurrency(item.golden_seagulls));
 
     const obtained = pull(pool)
-
-    currentpulls = [obtained];
+    // @ts-ignore
+    currentpulls.value = [obtained];
     pullvisible.value = true;
+    // @ts-ignore
     if(obtained.star > 3) {
+        // @ts-ignore
         const teacher = new Teacher(obtained.name, obtained.subject, obtained.image, obtained.star)
         console.log(teacher)
         insertGacha(teacher)
@@ -235,7 +230,7 @@ async function tenPull(pool:{
     image: string
 }[]) {
     // let winlosses:string[] = [];
-    currentpulls = []
+    currentpulls.value = []
 
     const userCurrency = await getCurrency() // these async backend functions aren't working
     console.log(userCurrency) // but if removed gacha works without verifying whether or not can pull
@@ -245,21 +240,30 @@ async function tenPull(pool:{
     }
     increaseCurrency({ golden_seagulls: -100 })
     // @ts-ignore
-    getCurrency().then(item => currencyNow.value = +item.golden_seagulls);
+    getCurrency().then(item => userStore.setCurrency(item.golden_seagulls));
     // currentpulls.value = []
 
-    let arr = [];
+    let arr:{
+    subject: string,
+    star: number,
+    name: string,
+    role: string,
+    image: string
+}[] = [];
     let i = 0
     while( i < 10 ) {
         i++
         //let res = onePull(pool);
         //arr.push(res, true);
         //winlosses.push(winlose.value);
-    
-    currentpulls = arr;
+    // @ts-ignore
+    currentpulls.value = arr;
         const obtained = pull(pool)
-        currentpulls.push(obtained)
+        // @ts-ignore
+        currentpulls.value.push(obtained)
+        // @ts-ignore
         if(obtained.star > 3) {
+            // @ts-ignore
             const teacher = new Teacher(obtained.name, obtained.subject, obtained.image, obtained.star)
             console.log(teacher)
             insertGacha(teacher)
