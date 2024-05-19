@@ -1,28 +1,35 @@
 import supabaseClient from '../supabaseClient'
 import { useUserStore } from '../../src/stores/userStore'
+import getCurrentUser from '../getCurrentUser'
+import getGacha from '../gacha/getGacha'
+import getCurrency from '../currency/getCurrency'
 
 export default async function signInUser(email, password) {
   const supabase = supabaseClient()
-  // console.log(email, password)
 
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password
   })
-  // console.log(error)
-  // console.log(await supabase.auth.getUser())
+
   const userStore = useUserStore()
-  userStore.setUser(await supabase.auth.getUser())
-  console.log(userStore.getUser)
+
+  const user = await getCurrentUser()
+  const gacha = getGacha()
+  const currency = getCurrency()
+  const session = data.session
+
+  userStore.setUser(user)
+  userStore.setSession(session)
+
+  console.log(userStore.$state)
+
   if (!error) {
     supabase.auth.setSession({
       access_token: data.session.access_token
     })
     return true
-  }else{
+  } else {
     return false
   }
-  // console.log(data, error)
-
-  
 }

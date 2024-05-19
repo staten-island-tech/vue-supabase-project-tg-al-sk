@@ -1,4 +1,5 @@
 <template>
+  <h1>User Details</h1>
   <Dialog v-model:visible="signedout" modal
     :pt="{
         root: 'border-none',
@@ -21,15 +22,15 @@
             <Skeleton width="10rem" class="mb-2" v-if="useremail === ''"></Skeleton>
             <p v-if="useremail != ''">{{ useremail }}</p>
             <Skeleton width="10rem" class="mb-2" v-if="usercreated === ''"></Skeleton>
-            <p style="font-size: 0.8rem;" v-if="usercreated != ''">Account created at {{ usercreated }}</p>
+            <p style="font-size: 0.8rem;" v-if="usercreated != ''">Account created on {{ usercreated.replace(/T.*/, '') }}</p>
             <Skeleton width="10rem" class="mb-2" v-if="usercreated === ''"></Skeleton>
-            <p style="font-size: 0.8rem;" v-if="usercreated != ''">Last logged in at {{ userlastlogin }}</p>
+            <p style="font-size: 0.8rem;" v-if="usercreated != ''">Last logged in on {{ userlastlogin.replace(/T.*/, '') }}</p>
         </div>
     </div>
     <Skeleton width="100%" height="150px" v-if="useremail === ''"></Skeleton>
     <div style="width:100%;height:150px;background-color: rgb(40,40,40);" v-if="useremail != ''">
       <p>cards collected:</p>
-      <p>golden seagulls:</p>
+      <p>golden seagulls: {{ userStore.user.currency }}</p>
     </div>
 </div>
 </template>
@@ -46,7 +47,10 @@ import signOutUser from '@/db/auth/signOutUser'
 import getCurrentUser from '@/db/getCurrentUser'
 // @ts-ignore
 import refreshPage from '../lib/refreshPage'
+// @ts-ignore
+import { useUserStore } from "../stores/userStore"
 
+const userStore = useUserStore()
 const signedout = ref(false);
 
 function logout() {
@@ -62,7 +66,6 @@ getCurrentUser().then((item) => {
   useremail.value = item.email;
   usercreated.value = item.created_at;
   userlastlogin.value = item.last_sign_in_at;
-  console.log(item)
   })
 </script>
 

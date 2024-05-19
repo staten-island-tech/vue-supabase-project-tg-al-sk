@@ -9,17 +9,13 @@ import { useRoute } from 'vue-router';
 import TeachersSidebar from './components/TeachersSidebar.vue'
 import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
-import IconField from 'primevue/iconfield';
 import InputText from 'primevue/inputtext';
+import InputGroup from 'primevue/inputgroup';
+import InputGroupAddon from 'primevue/inputgroupaddon';
 import Sidebar from 'primevue/sidebar';
 // @ts-ignore
-import insertGacha from '../db/gacha/insertGacha'
-// insertGacha({ name: 'testGacha'})
-// @ts-ignore
 import getCurrentUser from '../db/getCurrentUser'
-// @ts-ignore
-import currencyNow from './lib/currencyNow'
-insertGacha({ name: 'testGacha'})
+
 // @ts-ignore
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
 // @ts-ignore
@@ -33,8 +29,7 @@ console.log(userStore.getUser)
 checkIfHasCurrency({ golden_seagulls: 0 })
 
 const route = useRoute()
-// @ts-ignore
-isSignedIn().then((signedIn) => {
+isSignedIn().then((signedIn:boolean) => {
         if(signedIn) {
             loggedin.value = true;
         }
@@ -42,29 +37,28 @@ isSignedIn().then((signedIn) => {
 const loggedin = ref(false)
 watch(route, () => ifNotSignedInGoToPage(route)) 
 const sidebarVisible = ref(false);
-// const currencyAmt = ref(0);
 // isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
 
 onMounted(()=>{
-  // @ts-ignore
-  getCurrency().then(item => currencyNow.value = +item.golden_seagulls);
+  
+  getCurrency().then(function(item:{
+    last_updated: String, 
+    golden_seagulls: Number, 
+    id: String, 
+    diamond_seagulls: Number
+  }){
+    userStore.setCurrency(item.golden_seagulls)
+  });
 });
 </script>
 
 <template>
-  <!--<header>
-      <nav>
-        <RouterLink to="/login">Log In</RouterLink>
-        <RouterLink to="/currency" v-if="loggedin">Get Currency</RouterLink>
-        <RouterLink to="/gacha" v-if="loggedin">Gacha Pulls</RouterLink>
-      </nav>
-  </header>-->
   <RouterView />
   <div class="currency" v-if="loggedin">
-  <IconField>
-    <InputText disabled :placeholder="currencyNow.toString()" style="width: 15vw;"/>
-    <RouterLink to="/currency" class="pi pi-plus"> </RouterLink>
-</IconField>
+<InputGroup>
+    <InputText :placeholder="userStore.user.currency" disabled/>
+    <InputGroupAddon><RouterLink to="/currency" class="pi pi-plus"> </RouterLink></InputGroupAddon>
+</InputGroup>
 </div>
   <div style="width: 100%;
   align-items: center;
@@ -173,5 +167,6 @@ nav a:first-of-type {
   position: fixed;
   right: 0;
   top: 10px;
+  width: 7rem;
 }
 </style>

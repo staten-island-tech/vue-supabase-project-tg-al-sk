@@ -75,7 +75,7 @@ import signInUser from '@/db/auth/signInUser'
 // @ts-ignore
 import signUpUser from '@/db/auth/signUpUser'
 // @ts-ignore
-import checkIfHasCurrency from '@/db/currency/checkIfHasCurrency'
+// import checkIfHasCurrency from '@/db/currency/checkIfHasCurrency'
 // @ts-ignore
 import refreshPage from '../lib/refreshPage'
 
@@ -94,8 +94,7 @@ function signUp(username: String, email: String, password: String) {
 }
 
 function login(email: String, password: String) {
-  // @ts-ignore
-  signInUser(email, password).then((signedIn) => {
+  signInUser(email, password).then((signedIn:boolean) => {
         if(signedIn === true){
           loginfail.value = false;
           loginsuccess.value = true;
@@ -103,7 +102,6 @@ function login(email: String, password: String) {
           loginfail.value = true;
           loginsuccess.value = false;
         }
-        console.log(signedIn, 'testing')
     })
 }
 watch(password, (item) => {
