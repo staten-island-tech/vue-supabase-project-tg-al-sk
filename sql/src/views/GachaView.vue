@@ -43,10 +43,11 @@
     }">
     <template #container="{ closeCallback }">
         <div style="padding: 2rem; align-items: center; height: 100%;" :class="winlose">
+            <Button type="button" label="Close" icon="pi pi-times" severity="danger" @click="()=>{closeCallback(); winlose='lose'}"/>
     <Carousel :value="currentpulls" :numVisible="1" :numScroll="1">
             <template #item="slotProps">
                     <p>{{ slotProps.data.text }}</p>
-                    <Card :class="slotProps.data.subject" class="border-1 surface-border border-round m-2  p-3">
+                    <Card :class="slotProps.data.subject" class="border-1 surface-border border-round m-2  p-3" style="height: 30vh;">
             <template #title>{{slotProps.data.name}}</template>
             <template #content>
                 <div style="display:flex;">
@@ -62,7 +63,6 @@
             </Card>
     </template>
         </Carousel>
-    <Button type="button" label="Close" @click="closeCallback"/>
     </div>
   </template>
             </Dialog>
@@ -92,9 +92,6 @@ import getCurrency from '../../db/currency/getCurrency'
 
 import type { Cards, CurrencyObj } from '@/lib/interfaces.ts';
 
-// console.log(pools)
-
-
 /* function loadBanner(pool:{
     subject: string,
     star: number,
@@ -118,9 +115,18 @@ const pullHist = ref(0) //history/pity for 4*
 const pullHist2 = ref(0) //history for 5*
 const rate = ref(0.01) //when the pullhist2 reaches 80 this value will slowly increase to give a higehr rate of getting a 5*
 //the console logs are placeholders for the cards lmaooooo 
-const winlose = ref('lose');
+const winlose:Ref<'lose'|'win'|'winwin'> = ref('lose');
 const studentCard = {subject: 'nothing', 
             star: 3, 
+            "stats": {
+                "intelligence": 0,
+                "knowledge": 0,
+                "strength": 0,
+                "charisma": 0,
+                "dexterity": 0,
+                "coolness": 0
+            },
+            "power": 10,
             name: 'student', 
             role: 'useless', 
             image: 'https://assets-global.website-files.com/646218c67da47160c64a84d5/64faebcc5b9290da561ec21f_93.png'
@@ -133,41 +139,34 @@ function pull(pool:Cards[]){
     if(pool.length === 1){ // accomodate for whalen only pool
         if(Math.random() < 0.009){ // up rate for whalen
             obtained = pool[0];
-            winlose.value === 'win';
             rate.value = 0.01
             pullHist2.value = 0
         }else if(pullHist2.value == 89){ // full pity
             obtained = pool[0];
-            winlose.value === 'win';
             rate.value = 0.01
             pullHist2.value = 0
         } else {
             pullHist.value++
         obtained = studentCard;
-        winlose.value === 'lose';
         pullHist2.value++
         }
     }
     else{
     if( Math.random() < 0.1 && Math.random() > 0.02) {
     obtained = fourstar[Math.floor(Math.random() * fourstar.length)];
-    winlose.value === 'lose';
     pullHist.value = 0 //random chance of getting 4* every pull and resets pity if you get it 
     pullHist2.value++ 
     } else if (pullHist.value == 9 ) {
         obtained = fourstar[Math.floor(Math.random() * fourstar.length)];
-        winlose.value === 'lose';
         pullHist.value = 0
         pullHist2.value++ //if you already did 9 pulls, your next pull must be a 4* and resets pity  
     } else {
         pullHist.value++
         obtained = studentCard;
-        winlose.value === 'lose';
         pullHist2.value++ //you got nothing and it increments :skull:
     };
     if( Math.random() < rate.value) {
         obtained = fivestar[Math.floor(Math.random() * fivestar.length)];
-        winlose.value === 'win';
         pullHist2.value = 0 //resets pity counter 
         rate.value = 0.01
     }
@@ -175,7 +174,6 @@ function pull(pool:Cards[]){
         rate.value = rate.value + 0.1
     }else if (pullHist2.value == 89) {
         obtained = fivestar[Math.floor(Math.random() * fivestar.length)];
-        winlose.value === 'win';
         rate.value = 0.01
         pullHist2.value = 0 //you must get a chara every 90 pulls resets pity 
     }
@@ -186,7 +184,6 @@ function pull(pool:Cards[]){
 async function onePull(pool:Cards[]) {
     currentpulls.value = []
     const userCurrency = await getCurrency()
-    console.log(userCurrency)
     if (userCurrency.golden_seagulls < 10) {
         cannotPull.value = true;
         return
@@ -201,17 +198,22 @@ async function onePull(pool:Cards[]) {
     pullvisible.value = true;
     if(obtained.star > 3) {
         const teacher = new Teacher(obtained.name, obtained.subject, obtained.image, obtained.star)
-        console.log(teacher)
         insertGacha(teacher)
-    }
+        if(obtained.star === 4){
+        winlose.value = 'win';
+        }else{
+            winlose.value = 'winwin';
+        }
+    }else{
+            insertGacha(studentCard)
+        }
     return obtained;
 };
 async function tenPull(pool:Cards[]) {
-    // let winlosses:string[] = [];
+    let winlosses:string[] = []; // track if there was a win
     currentpulls.value = []
 
-    const userCurrency = await getCurrency() // these async backend functions aren't working
-    console.log(userCurrency) // but if removed gacha works without verifying whether or not can pull
+    const userCurrency = await getCurrency()
     if (userCurrency.golden_seagulls < 100) {
         cannotPull.value = true;
         return
@@ -226,19 +228,28 @@ async function tenPull(pool:Cards[]) {
     let i = 0
     while( i < 10 ) {
         i++
-        //let res = onePull(pool);
-        //arr.push(res, true);
-        //winlosses.push(winlose.value);
+
     currentpulls.value = arr;
         const obtained = pull(pool)
         currentpulls.value.push(obtained)
         if(obtained.star > 3) {
             const teacher = new Teacher(obtained.name, obtained.subject, obtained.image, obtained.star)
-            console.log(teacher)
             insertGacha(teacher)
+            if(obtained.star === 4){
+                winlosses.push('win');
+            }else{
+                winlosses.push('winwin');;
+        }
+        }else{
+            insertGacha(studentCard)
         }
     }
     pullvisible.value = true;
+    if(winlosses.includes('winwin') === true){
+        winlose.value = 'winwin';
+    }else if(winlosses.length > 0){
+        winlose.value = 'win';
+    }
 };
 
 const PhotoService = {
@@ -288,8 +299,11 @@ const images = ref();
   right: 10px;
   top: 50px;
 }
+.winwin{
+    background-color: rgb(224, 193, 101);
+}
 .win{
-    background-color: rgb(200,150,0);
+    background-color: rgb(154, 58, 213);
 }
 .lose{
     background-color: #181818;

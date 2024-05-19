@@ -14,12 +14,8 @@ import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
 import Sidebar from 'primevue/sidebar';
 // @ts-ignore
-import insertGacha from '../db/gacha/insertGacha'
-// insertGacha({ name: 'testGacha'})
-// @ts-ignore
 import getCurrentUser from '../db/getCurrentUser'
 
-insertGacha({ name: 'testGacha'})
 // @ts-ignore
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
 // @ts-ignore

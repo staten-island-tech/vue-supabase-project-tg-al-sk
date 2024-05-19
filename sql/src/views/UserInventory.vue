@@ -85,7 +85,7 @@ import DataView from 'primevue/dataview';
 import DataViewLayoutOptions from 'primevue/dataviewlayoutoptions'
 import Tag from 'primevue/tag';
 import Button from 'primevue/button';
-import { ref, onMounted } from "vue";
+import { ref, /* onMounted */ } from "vue";
 import type { Ref } from 'vue'
 const layout: Ref<'grid'|'list'> = ref('grid');
 
@@ -117,13 +117,13 @@ const products = [
 ];
 
 
-// import getCurrentUser from '@/db/getCurrentUser'
-// import getGacha from '@/db/gacha/getGacha'
+/* import getCurrentUser from '@/db/getCurrentUser'
+import getGacha from '@/db/gacha/getGacha'
 
-// const id = await (await getCurrentUser()).id
-// console.log(id)
-// const gacha = await getGacha(id)
-// console.log(gacha)
+const id = await (await getCurrentUser()).id
+console.log(id)
+const gacha = await getGacha(id)
+console.log(gacha) */
 
 </script>
 

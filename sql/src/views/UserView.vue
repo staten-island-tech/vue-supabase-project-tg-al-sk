@@ -66,7 +66,6 @@ getCurrentUser().then((item) => {
   useremail.value = item.email;
   usercreated.value = item.created_at;
   userlastlogin.value = item.last_sign_in_at;
-  console.log(item)
   })
 </script>
 
