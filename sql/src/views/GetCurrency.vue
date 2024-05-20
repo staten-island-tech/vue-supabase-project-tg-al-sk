@@ -89,8 +89,12 @@ function randomize() {
   yn.value = ''
 }
 
-function reset() { yn.value = ''};
-
+function reset() { 
+  yn.value = ''
+};
+function MakeTrue() { 
+  disabled.value = false 
+};
 function checkAns() {
   let ans = 0
   if (op.value == '+') {
@@ -114,7 +118,7 @@ function checkAns() {
     userStore.setCurrency(item.golden_seagulls)
   });
     disabled.value = true; 
-    function MakeTrue() { disabled.value = false };
+    
     setTimeout(MakeTrue, 3000)
     //umm def a shorter way to write this but will fix later trust!! 
     // getCurrency();
