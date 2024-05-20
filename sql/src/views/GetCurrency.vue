@@ -116,6 +116,7 @@ function checkAns() {
     checkIfHasCurrency({ golden_seagulls: 0 })
     getCurrency().then(function(item:CurrencyObj){
     userStore.setCurrency(item.golden_seagulls)
+    setTimeout(randomize, 700)
   });
     disabled.value = true; 
     
