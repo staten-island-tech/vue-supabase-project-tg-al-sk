@@ -65,8 +65,13 @@
         </Carousel>
     </div>
   </template>
-            </Dialog>
+    </Dialog>
     </div>
+    <Button icon="pi pi-info-circle" @click="dialogVisible2 = true" />
+        <Dialog v-model:visible="dialogVisible" modal header="Gacha Rates" :style="{ width: '50rem' }">
+            <p>pull history</p>
+            
+        </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -91,16 +96,19 @@ import increaseCurrency from '../../db/currency/increaseCurrency'
 import getCurrency from '../../db/currency/getCurrency'
 
 import type { Cards, CurrencyObj } from '@/lib/interfaces.ts';
+console.log(pools)
 
-/* function loadBanner(pool:{
+//<img :src="loadBanner(pools[slotProps.data.index])">
+//<img :src="slotProps.data.image">
+
+/* /* function loadBanner(pool:{
     subject: string,
     star: number,
     name: string,
     role: string,
-    image: string
+    image: string,
 }[]) { 
-    let face = pool.find((teacher) => teacher.star === 5)
-    console.log(face)
+    let img = pool.filter((teacher) => teacher.star === 5)
     //let fivestar = pool.filter((teacher) => teacher.star === 5);
     //console.log(fivestar)
     // let main = pool.filter((teacher) => teacher.star === 5)
@@ -108,6 +116,7 @@ import type { Cards, CurrencyObj } from '@/lib/interfaces.ts';
 } */
 const userStore = useUserStore();
 const dialogVisible = ref(false); //differentiates the visibilies of the dialog components 
+const dialogVisible2 = ref(false);  //differentiates the visibilies of the sidebar and dialog components 
 let pullvisible = ref(false)
 const cannotPull = ref(false)
 const currentpulls: Ref<Cards[]> = ref([]);
