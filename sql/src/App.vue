@@ -56,8 +56,8 @@ onMounted(()=>{
   <RouterView />
   <div class="currency" v-if="loggedin">
 <InputGroup>
-    <InputText :placeholder="userStore.user.currency" disabled/>
-    <InputGroupAddon><RouterLink to="/currency" class="pi pi-plus"> </RouterLink></InputGroupAddon>
+    <InputText :placeholder="userStore.user.currency" disabled :aria-label="`user has ${ userStore.user.currency } golden seagulls. `"/>
+    <InputGroupAddon><RouterLink to="/currency" class="pi pi-plus" aria-label="get more currency"> </RouterLink></InputGroupAddon>
 </InputGroup>
 </div>
   <div style="width: 100%;
@@ -68,26 +68,26 @@ onMounted(()=>{
   <nav style=" width: fit-content; position: fixed; bottom: 0;"><Toolbar v-if="loggedin">
     <template #center>
       <div style="display: flex;">
-        <RouterLink to="/user">
-        <Button v-tooltip.top="'User'" icon="pi pi-user-edit" severity="secondary" rounded />
+        <RouterLink to="/user" aria-label="user" >
+        <Button aria-label="user" v-tooltip.top="'User'" icon="pi pi-user-edit" severity="secondary" rounded />
       </RouterLink>
-      <RouterLink to="">
-        <Button v-tooltip.top="'View Available Cards'" icon="pi pi-book" severity="secondary" rounded @click="sidebarVisible = true"/>
+      <RouterLink to="" aria-label="view available cards" >
+        <Button aria-label="view available cards" v-tooltip.top="'View Available Cards'" icon="pi pi-book" severity="secondary" rounded @click="sidebarVisible = true"/>
       </RouterLink>
-        <RouterLink to="/currency">
-        <Button v-tooltip.top="'Do math for Golden Seagulls'" icon="pi pi-calculator" severity="secondary" rounded/>
+        <RouterLink to="/currency" aria-label="currency" >
+        <Button aria-label="do math for golden seagulls" v-tooltip.top="'Do math for Golden Seagulls'" icon="pi pi-calculator" severity="secondary" rounded/>
       </RouterLink>
-      <RouterLink to="/battle" >
-          <Button v-tooltip.top="'Battle for Golden Seagulls'" icon="pi pi-hammer" severity="secondary" rounded/>
+      <RouterLink to="/battle" aria-label="battle" >
+          <Button aria-label="battle" v-tooltip.top="'Battle for Golden Seagulls'" icon="pi pi-hammer" severity="secondary" rounded/>
         </RouterLink>
-        <RouterLink to="/gacha" >
-          <Button v-tooltip.top="'Gacha >:)'" icon="pi pi-money-bill" severity="secondary" rounded/>
+        <RouterLink to="/gacha" aria-label="gacha" >
+          <Button aria-label="gacha" v-tooltip.top="'Gacha >:)'" icon="pi pi-money-bill" severity="secondary" rounded/>
         </RouterLink>
-        <RouterLink to="/inventory" >
-          <Button v-tooltip.top="'Inventory'" icon="pi pi-trophy" severity="secondary" rounded/>
+        <RouterLink to="/inventory" aria-label="inventory" >
+          <Button aria-label="inventory" v-tooltip.top="'Inventory'" icon="pi pi-trophy" severity="secondary" rounded/>
         </RouterLink>
-        <RouterLink to="/" >
-          <Button v-tooltip.top="'Help'" icon="pi pi-question-circle" severity="secondary" rounded/>
+        <RouterLink to="/" aria-label="help" >
+          <Button aria-label="help page" v-tooltip.top="'Help'" icon="pi pi-question-circle" severity="secondary" rounded/>
         </RouterLink>
       </div>
     </template>

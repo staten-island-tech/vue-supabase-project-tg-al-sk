@@ -22,7 +22,7 @@
     <span style="font-size: 1.5rem;" v-if="op==='/'">➗</span>
     <span style="font-size: 1.5rem;">{{ num2 }}</span>
     <span style="font-size: 1.5rem;" class="pi pi-equals"></span>
-    <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 4rem" :disabled="disabled">
+    <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 4rem" :disabled="disabled" aria-label="input your answer">
 </InputNumber>
 <Button @click="checkAns()" label="Enter"/>
   </div>
