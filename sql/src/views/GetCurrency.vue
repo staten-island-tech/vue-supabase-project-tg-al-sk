@@ -2,7 +2,7 @@
   
   <h1>Get currency by solving math problems</h1>
   
-  <Fieldset legend="Directions" :toggleable="true" :collapsed="collapsed" style="position: fixed; z-index: 999;">
+  <Fieldset legend="Directions" :toggleable="true" :collapsed="collapsed" style="position: fixed; z-index: 999; padding-bottom: 5%;">
     <p class="m-0">
       You will be shown questions consisting of addition, subtraction, multiplication, and division.
       Solve them correctly to gain Golden Seagulls! You may increase the difficulty of the questions to gain more Golden Seagulls.
@@ -11,7 +11,7 @@
     <p>For division, please round to the nearest whole number.</p>
     <div class="card flex justify-content-center">
     </div>
-    <Button label="Got it!" @click="collapsed = true" v-if="collapsed === false"></Button>
+    <Button label="Got it!" @click="collapsed = true" v-if="collapsed === false" style="margin-top: 5vw;"></Button>
   </Fieldset>
   <div style="display: flex; align-items: center; flex-direction: column;">
   <div class="flex px-5 py-5 gap-4" style="align-items: center; display: block; display: flex; margin-left: auto; margin-right: auto;">
@@ -22,7 +22,7 @@
     <span style="font-size: 1.5rem;" v-if="op==='/'">➗</span>
     <span style="font-size: 1.5rem;">{{ num2 }}</span>
     <span style="font-size: 1.5rem;" class="pi pi-equals"></span>
-    <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 4rem">
+    <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 4rem" :disabled="disabled">
 </InputNumber>
 <Button @click="checkAns()" label="Enter"/>
   </div>
@@ -46,6 +46,8 @@ import InputNumber from 'primevue/inputnumber';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
+
+let disabled = ref(false)
 
 // @ts-ignore
 import increaseCurrency from '/db/currency/increaseCurrency';
@@ -78,6 +80,8 @@ function randomize() {
   yn.value = ''
 }
 
+function reset() { yn.value = ''};
+
 function checkAns() {
   let ans = 0
   if (op.value == '+') {
@@ -93,12 +97,18 @@ function checkAns() {
   if (ans == value.value) {
     yn.value = 'you are correct!'
     severity.value = 'success';
+    setTimeout(randomize, 3000)
     increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
     checkIfHasCurrency({ golden_seagulls: 0 })
+    disabled.value = true; 
+    function MakeTrue() { disabled.value = false };
+    setTimeout(MakeTrue, 3000)
+    //umm def a shorter way to write this but will fix later trust!! 
     // getCurrency();
   } else {
     yn.value = 'you are incorrect.'
     severity.value = 'error'
+    setTimeout(reset, 1000)
     checkIfHasCurrency({ golden_seagulls: 10 })
     // getCurrency();
   }

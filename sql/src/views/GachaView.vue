@@ -12,13 +12,12 @@
             <p>Soft Pity: Once you reach 80 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
         </Dialog>
     </div>
-        
-        <Carousel :value="images" :numVisible="1" :numScroll="1" circular @click="loadBanner()">
+        <Carousel :value="images" :numVisible="1" :numScroll="1" circular >
             <template #item="slotProps">
                     <Fieldset :legend="slotProps.data.alt" class="border-1 surface-border border-round m-2  p-3" style="height: 50vh;">
                     <p>{{ slotProps.data.text }}</p>
                     <div>
-                        <img :src="face.img"/>
+                        
                     </div>
                     <div class="buttons">
                     <Button @click="onePull(pools[slotProps.data.index])" class="button" label="x1 Pull"/>
@@ -57,8 +56,13 @@
     <Button type="button" label="Close" @click="closeCallback"/>
     </div>
   </template>
-            </Dialog>
+    </Dialog>
     </div>
+    <Button icon="pi pi-info-circle" @click="dialogVisible2 = true" />
+        <Dialog v-model:visible="dialogVisible" modal header="Gacha Rates" :style="{ width: '50rem' }">
+            <p>pull history</p>
+            
+        </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -82,23 +86,26 @@ import getCurrency from '../../db/currency/getCurrency'
 
 console.log(pools)
 
+//<img :src="loadBanner(pools[slotProps.data.index])">
+//<img :src="slotProps.data.image">
 
-function loadBanner(pool:{
+
+/* function loadBanner(pool:{
     subject: string,
     star: number,
     name: string,
     role: string,
-    image: string
+    image: string,
 }[]) { 
-    let face = pool.find((teacher) => teacher.star === 5)
-    console.log(face)
+    let img = pool.filter((teacher) => teacher.star === 5)
     //let fivestar = pool.filter((teacher) => teacher.star === 5);
     //console.log(fivestar)
     // let main = pool.filter((teacher) => teacher.star === 5)
     // console.log(main)
-}
+} */
 
-const dialogVisible = ref(false); //differentiates the visibilies of the sidebar and dialog components 
+const dialogVisible = ref(false);
+const dialogVisible2 = ref(false);  //differentiates the visibilies of the sidebar and dialog components 
 let pullvisible = ref(false)
 let currentpulls:{
     subject: string,
@@ -207,7 +214,7 @@ async function tenPull(pool:{
         return
     }
     increaseCurrency({ golden_seagulls: -100 })
-    currentpulls.value = []
+    currentpulls = []
 
     let arr = [];
     let i = 0
