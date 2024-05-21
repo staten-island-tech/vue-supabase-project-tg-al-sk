@@ -27,7 +27,7 @@ const userStore = useUserStore()
 // userStore.setUser(currentUser) 
 console.log(userStore.getUser)
 checkIfHasCurrency({ golden_seagulls: 0 })
-
+userStore.setPity(0, 'add');
 const route = useRoute()
 isSignedIn().then((signedIn:boolean) => {
         if(signedIn) {
