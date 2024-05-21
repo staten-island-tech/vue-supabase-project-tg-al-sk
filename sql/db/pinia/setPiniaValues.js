@@ -1,7 +1,7 @@
-import { useUserStore } from "../src/stores/userStore"
-import getCurrentUser from "./getCurrentUser"
-import getGacha from "./gacha/getGacha"
-import getCurrency from "./currency/getCurrency"
+import { useUserStore } from "./stores/userStore"
+import getCurrentUser from "../getCurrentUser"
+import getGacha from "../gacha/getGacha"
+import getCurrency from "../currency/getCurrency"
 
 export async function setPiniaValues(session) {
     const userStore = useUserStore()

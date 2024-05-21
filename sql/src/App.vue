@@ -19,12 +19,9 @@ import getCurrentUser from '../db/getCurrentUser'
 // @ts-ignore
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
 import { useUserStore } from './stores/userStore';
+import { pushPiniaValues } from '../db/pinia/pushPiniaValues'
 
-const currentUser = getCurrentUser()
-const userStore = useUserStore()
-// userStore.setUser(currentUser) 
-console.log(userStore.getUser)
-checkIfHasCurrency({ golden_seagulls: 0 })
+pushPiniaValues()
 
 const route = useRoute()
 // @ts-ignore
@@ -164,3 +161,4 @@ nav a:first-of-type {
   top: 10px;
 }
 </style>
+../db/pinia/stores/userStore
