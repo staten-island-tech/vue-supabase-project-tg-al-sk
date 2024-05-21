@@ -60,10 +60,10 @@ import checkIfHasCurrency from '/db/currency/checkIfHasCurrency';
 import type { CurrencyObj } from '@/lib/interfaces.ts';
 
 const userStore = useUserStore();
-
+/* 
 let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-console.log(vw, vh)
+console.log(vw, vh) */
 
 const collapsed = ref(false);
 const value2 = ref(1)
