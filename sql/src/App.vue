@@ -18,12 +18,15 @@ import insertGacha from '../db/gacha/insertGacha'
 import getCurrentUser from '../db/getCurrentUser'
 // @ts-ignore
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
-import { useUserStore } from './stores/userStore';
+import { useUserStore } from '@/db/pinia/stores/userStore';
 import { pushPiniaValues } from '../db/pinia/pushPiniaValues'
 
-pushPiniaValues()
+// pushPiniaValues()
 
 const route = useRoute()
+const userStore = useUserStore()
+console.log(userStore.getUser)
+
 // @ts-ignore
 isSignedIn().then((signedIn) => {
     if(signedIn) {

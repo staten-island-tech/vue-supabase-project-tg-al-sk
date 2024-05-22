@@ -7,7 +7,8 @@ export async function setPiniaValues(session) {
     const userStore = useUserStore()
 
     const user = await getCurrentUser()
-    const gacha = JSON.parse(await getGacha())
+    const gacha = await getGacha()
+    console.log(gacha)
     const currency = await getCurrency()
     
     userStore.setUser(user)

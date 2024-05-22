@@ -7,5 +7,6 @@ export async function pushPiniaValues() {
     
     const user = userStore.getUser
     setCurrency(user.currency)
+    console.log(user.gacha)
     setGacha(user.gacha)
 }
