@@ -1,5 +1,5 @@
 import supabaseClient from '../supabaseClient'
-import { setPiniaValues } from '../setPiniaValues'
+import { setPiniaValues } from '../pinia/setPiniaValues'
 
 export default async function signInUser(email, password) {
   const supabase = supabaseClient()

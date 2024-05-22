@@ -28,6 +28,10 @@ const userStore = useUserStore()
 console.log(userStore.getUser)
 checkIfHasCurrency({ golden_seagulls: 0 })
 userStore.setPity(0, 'add');
+import { pushPiniaValues } from '../db/pinia/pushPiniaValues'
+
+pushPiniaValues()
+
 const route = useRoute()
 isSignedIn().then((signedIn:boolean) => {
         if(signedIn) {
@@ -170,3 +174,4 @@ nav a:first-of-type {
   width: 7rem;
 }
 </style>
+../db/pinia/stores/userStore

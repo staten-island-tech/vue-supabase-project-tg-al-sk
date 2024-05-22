@@ -1,5 +1,5 @@
 import supabaseClient from '../supabaseClient'
-import { useUserStore } from '../../src/stores/userStore'
+import { useUserStore } from '../pinia/stores/userStore'
 
 export default async function signInUser(email, password) {
   const supabase = supabaseClient()
