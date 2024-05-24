@@ -36,10 +36,8 @@ staffs.value = teachers
 const value = ref('');
 
 watch(value, async() => {
-    staffs.value = teachers.filter((teacher) => teacher.name.includes(value.value))
-    console.log(staffs.value)
+    staffs.value = teachers.filter((teacher) => (teacher.name).toLowerCase().includes(value.value.toLowerCase()))
 })
-
 
 </script>
 
