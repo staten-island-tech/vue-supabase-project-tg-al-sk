@@ -12,7 +12,7 @@
             <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
                 <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3" :class="{ 'border-top-1 surface-border': index !== 0 }">
                     <div class="md:w-10rem relative">
-                        <img class="block xl:block mx-auto border-round w-full" :src="`https://primefaces.org/cdn/primevue/images/product/${item.image}`" :alt="item.name" />
+                        <img class="block xl:block mx-auto border-round w-full" :src="`${item.image}`" :alt="item.name" />
                         <Tag :value="item.inventoryStatus" class="absolute" style="left: 4px; top: 4px"></Tag>
                     </div>
                     <div class="flex flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4">
@@ -85,35 +85,44 @@ import DataView from 'primevue/dataview';
 import DataViewLayoutOptions from 'primevue/dataviewlayoutoptions'
 import Tag from 'primevue/tag';
 import Button from 'primevue/button';
-import { ref, /* onMounted */ } from "vue";
+import { onMounted, ref, /* onMounted */ } from "vue";
 import type { Ref } from 'vue'
+
 const layout: Ref<'grid'|'list'> = ref('grid');
+
+// @ts-ignore
+import getGacha from '/db/gacha/getGacha.js'
 
 //import { pools } from '@/teachers/teacherPools.ts';
 
+onMounted(()=> {
+    doSmth()
+});
+
+
+async function doSmth() {
+    const userInventory = await getGacha();
+    if (userInventory.gacha > 0) {
+    console.log('hello i work????')
+    console.log(userInventory.gacha)
+}
+};
+
 const products = [
     {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        star: 5
+        "subject": "math",
+        "star": 5,
+        "name": "Heidi Chu",
+        "role": "Mathematics Teacher",
+        "image": "https://3.files.edl.io/feee/22/09/16/161904-8e2cc888-3845-4d08-8559-dd52749fc31c.heic"
     },
     {
-        id: '2346',
-        code: 'ababa',
-        name: 'testing',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        star: 5
-    }
+        "subject": "science",
+        "star": 4,
+        "name": "Jonathan Colangelo",
+        "role": "Science Teacher",
+        "image": "https://3.files.edl.io/28a0/20/03/12/122230-d2392079-05d5-4940-a838-0d6146427076.jpg"
+    },
 ];
 
 
