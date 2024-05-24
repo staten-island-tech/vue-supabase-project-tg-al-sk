@@ -21,7 +21,7 @@ import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
 import { useUserStore } from '@/db/pinia/stores/userStore';
 import { pushPiniaValues } from '../db/pinia/pushPiniaValues'
 
-// pushPiniaValues()
+pushPiniaValues()
 
 const route = useRoute()
 const userStore = useUserStore()
