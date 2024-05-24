@@ -9,13 +9,15 @@ import { useRoute } from 'vue-router';
 import TeachersSidebar from './components/TeachersSidebar.vue'
 import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
-import IconField from 'primevue/iconfield';
 import InputText from 'primevue/inputtext';
+import InputGroup from 'primevue/inputgroup';
+import InputGroupAddon from 'primevue/inputgroupaddon';
 import Sidebar from 'primevue/sidebar';
 // @ts-ignore
-import insertGacha from '../db/gacha/insertGacha'
+// import insertGacha from '../db/gacha/insertGacha'
 // insertGacha({ name: 'testGacha'})
-import getCurrentUser from '../db/getCurrentUser'
+// @ts-ignore
+// import getCurrentUser from '../db/getCurrentUser'
 // @ts-ignore
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
 // @ts-ignore
@@ -39,7 +41,7 @@ isSignedIn().then((signedIn:boolean) => {
 const loggedin = ref(false)
 watch(route, () => ifNotSignedInGoToPage(route)) 
 const sidebarVisible = ref(false);
-const currencyAmt = ref(0);
+// const currencyAmt = ref(0);
 // isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
 </script>
 
