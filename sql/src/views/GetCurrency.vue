@@ -51,6 +51,8 @@ import { useUserStore } from "../stores/userStore"
 
 let disabled = ref(false)
 
+import { useUserStore } from '@/db/pinia/stores/userStore'
+
 // @ts-ignore
 import increaseCurrency from '/db/currency/increaseCurrency';
 // @ts-ignore
@@ -64,6 +66,9 @@ const userStore = useUserStore();
 let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 console.log(vw, vh) */
+
+const userStore = useUserStore()
+console.log(userStore.getUser)
 
 const collapsed = ref(false);
 const value2 = ref(1)

@@ -133,6 +133,9 @@ const id = await (await getCurrentUser()).id
 console.log(id)
 const gacha = await getGacha(id)
 console.log(gacha) */
+import { useUserStore } from '@/db/pinia/stores/userStore'
+const userStore = useUserStore()
+console.log(userStore.getUser)
 
 </script>
 

@@ -4,61 +4,53 @@ import { RouterLink, RouterView } from 'vue-router'
 import isSignedIn from '../db/auth/isSignedIn'
 // @ts-ignore
 import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
-import { watch, ref, onMounted } from 'vue';
+import { watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import TeachersSidebar from './components/TeachersSidebar.vue'
 import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
+import IconField from 'primevue/iconfield';
 import InputText from 'primevue/inputtext';
-import InputGroup from 'primevue/inputgroup';
-import InputGroupAddon from 'primevue/inputgroupaddon';
 import Sidebar from 'primevue/sidebar';
 // @ts-ignore
+import insertGacha from '../db/gacha/insertGacha'
+// insertGacha({ name: 'testGacha'})
 import getCurrentUser from '../db/getCurrentUser'
-
 // @ts-ignore
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
-// @ts-ignore
-import { useUserStore } from './stores/userStore';
-// @ts-ignore
-import getCurrency from '../db/currency/getCurrency'
-const currentUser = getCurrentUser()
-const userStore = useUserStore()
-// userStore.setUser(currentUser) 
-console.log(userStore.getUser)
-checkIfHasCurrency({ golden_seagulls: 0 })
+import { useUserStore } from '@/db/pinia/stores/userStore';
 
 const route = useRoute()
-isSignedIn().then((signedIn:boolean) => {
-        if(signedIn) {
-            loggedin.value = true;
-        }
-    })
+const userStore = useUserStore()
+console.log(userStore.getUser)
+
+// @ts-ignore
+isSignedIn().then((signedIn) => {
+    if(signedIn) {
+        loggedin.value = true;
+    }
+})
 const loggedin = ref(false)
 watch(route, () => ifNotSignedInGoToPage(route)) 
 const sidebarVisible = ref(false);
+const currencyAmt = ref(0);
 // isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
-
-onMounted(()=>{
-  
-  getCurrency().then(function(item:{
-    last_updated: String, 
-    golden_seagulls: Number, 
-    id: String, 
-    diamond_seagulls: Number
-  }){
-    userStore.setCurrency(item.golden_seagulls)
-  });
-});
 </script>
 
 <template>
+  <!--<header>
+      <nav>
+        <RouterLink to="/login">Log In</RouterLink>
+        <RouterLink to="/currency" v-if="loggedin">Get Currency</RouterLink>
+        <RouterLink to="/gacha" v-if="loggedin">Gacha Pulls</RouterLink>
+      </nav>
+  </header>-->
   <RouterView />
   <div class="currency" v-if="loggedin">
-<InputGroup>
-    <InputText :placeholder="userStore.user.currency" disabled :aria-label="`user has ${ userStore.user.currency } golden seagulls. `"/>
-    <InputGroupAddon><RouterLink to="/currency" class="pi pi-plus" aria-label="get more currency"> </RouterLink></InputGroupAddon>
-</InputGroup>
+  <IconField>
+    <InputText disabled :placeholder="currencyAmt.toString()" style="width: 15vw;"/>
+    <RouterLink to="/currency" class="pi pi-plus"> </RouterLink>
+</IconField>
 </div>
   <div style="width: 100%;
   align-items: center;
@@ -68,26 +60,26 @@ onMounted(()=>{
   <nav style=" width: fit-content; position: fixed; bottom: 0;"><Toolbar v-if="loggedin">
     <template #center>
       <div style="display: flex;">
-        <RouterLink to="/user" aria-label="user" >
-        <Button aria-label="user" v-tooltip.top="'User'" icon="pi pi-user-edit" severity="secondary" rounded />
+        <RouterLink to="/user">
+        <Button v-tooltip.top="'User'" icon="pi pi-user-edit" severity="secondary" rounded />
       </RouterLink>
-      <RouterLink to="" aria-label="view available cards" >
-        <Button aria-label="view available cards" v-tooltip.top="'View Available Cards'" icon="pi pi-book" severity="secondary" rounded @click="sidebarVisible = true"/>
+      <RouterLink to="">
+        <Button v-tooltip.top="'View Available Cards'" icon="pi pi-book" severity="secondary" rounded @click="sidebarVisible = true"/>
       </RouterLink>
-        <RouterLink to="/currency" aria-label="currency" >
-        <Button aria-label="do math for golden seagulls" v-tooltip.top="'Do math for Golden Seagulls'" icon="pi pi-calculator" severity="secondary" rounded/>
+        <RouterLink to="/currency">
+        <Button v-tooltip.top="'Do math for Golden Seagulls'" icon="pi pi-calculator" severity="secondary" rounded/>
       </RouterLink>
-      <RouterLink to="/battle" aria-label="battle" >
-          <Button aria-label="battle" v-tooltip.top="'Battle for Golden Seagulls'" icon="pi pi-hammer" severity="secondary" rounded/>
+      <RouterLink to="/battle" >
+          <Button v-tooltip.top="'Battle for Golden Seagulls'" icon="pi pi-hammer" severity="secondary" rounded/>
         </RouterLink>
-        <RouterLink to="/gacha" aria-label="gacha" >
-          <Button aria-label="gacha" v-tooltip.top="'Gacha >:)'" icon="pi pi-money-bill" severity="secondary" rounded/>
+        <RouterLink to="/gacha" >
+          <Button v-tooltip.top="'Gacha >:)'" icon="pi pi-money-bill" severity="secondary" rounded/>
         </RouterLink>
-        <RouterLink to="/inventory" aria-label="inventory" >
-          <Button aria-label="inventory" v-tooltip.top="'Inventory'" icon="pi pi-trophy" severity="secondary" rounded/>
+        <RouterLink to="/inventory" >
+          <Button v-tooltip.top="'Inventory'" icon="pi pi-trophy" severity="secondary" rounded/>
         </RouterLink>
-        <RouterLink to="/" aria-label="help" >
-          <Button aria-label="help page" v-tooltip.top="'Help'" icon="pi pi-question-circle" severity="secondary" rounded/>
+        <RouterLink to="/" >
+          <Button v-tooltip.top="'Help'" icon="pi pi-question-circle" severity="secondary" rounded/>
         </RouterLink>
       </div>
     </template>
@@ -167,6 +159,6 @@ nav a:first-of-type {
   position: fixed;
   right: 0;
   top: 10px;
-  width: 7rem;
 }
 </style>
+../db/pinia/stores/userStore

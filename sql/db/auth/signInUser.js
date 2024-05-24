@@ -1,8 +1,5 @@
 import supabaseClient from '../supabaseClient'
-import { useUserStore } from '../../src/stores/userStore'
-import getCurrentUser from '../getCurrentUser'
-import getGacha from '../gacha/getGacha'
-import getCurrency from '../currency/getCurrency'
+import { setPiniaValues } from '../pinia/setPiniaValues'
 
 export default async function signInUser(email, password) {
   const supabase = supabaseClient()
@@ -12,17 +9,7 @@ export default async function signInUser(email, password) {
     password
   })
 
-  const userStore = useUserStore()
-
-  const user = await getCurrentUser()
-  const gacha = getGacha()
-  const currency = getCurrency()
-  const session = data.session
-
-  userStore.setUser(user)
-  userStore.setSession(session)
-
-  console.log(userStore.$state)
+  await setPiniaValues(data.session)
 
   if (!error) {
     supabase.auth.setSession({
