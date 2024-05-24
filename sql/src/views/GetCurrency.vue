@@ -47,7 +47,7 @@ import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
 // @ts-ignore
-import { useUserStore } from "../stores/userStore"
+import { useUserStore } from "@/db/pinia/stores/userStore"
 
 let disabled = ref(false)
 

@@ -19,7 +19,7 @@ import getCurrentUser from '../db/getCurrentUser'
 // @ts-ignore
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
 // @ts-ignore
-import { useUserStore } from './stores/userStore';
+import { useUserStore } from '../db/pinia/stores/userStore';
 // @ts-ignore
 import getCurrency from '../db/currency/getCurrency'
 const currentUser = getCurrentUser()
@@ -28,6 +28,7 @@ const userStore = useUserStore()
 console.log(userStore.getUser)
 checkIfHasCurrency({ golden_seagulls: 0 })
 userStore.setPity(0, 'add');
+// @ts-ignore
 import { pushPiniaValues } from '../db/pinia/pushPiniaValues'
 
 pushPiniaValues()
