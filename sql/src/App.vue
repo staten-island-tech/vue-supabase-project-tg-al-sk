@@ -4,36 +4,33 @@ import { RouterLink, RouterView } from 'vue-router'
 import isSignedIn from '../db/auth/isSignedIn'
 // @ts-ignore
 import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
-import { watch, ref, onMounted } from 'vue';
+import { watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import TeachersSidebar from './components/TeachersSidebar.vue'
 import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
+import IconField from 'primevue/iconfield';
 import InputText from 'primevue/inputtext';
-import InputGroup from 'primevue/inputgroup';
-import InputGroupAddon from 'primevue/inputgroupaddon';
 import Sidebar from 'primevue/sidebar';
 // @ts-ignore
+import insertGacha from '../db/gacha/insertGacha'
+// insertGacha({ name: 'testGacha'})
 import getCurrentUser from '../db/getCurrentUser'
-
 // @ts-ignore
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
 // @ts-ignore
-import { useUserStore } from '../db/pinia/stores/userStore';
-// @ts-ignore
-import getCurrency from '../db/currency/getCurrency'
-const currentUser = getCurrentUser()
+import { useUserStore } from '@/db/pinia/stores/userStore';
+
+const route = useRoute()
 const userStore = useUserStore()
-// userStore.setUser(currentUser) 
 console.log(userStore.getUser)
 checkIfHasCurrency({ golden_seagulls: 0 })
 userStore.setPity(0, 'add');
 // @ts-ignore
-import { pushPiniaValues } from '../db/pinia/pushPiniaValues'
+// import { pushPiniaValues } from '../db/pinia/pushPiniaValues'
 
-pushPiniaValues()
+// pushPiniaValues()
 
-const route = useRoute()
 isSignedIn().then((signedIn:boolean) => {
         if(signedIn) {
             loggedin.value = true;
@@ -42,22 +39,18 @@ isSignedIn().then((signedIn:boolean) => {
 const loggedin = ref(false)
 watch(route, () => ifNotSignedInGoToPage(route)) 
 const sidebarVisible = ref(false);
+const currencyAmt = ref(0);
 // isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
-
-onMounted(()=>{
-  
-  getCurrency().then(function(item:{
-    last_updated: String, 
-    golden_seagulls: Number, 
-    id: String, 
-    diamond_seagulls: Number
-  }){
-    userStore.setCurrency(item.golden_seagulls)
-  });
-});
 </script>
 
 <template>
+  <!--<header>
+      <nav>
+        <RouterLink to="/login">Log In</RouterLink>
+        <RouterLink to="/currency" v-if="loggedin">Get Currency</RouterLink>
+        <RouterLink to="/gacha" v-if="loggedin">Gacha Pulls</RouterLink>
+      </nav>
+  </header>-->
   <RouterView />
   <div class="currency" v-if="loggedin">
 <InputGroup>
@@ -172,7 +165,5 @@ nav a:first-of-type {
   position: fixed;
   right: 0;
   top: 10px;
-  width: 7rem;
 }
 </style>
-../db/pinia/stores/userStore

@@ -10,6 +10,7 @@ export default async function getGacha() {
         method: 'post',
         body: JSON.stringify({ id })
     })
-    const data = res.json()
+    const data = await res.json()
+    console.log(data)
     return data
 }
