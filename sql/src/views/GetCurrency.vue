@@ -14,13 +14,14 @@
     <Button label="Got it!" @click="collapsed = true" v-if="collapsed === false"></Button>
   </Fieldset>
   <div style="display: flex; align-items: center; flex-direction: column;">
-  <div class="flex px-5 py-5 gap-4" style="width: auto; align-items: center; display: block;">
+  <div class="flex px-5 py-5 gap-4" style="align-items: center; display: block; display: flex; margin-left: auto; margin-right: auto;">
     <span style="font-size: 1.5rem;">{{ num1 }}</span>
     <span style="font-size: 1.5rem;" class="pi pi-plus" v-if="op==='+'"></span>
     <span style="font-size: 1.5rem;" class="pi pi-minus" v-if="op==='-'"></span>
     <span style="font-size: 1.5rem;" class="pi pi-times" v-if="op==='*'"></span>
     <span style="font-size: 1.5rem;" v-if="op==='/'">➗</span>
     <span style="font-size: 1.5rem;">{{ num2 }}</span>
+    
     <span style="font-size: 1.5rem;" class="pi pi-equals"></span>
     <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 4rem">
 </InputNumber>
@@ -46,21 +47,18 @@ import InputNumber from 'primevue/inputnumber';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
-// @ts-ignore
-import { useUserStore } from "../stores/userStore"
+
+import { useUserStore } from '@/db/pinia/stores/userStore'
+
 // @ts-ignore
 import increaseCurrency from '/db/currency/increaseCurrency';
 // @ts-ignore
-import getCurrency from '/db/currency/getCurrency';
+// import getCurrency from '/db/currency/getCurrency';
 // @ts-ignore
 import checkIfHasCurrency from '/db/currency/checkIfHasCurrency';
-import type { CurrencyObj } from '@/lib/interfaces.ts';
 
-const userStore = useUserStore();
-
-let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-console.log(vw, vh)
+const userStore = useUserStore()
+console.log(userStore.getUser)
 
 const collapsed = ref(false);
 const value2 = ref(1)
@@ -101,11 +99,9 @@ function checkAns() {
   if (ans == value.value) {
     yn.value = 'you are correct!'
     severity.value = 'success';
-    increaseCurrency({golden_seagulls: 10});
+    increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
     checkIfHasCurrency({ golden_seagulls: 0 })
-    getCurrency().then(function(item:CurrencyObj){
-    userStore.setCurrency(item.golden_seagulls)
-  });
+    // getCurrency();
   } else {
     yn.value = 'you are incorrect.'
     severity.value = 'error'
@@ -121,9 +117,5 @@ function checkAns() {
 .p-message{
   width: fit-content;
   margin-right: 0px;
-}
-.item {
-  align-items: center;
-  widows: 100%;
 }
 </style>
