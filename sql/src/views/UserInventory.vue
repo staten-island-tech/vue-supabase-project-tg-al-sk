@@ -59,7 +59,7 @@
                             </div>
                             <div class="surface-100 p-1" style="border-radius: 30px">
                                 <div class="surface-0 flex align-items-center gap-2 justify-content-center py-1 px-2" style="border-radius: 30px; box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)">
-                                    <span class="text-900 font-medium text-sm">{{ item.rating }}</span>
+                                    <span class="text-900 font-medium text-sm">{{ item.star }}</span>
                                     <i class="pi pi-star-fill text-yellow-500"></i>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                         <div class="flex flex-column gap-4 mt-4">
                             <span class="text-2xl font-semibold text-900">${{ item.price }}</span>
                             <div class="flex gap-2">
-                                <Button icon="pi pi-shopping-cart" label="Buy Now" :disabled="item.inventoryStatus === 'OUTOFSTOCK'" class="flex-auto white-space-nowrap"></Button>
+                                <Button icon="pi pi-shopping-cart" label="Open Stats"  class="flex-auto white-space-nowrap"></Button>
                                 <Button icon="pi pi-heart" outlined></Button>
                             </div>
                         </div>
@@ -93,6 +93,8 @@ import { ref } from "vue";
 import type { Ref } from 'vue'
 const layout: Ref<'grid'|'list'> = ref('grid');
 
+//import { pools } from '@/teachers/teacherPools.ts';
+
 const products = [
     {
         id: '1000',
@@ -103,8 +105,7 @@ const products = [
         price: 65,
         category: 'Accessories',
         quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
+        star: 5
     },
     {
         id: '2346',
@@ -115,8 +116,7 @@ const products = [
         price: 65,
         category: 'Accessories',
         quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
+        star: 5
     }
 ];
 

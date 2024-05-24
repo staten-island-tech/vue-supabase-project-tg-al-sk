@@ -319,10 +319,10 @@ const images = ref();
   top: 50px;
 }
 .winwin{
-    background-color: rgb(224, 193, 101);
+    background-color: rgb(242, 227, 183);
 }
 .win{
-    background-color: rgb(154, 58, 213);
+    background-color: rgb(206, 169, 228);
 }
 .lose{
     background-color: #181818;

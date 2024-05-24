@@ -60,10 +60,10 @@ import checkIfHasCurrency from '/db/currency/checkIfHasCurrency';
 import type { CurrencyObj } from '@/lib/interfaces.ts';
 
 const userStore = useUserStore();
-
+/* 
 let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-console.log(vw, vh)
+console.log(vw, vh) */
 
 const collapsed = ref(false);
 const value2 = ref(1)
@@ -111,7 +111,7 @@ function checkAns() {
     yn.value = 'you are correct!'
     severity.value = 'success';
     increaseCurrency({golden_seagulls: 10});
-    setTimeout(randomize, 3000)
+    setTimeout(randomize, 700)
     increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
     checkIfHasCurrency({ golden_seagulls: 0 })
     getCurrency().then(function(item:CurrencyObj){
@@ -120,7 +120,7 @@ function checkAns() {
   });
     disabled.value = true; 
     
-    setTimeout(MakeTrue, 3000)
+    setTimeout(MakeTrue, 700)// cant type while loading next question 
     //umm def a shorter way to write this but will fix later trust!! 
     // getCurrency();
   } else {
