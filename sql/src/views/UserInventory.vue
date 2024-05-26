@@ -1,7 +1,7 @@
 <template>
     <h1>User Inventory</h1>
 <div class="card">
-        <DataView :value="products" :layout="layout">
+        <DataView :value="gacha" :layout="layout">
             <template #header>
         <div class="flex justify-content-end">
             <DataViewLayoutOptions v-model="layout" />
@@ -79,31 +79,25 @@ import DataView from 'primevue/dataview';
 import DataViewLayoutOptions from 'primevue/dataviewlayoutoptions'
 import Tag from 'primevue/tag';
 import Button from 'primevue/button';
-import { onMounted, ref, /* onMounted */ } from "vue";
+import { onMounted, ref} from "vue";
 import type { Ref } from 'vue'
 
 const layout: Ref<'grid'|'list'> = ref('grid');
 
-// @ts-ignore
-//import getGacha from '/db/gacha/getGacha.js'
-
-//import { pools } from '@/teachers/teacherPools.ts';
-
-onMounted(()=> {
-    
-});
-
-
 import getCurrentUser from '@/db/getCurrentUser'
 import getGacha from '@/db/gacha/getGacha'
-
-const id = await (await getCurrentUser()).id
-console.log(id)
-const gacha = await getGacha(id)
-console.log(gacha) 
 import { useUserStore } from '@/db/pinia/stores/userStore'
-const userStore = useUserStore()
-console.log(userStore.getUser)
+
+const gacha = ref([]);
+
+onMounted(() => async function() {
+    const id = await (await getCurrentUser()).id
+    console.log(id)
+    gacha.value = await getGacha(id)
+    console.log(gacha.value) 
+    const userStore = useUserStore()
+    //console.log(userStore.getUser)
+});
 
 
 const products = [
