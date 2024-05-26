@@ -21,6 +21,7 @@
     <span style="font-size: 1.5rem;" class="pi pi-times" v-if="op==='*'"></span>
     <span style="font-size: 1.5rem;" v-if="op==='/'">➗</span>
     <span style="font-size: 1.5rem;">{{ num2 }}</span>
+    
     <span style="font-size: 1.5rem;" class="pi pi-equals"></span>
     <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 4rem" :disabled="disabled" aria-label="input your answer">
 </InputNumber>
@@ -46,11 +47,7 @@ import InputNumber from 'primevue/inputnumber';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
-// @ts-ignore
-import { useUserStore } from "../stores/userStore"
-
 let disabled = ref(false)
-
 import { useUserStore } from '@/db/pinia/stores/userStore'
 
 // @ts-ignore
@@ -59,13 +56,6 @@ import increaseCurrency from '/db/currency/increaseCurrency';
 import getCurrency from '/db/currency/getCurrency';
 // @ts-ignore
 import checkIfHasCurrency from '/db/currency/checkIfHasCurrency';
-import type { CurrencyObj } from '@/lib/interfaces.ts';
-
-const userStore = useUserStore();
-/* 
-let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-let vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-console.log(vw, vh) */
 
 const userStore = useUserStore()
 console.log(userStore.getUser)
@@ -144,9 +134,5 @@ function checkAns() {
 .p-message{
   width: fit-content;
   margin-right: 0px;
-}
-.item {
-  align-items: center;
-  widows: 100%;
 }
 </style>
