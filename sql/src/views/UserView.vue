@@ -29,7 +29,7 @@
     </div>
     <Skeleton width="100%" height="150px" v-if="useremail === ''"></Skeleton>
     <div style="width:100%;height:150px;background-color: rgb(40,40,40);" v-if="useremail != ''">
-      <p>cards collected:</p>
+      <p>cards collected: {{ cardAmt }}</p>
       <p>golden seagulls: {{ userStore.user.currency }}</p>
     </div>
 </div>
@@ -49,6 +49,8 @@ import getCurrentUser from '@/db/getCurrentUser'
 import refreshPage from '../lib/refreshPage'
 // @ts-ignore
 import { useUserStore } from "@/db/pinia/stores/userStore"
+// @ts-ignore
+import getGacha from '@/db/gacha/getGacha'
 
 const userStore = useUserStore()
 const signedout = ref(false);
@@ -67,6 +69,9 @@ getCurrentUser().then((item) => {
   usercreated.value = item.created_at;
   userlastlogin.value = item.last_sign_in_at;
   })
+
+const cardAmt = ref(0);
+getGacha().then((item:any) => {cardAmt.value = JSON.parse(item).length});
 </script>
 
 <style scoped>
