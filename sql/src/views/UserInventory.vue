@@ -1,7 +1,7 @@
 <template>
     <h1>User Inventory</h1>
 <div class="card">
-        <DataView :value="gacha" :layout="layout">
+        <DataView :value="unique" :layout="layout">
             <template #header>
         <div class="flex justify-content-end">
             <DataViewLayoutOptions v-model="layout" />
@@ -62,7 +62,7 @@
                         </div>
                         <div class="flex flex-column gap-4 mt-4">
                             <div class="flex gap-2">
-                                <Button icon="pi pi-shopping-cart" label="Open Stats"  class="flex-auto white-space-nowrap"></Button>
+                                <Button icon="pi-box" label="Open Stats"  class="flex-auto white-space-nowrap" @click="openStats()"></Button>
                             </div>
                         </div>
                     </div>
@@ -83,56 +83,36 @@ import { onMounted, ref} from "vue";
 import type { Ref } from 'vue'
 
 const layout: Ref<'grid'|'list'> = ref('grid');
-
+// @ts-ignore
 import getCurrentUser from '@/db/getCurrentUser'
+// @ts-ignore
 import getGacha from '@/db/gacha/getGacha'
+// @ts-ignore
 import { useUserStore } from '@/db/pinia/stores/userStore'
 
-let gacha = ref();
+const gacha = ref();
+const unique = ref([])
 
 onMounted(async() => {
     const id = await (await getCurrentUser()).id
     console.log(id)
-    console.log(products)
     let inv = await getGacha(id)
     gacha.value = JSON.parse(inv)
-    console.log(gacha.value)
-    
-/*     for (let i = 0; i < gacha.value.length; i++) {
-        if (gacha.value[i] == gacha.value[i + 1]) {
-            console.log("dupe")
-        } else {
-            console.log("not dupe")
-        }
-    } */
+
+//finds duplicate values
+gacha.value.filter(o => {
+   if(unique.value.find(i => i.name === o.name)) {
+     return true
+   } else {
+   unique.value.push(o)
+   return false;
+   }
+})
 });
 
-
-const products = [
-    {
-        "subject": "math",
-        "star": 5,
-        "name": "Heidi Chu",
-        "role": "Mathematics Teacher",
-        "image": "https://3.files.edl.io/feee/22/09/16/161904-8e2cc888-3845-4d08-8559-dd52749fc31c.heic"
-    },
-    {
-        "subject": "science",
-        "star": 4,
-        "name": "Jonathan Colangelo",
-        "role": "Science Teacher",
-        "image": "https://3.files.edl.io/28a0/20/03/12/122230-d2392079-05d5-4940-a838-0d6146427076.jpg"
-    },
-];
-
-
-/* import getCurrentUser from '@/db/getCurrentUser'
-import getGacha from '@/db/gacha/getGacha'
-
-const id = await (await getCurrentUser()).id
-console.log(id)
-const gacha = await getGacha(id)
-console.log(gacha) */
+function openStats() {
+    console.log('hello')
+};
 
 </script>
 
