@@ -88,15 +88,23 @@ import getCurrentUser from '@/db/getCurrentUser'
 import getGacha from '@/db/gacha/getGacha'
 import { useUserStore } from '@/db/pinia/stores/userStore'
 
-const gacha = ref([]);
+let gacha = ref();
 
-onMounted(() => async function() {
+onMounted(async() => {
     const id = await (await getCurrentUser()).id
     console.log(id)
-    gacha.value = await getGacha(id)
-    console.log(gacha.value) 
-    const userStore = useUserStore()
-    //console.log(userStore.getUser)
+    console.log(products)
+    let inv = await getGacha(id)
+    gacha.value = JSON.parse(inv)
+    console.log(gacha.value)
+    
+/*     for (let i = 0; i < gacha.value.length; i++) {
+        if (gacha.value[i] == gacha.value[i + 1]) {
+            console.log("dupe")
+        } else {
+            console.log("not dupe")
+        }
+    } */
 });
 
 
