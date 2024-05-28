@@ -14,6 +14,9 @@ import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
 import Sidebar from 'primevue/sidebar';
 // @ts-ignore
+import getCurrency from '../db/currency/getCurrency'
+import type { CurrencyObj } from './lib/interfaces';
+// @ts-ignore
 // import insertGacha from '../db/gacha/insertGacha'
 // insertGacha({ name: 'testGacha'})
 // @ts-ignore
@@ -28,6 +31,9 @@ const userStore = useUserStore()
 console.log(userStore.getUser)
 checkIfHasCurrency({ golden_seagulls: 0 })
 userStore.setPity(0, 'add');
+getCurrency().then(function(item:CurrencyObj){
+    userStore.setCurrency(item.golden_seagulls)
+  });
 // @ts-ignore
 // import { pushPiniaValues } from '../db/pinia/pushPiniaValues'
 
