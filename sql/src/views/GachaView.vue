@@ -76,7 +76,7 @@ import Card from 'primevue/card';
 import { ref } from "vue";
 import type { Ref } from 'vue'
 // @ts-ignore
-import { useUserStore } from "../stores/userStore"
+import { useUserStore } from "@/db/pinia/stores/userStore"
 import { pools } from '../teachers/teacherPools.ts';
 import { poolInfo } from '../teachers/teacherPools.ts';
 import Dialog from 'primevue/dialog';

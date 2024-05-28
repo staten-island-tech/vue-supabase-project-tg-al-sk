@@ -48,7 +48,7 @@ import getCurrentUser from '@/db/getCurrentUser'
 // @ts-ignore
 import refreshPage from '../lib/refreshPage'
 // @ts-ignore
-import { useUserStore } from "../stores/userStore"
+import { useUserStore } from "@/db/pinia/stores/userStore"
 
 const userStore = useUserStore()
 const signedout = ref(false);
