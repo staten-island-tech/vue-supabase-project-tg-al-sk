@@ -29,7 +29,12 @@
                         </div>
                         <div class="flex flex-column md:align-items-end gap-5">
                             <div class="flex flex-row-reverse md:flex-row gap-2">
-                                <Button icon="pi pi-shopping-cart" label="Open Stats"  class="flex-auto white-space-nowrap"></Button>
+                                <Button label="Show Stats" @click="openStats()" />
+                                <Dialog v-model:visible="visible" :style="{ width: '25rem' }">
+                                    <div class="flex align-items-center gap-3 mb-3">
+                                        <InputText id="username" class="flex-auto" autocomplete="off" />
+                                    </div>
+                                </Dialog>
                             </div>
                         </div>
                     </div>
@@ -62,7 +67,12 @@
                         </div>
                         <div class="flex flex-column gap-4 mt-4">
                             <div class="flex gap-2">
-                                <Button icon="pi-box" label="Open Stats"  class="flex-auto white-space-nowrap" @click="openStats()"></Button>
+                                <Button label="Show Stats" @click="openStats()" />
+                                <Dialog v-model:visible="visible" :style="{ width: '25rem' }">
+                                    <div class="flex align-items-center gap-3 mb-3">
+                                        <InputText id="username" class="flex-auto" autocomplete="off" />
+                                    </div>
+                                </Dialog>
                             </div>
                         </div>
                     </div>
@@ -79,6 +89,9 @@ import DataView from 'primevue/dataview';
 import DataViewLayoutOptions from 'primevue/dataviewlayoutoptions'
 import Tag from 'primevue/tag';
 import Button from 'primevue/button';
+
+import Dialog from 'primevue/dialog';
+
 import { onMounted, ref} from "vue";
 import type { Ref } from 'vue'
 
@@ -93,12 +106,18 @@ import { useUserStore } from '@/db/pinia/stores/userStore'
 const gacha = ref();
 const unique = ref([])
 
+const visible = ref(false)
+
+function openStats() {
+    visible.value = true
+    console.log(unique.value)
+}
+
 onMounted(async() => {
     const id = await (await getCurrentUser()).id
     console.log(id)
     let inv = await getGacha(id)
     gacha.value = JSON.parse(inv)
-
 //finds duplicate values
 gacha.value.filter(o => {
    if(unique.value.find(i => i.name === o.name)) {
@@ -109,10 +128,6 @@ gacha.value.filter(o => {
    }
 })
 });
-
-function openStats() {
-    console.log('hello')
-};
 
 </script>
 
