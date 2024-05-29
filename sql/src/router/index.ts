@@ -6,37 +6,44 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/HomeView.vue')
+      component: () => import('../views/HomeView.vue'),
+      meta: {requiresAuth: true}
     },
     {
       path: '/user',
       name: 'User',
-      component: () => import('../views/UserView.vue')
+      component: () => import('../views/UserView.vue'),
+      meta: {requiresAuth: true}
     },
     {
       path: '/currency',
       name: 'Currency',
-      component: () => import('../views/GetCurrency.vue')
+      component: () => import('../views/GetCurrency.vue'),
+      meta: {requiresAuth: true}
     },
     {
       path: '/login',
       name: 'Login',
-      component: () => import('../views/LoginView.vue')
+      component: () => import('../views/LoginView.vue'),
+      meta: {requiresAuth: false}
     },
     {
       path: '/gacha',
       name: 'Gacha',
-      component: () => import('../views/GachaView.vue')
+      component: () => import('../views/GachaView.vue'),
+      meta: {requiresAuth: true}
     },
     {
       path: '/inventory',
       name: 'Inventory',
-      component: () => import('../views/UserInventory.vue')
+      component: () => import('../views/UserInventory.vue'),
+      meta: {requiresAuth: true}
     },
     {
       path: '/battle',
       name: 'Battle',
-      component: () => import('../views/BattleView.vue')
+      component: () => import('../views/BattleView.vue'),
+      meta: {requiresAuth: true}
     }
   ]
 })
