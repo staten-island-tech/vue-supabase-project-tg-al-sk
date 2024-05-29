@@ -152,7 +152,7 @@ function pull(pool:Cards[]){
             rate.value = 0.01
             // pullHist2.value = 0
             userStore.setPity(0, 'clear')
-        }else if(userStore.user.pityCount == 89){ // full pity
+        }else if(userStore.user.pityCount >= 89){ // full pity
             obtained = pool[0];
             rate.value = 0.01
             // pullHist2.value = 0
@@ -161,8 +161,6 @@ function pull(pool:Cards[]){
             // pullHist.value++
             userStore.setPity(1, 'add')
         obtained = studentCard;
-        // pullHist2.value++
-        userStore.setPity(1, 'add')
         }
     }
     else{
