@@ -70,7 +70,13 @@
                                 <Button label="Show Stats" @click="openStats()" />
                                 <Dialog v-model:visible="visible" :style="{ width: '25rem' }">
                                     <div class="flex align-items-center gap-3 mb-3">
-                                        <InputText id="username" class="flex-auto" autocomplete="off" />
+                                        <p>power: {{ item.power }}</p>
+                                        <p>charisma: {{ item.stats.charisma }}</p>
+                                        <p>coolness: {{ item.stats.coolness }}</p>
+                                        <p>dexterity: {{ item.stats.dexterity }}</p>
+                                        <p>intelligence: {{ item.stats.intelligence }}</p>
+                                        <p>knowledge: {{ item.stats.knowledge }}</p>
+                                        <p>strength: {{ item.stats.strength }}</p>
                                     </div>
                                 </Dialog>
                             </div>
@@ -110,7 +116,6 @@ const visible = ref(false)
 
 function openStats() {
     visible.value = true
-    console.log(unique.value)
 }
 
 onMounted(async() => {
