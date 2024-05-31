@@ -67,11 +67,6 @@
   </template>
     </Dialog>
     </div>
-    <Button icon="pi pi-info-circle" @click="dialogVisible2 = true" />
-        <Dialog v-model:visible="dialogVisible" modal header="Gacha Rates" :style="{ width: '50rem' }">
-            <p>pull history</p>
-            
-        </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -116,7 +111,6 @@ console.log(pools)
 } */
 const userStore = useUserStore();
 const dialogVisible = ref(false); //differentiates the visibilies of the dialog components 
-const dialogVisible2 = ref(false);  //differentiates the visibilies of the sidebar and dialog components 
 let pullvisible = ref(false)
 const cannotPull = ref(false)
 const currentpulls: Ref<Cards[]> = ref([]);
