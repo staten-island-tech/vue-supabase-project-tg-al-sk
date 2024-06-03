@@ -1,32 +1,3 @@
-<script setup lang="ts">
-import { useUserStore } from '@/db/pinia/stores/userStore'
-import Card from 'primevue/card';
-
-const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
-
-const userStore = useUserStore()
-const gachaPlusStudents = JSON.parse(userStore.getUser.gacha)
-const gacha = gachaPlusStudents.filter((unit) => (unit.star > 3))
-const gachaSorted = gacha.sort(function (a, b) {
-  if (a.power < b.power) {
-    return 1;
-  }
-  if (a.power > b.power) {
-    return -1;
-  }
-  return 0;
-})
-
-console.log(gacha)
-
-function getKeyByValue(object: {}, value: String) {
-  return Object.keys(object).find((key) => object[key] === value);
-}
-function capitalizeFirstLetter(string: String) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-</script>
-
 <template>
     <h1>User Inventory</h1>
 <div class="card">
