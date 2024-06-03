@@ -26,7 +26,7 @@
     </Dialog>
         <Carousel :value="images" :numVisible="1" :numScroll="1" circular>
             <template #item="slotProps">
-                    <Fieldset :legend="slotProps.data.alt" class="border-1 surface-border border-round m-2  p-3" style="height: 50vh;">
+                <Fieldset :legend="slotProps.data.alt" class="border-1 surface-border border-round m-2  p-3" style="height: 50vh;">
                     <p>{{ slotProps.data.text }}</p>
                     <div class="buttons">
                     <Button @click="onePull(pools[slotProps.data.index])" class="button" label="x1 Pull"/>
