@@ -42,7 +42,33 @@ watch(selected, () => {
     }
 })
 
-const battle = {}
+const battle = ref({}: {
+    battle: {},
+    units: []
+})
+
+function generateBossName() {
+    var adjectives = [
+		"Autumn", "Hidden", "Bitter", "Misty", "Silent", "Empty", "Dry", "Dark", "Summer", "Icy", 
+		"Delicate", "Quiet", "White", "Cool", "Spring", "Winter", "Patient", "Twilight", "Dawn", 
+		"Crimson", "Wispy", "Weathered", "Blue", "Billowing", "Broken", "Cold", "Damp", "Falling", 
+		"Frosty", "Green", "Long", "Late", "Lingering", "Bold", "Little", "Morning", "Muddy", "Old",
+		"Red", "Rough", "Still", "Small", "Sparkling", "Wandering", "Withered", "Wild", "Black", 
+		"Young", "Holy", "Solitary", "Fragrant", "Aged", "Snowy", "Proud", "Floral", "Restless", 
+		"Divine", "Polished", "Ancient", "Purple", "Lively", "Nameless"];
+	var nouns = [
+		"Waterfall", "River", "Breeze", "Moon", "Rain", "Wind", "Sea", "Morning", "Snow", "Lake", 
+		"Sunset", "Pine", "Shadow", "Leaf", "Dawn", "Glitter", "Forest", "Hill", "Cloud", "Meadow", 
+		"Sun", "Glade", "Bird", "Brook", "Butterfly", "Bush", "Dew", "Dust", "Field", "Fire", 
+		"Flower", "Firefly", "Feather", "Grass", "Haze", "Mountain", "Night", "Pond", "Darkness",
+		"Snowflake", "Silence", "Sound", "Sky", "Shape", "Surf", "Thunder", "Violet", "Water", 
+		"Wildflower", "Wave", "Water", "Resonance", "Sun", "Wood", "Dream", "Cherry", "Tree", "Fog", 
+		"Frost", "Voice", "Paper", "Frog", "Smoke", "Star"];
+
+	var adjective = adjectives[Math.floor(Math.random()*adjectives.length)];
+	var noun = nouns[Math.floor(Math.random()*nouns.length)];
+    return `${adjective} ${noun}`
+}
 
 function startBattle() {
     isSelectingDifficulty.value = false
@@ -59,12 +85,16 @@ function startBattle() {
 
     battle.units = units
     battle.boss = boss
+
+
 }
 
 class Boss {
     health: Number
+    maxHealth: Number
     damage: Number
     resistance: Number
+    name: String
 
     constructor(difficulty: String) {
         let difficultyMod
@@ -87,16 +117,18 @@ class Boss {
             default:
                 difficultyMod = 1
         }
-        this.health = this.generateStat(1000) * difficultyMod
-        this.damage = this.generateStat(100) * difficultyMod
-        this.resistance = this.generateStat(12) * difficultyMod
+        this.health = Math.round(this.generateStat(3000) * difficultyMod)
+        this.maxHealth = Math.round(this.health)
+        this.damage = Math.round(this.generateStat(1000) * difficultyMod)
+        this.resistance = Math.round(this.generateStat(12) * difficultyMod)
+        this.name = generateBossName()
     }
     generateStat(max: Number) {
         let num = 0
-        for(let i = 0; i < 3; i++) {
+        for(let i = 0; i < 5; i++) {
             num += (Math.floor(Math.random() * max + 1))
         }
-        num /= 3
+        num /= 5
         num = Math.round(num)
         return num
     }
@@ -115,8 +147,8 @@ class Unit {
     name: String
 
     constructor(obj) {
-        this.health = obj.power + obj.stats.strength + obj.stats.coolness
-        this.damage = obj.power + obj.stats.strength + obj.stats.dexterity
+        this.health = Math.round(obj.power + obj.stats.strength + obj.stats.coolness)
+        this.damage = Math.round((obj.power + obj.stats.strength + obj.stats.dexterity) / 2)
         this.resistance = Math.round((obj.power + obj.stats.dexterity + obj.stats.intelligence) / 40)
         this.image = obj.image
         this.name = obj.name
@@ -179,20 +211,36 @@ class Unit {
             <Button type="submit" @click="startBattle">Start Battle</Button>
         </form>
     </div> 
-    
     <div v-if="battleStarted">
-        <div>
-            <Card style="width: 10rem; overflow: hidden" v-for="card in selected" class="justify-center">
+        <div class="drop-shadow-lg p-1 b-rounded-xl">
+            <Card>
+                <template #title>
+                    <h1 class="text-center text-4xl" >Boss: {{ battle.boss.name }}</h1>
+                </template>
+                <template #content>
+                    <h2 class="text-center text-2xl">Health: {{ battle.boss.health }} / {{ battle.boss.maxHealth }}</h2>
+                    <h2 class="text-center text-2xl">Damage: {{ battle.boss.damage }}</h2>
+                    <h2 class="text-center text-2xl">Resistance: {{ battle.boss.resistance }}</h2>
+                </template>
+            </Card>
+        </div>
+        <div class="flex gap-5 justify-center items-center">
+            <Card style="width: 10rem; overflow: hidden" v-for="unit in battle.units" class="flex-grow-1">
                 <template #header>
-                    <img alt="header" :src="card.image" style="width: 100%; height: 100%;" />
+                    <img alt="header" :src="unit.image" style="width: 100%; height: 100%;" />
                 </template>
                 <template #title>
-                    {{ card.name }}
+                    {{ unit.name }}
                 </template>
-                <template #subtitle>Power: {{ card.power }}</template>
                 <template #content>
-                    <li v-for="stat in battle.units[gacha.indexOf(card)]">
-                        {{ stat }}
+                    <li>
+                        Health: {{ unit.health }}
+                    </li>
+                    <li>
+                        Damage: {{ unit.damage }}
+                    </li>
+                    <li>
+                        Resistance: {{ unit.resistance }}
                     </li>
                 </template>
             </Card>
