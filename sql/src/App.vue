@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 // @ts-ignore
-import isSignedIn from '../db/auth/isSignedIn'
+// import isSignedIn from '../db/auth/isSignedIn'
 // @ts-ignore
-import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
+// import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
 import { watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import TeachersSidebar from './components/TeachersSidebar.vue'
@@ -25,40 +25,35 @@ import type { CurrencyObj } from './lib/interfaces';
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
 // @ts-ignore
 import { useUserStore } from '@/db/pinia/stores/userStore';
+import router from './router/index'
 
 const route = useRoute()
 const userStore = useUserStore()
-console.log(userStore.getUser)
+console.log('test2', userStore.getUser)
 checkIfHasCurrency({ golden_seagulls: 0 })
-userStore.setPity(0, 'add');
 getCurrency().then(function(item:CurrencyObj){
     userStore.setCurrency(item.golden_seagulls)
   });
-// @ts-ignore
-// import { pushPiniaValues } from '../db/pinia/pushPiniaValues'
 
-// pushPiniaValues()
-
-isSignedIn().then((signedIn:boolean) => {
-        if(signedIn) {
-            loggedin.value = true;
-        }
-    })
 const loggedin = ref(false)
-watch(route, () => ifNotSignedInGoToPage(route)) 
+ 
 const sidebarVisible = ref(false);
-// const currencyAmt = ref(0);
-// isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
-</script>
+userStore.setPity(0, 'add');
 
+function detectLogin(){
+if(!userStore.user.user){
+    router.push('/login')
+    loggedin.value = false;
+    console.log('test not logged in', userStore.user)
+  }else{
+    loggedin.value=true;
+    console.log('test logged in', userStore.user)
+  }
+}
+detectLogin();
+  watch(route, () => detectLogin())
+</script>
 <template>
-  <!--<header>
-      <nav>
-        <RouterLink to="/login">Log In</RouterLink>
-        <RouterLink to="/currency" v-if="loggedin">Get Currency</RouterLink>
-        <RouterLink to="/gacha" v-if="loggedin">Gacha Pulls</RouterLink>
-      </nav>
-  </header>-->
   <RouterView />
   <div class="currency" v-if="loggedin">
 <InputGroup>
