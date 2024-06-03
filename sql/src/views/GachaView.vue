@@ -266,7 +266,10 @@ async function tenPull(pool:Cards[]) {
         winlose.value = 'winwin';
     }else if(winlosses.length > 0){
         winlose.value = 'win';
+    }else{
+        winlose.value = 'lose';
     }
+    winlosses = [];
 };
 
 const PhotoService = {
