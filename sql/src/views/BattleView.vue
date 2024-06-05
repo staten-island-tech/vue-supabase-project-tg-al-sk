@@ -42,10 +42,9 @@ watch(selected, () => {
     }
 })
 
-const battle = ref({}: {
-    battle: {},
-    units: []
-})
+const boss = ref({})
+const units = ref([])
+const turn = ref(0)
 
 function generateBossName() {
     var adjectives = [
@@ -74,18 +73,16 @@ function startBattle() {
     isSelectingDifficulty.value = false
     battleStarted.value = true
 
-    const boss = new Boss(difficulty.value)
+    const bossTemp = new Boss(difficulty.value)
 
-    const units = []
+    const unitsTemp = []
     for(let i in selected.value) {
-        const unit = new Unit(selected.value[i])
-        units.push(unit)
+        const unitTemp = new Unit(selected.value[i])
+        unitsTemp.push(unitTemp)
     }
-    console.log(boss, units)
-
-    battle.units = units
-    battle.boss = boss
-
+    // console.log(boss, units)
+    boss.value = bossTemp
+    units.value = unitsTemp
 
 }
 
@@ -213,19 +210,21 @@ class Unit {
     </div> 
     <div v-if="battleStarted">
         <div class="drop-shadow-lg p-1 b-rounded-xl">
+        <div v-if='turn = 6'></div>
             <Card>
                 <template #title>
-                    <h1 class="text-center text-4xl" >Boss: {{ battle.boss.name }}</h1>
+                    <h1 class="text-center text-4xl" >Boss: {{ boss.name }}</h1>
                 </template>
                 <template #content>
-                    <h2 class="text-center text-2xl">Health: {{ battle.boss.health }} / {{ battle.boss.maxHealth }}</h2>
-                    <h2 class="text-center text-2xl">Damage: {{ battle.boss.damage }}</h2>
-                    <h2 class="text-center text-2xl">Resistance: {{ battle.boss.resistance }}</h2>
+                    <h2 class="text-center text-2xl">Health: {{ boss.health }} / {{ boss.maxHealth }}</h2>
+                    <h2 class="text-center text-2xl">Damage: {{ boss.damage }}</h2>
+                    <h2 class="text-center text-2xl">Resistance: {{ boss.resistance }}</h2>
                 </template>
             </Card>
         </div>
         <div class="flex gap-5 justify-center items-center">
-            <Card style="width: 10rem; overflow: hidden" v-for="unit in battle.units" class="flex-grow-1">
+            <Card style="width: 10rem; overflow: hidden" v-for="unit in units" class="flex-grow-1">
+                <div v-if='units.indexOf(unit) % 6 === turn'>Test</div>
                 <template #header>
                     <img alt="header" :src="unit.image" style="width: 100%; height: 100%;" />
                 </template>
@@ -243,6 +242,7 @@ class Unit {
                         Resistance: {{ unit.resistance }}
                     </li>
                 </template>
+
             </Card>
         </div>
     </div>
