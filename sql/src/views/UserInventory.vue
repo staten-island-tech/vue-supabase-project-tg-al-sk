@@ -1,7 +1,7 @@
 <template>
     <h1>User Inventory</h1>
 <div class="card">
-        <DataView :value="unique" :layout="layout">
+        <DataView :value="unique" :layout="layout" :dataKey="'?'">
             <template #header>
         <div class="flex justify-content-end">
             <DataViewLayoutOptions v-model="layout" />
@@ -11,7 +11,7 @@
         <div class="grid grid-nogutter">
             <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
                 <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3" :class="{ 'border-top-1 surface-border': index !== 0 }">
-                    <div class="md:w-10rem relative">
+                    <div class="md:w-10rem relative" v-badge="uniqueObtainedCount[index]">
                         <img class="block xl:block mx-auto border-round w-full" :src="item.image" :alt="item.name" />
                         <Tag :value="item.inventoryStatus" class="absolute" style="left: 4px; top: 4px"></Tag>
                     </div>
@@ -54,7 +54,7 @@
         <div class="grid grid-nogutter">
             <div v-for="(item, index) in slotProps.items" :key="index" class="col-12 sm:col-6 md:col-4 xl:col-6 p-2">
                 <div class="p-4 border-1 surface-border surface-card border-round flex flex-column">
-                    <div class="surface-50 flex justify-content-center border-round p-3">
+                    <div class="surface-50 flex justify-content-center border-round p-3" v-badge="uniqueObtainedCount[index]">
                         <div class="relative mx-auto">
                             <img class="border-round w-full" :src="item.image" :alt="item.name" style="max-width: 300px"/>
                             <Tag :value="item.inventoryStatus" class="absolute" style="left: 4px; top: 4px"></Tag>
@@ -109,20 +109,38 @@ import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 
 import { onMounted, ref} from "vue";
-import type { Ref } from 'vue'
-
-const layout: Ref<'grid'|'list'> = ref('grid');
 // @ts-ignore
 import getCurrentUser from '@/db/getCurrentUser'
 // @ts-ignore
 import getGacha from '@/db/gacha/getGacha'
+import type { Ref } from 'vue'
+import type { CardWStat } from '@/lib/interfaces';
+
+const layout: Ref<'grid'|'list'> = ref('grid');
+
 // @ts-ignore
-import { useUserStore } from '@/db/pinia/stores/userStore'
+// import { useUserStore } from '@/db/pinia/stores/userStore'
 
 const gacha = ref();
 const unique = ref([])
+const uniqueObtainedCount = ref([]);
 
-const stat = ref({})
+const stat:Ref<CardWStat> = ref({
+    subject: '',
+    star: 0,
+    power: 0,
+    name: '',
+    role: '',
+    image: '',
+    stats: {
+      charisma: 0,
+      coolness: 0,
+      dexterity: 0,
+      intelligence: 0,
+      knowledge: 0, 
+      strength: 0
+    }
+})
 
 const visible = ref(false)
 
@@ -140,14 +158,25 @@ onMounted(async() => {
     let inv = await getGacha(id)
     gacha.value = JSON.parse(inv)
 //finds duplicate values
-gacha.value.filter(o => {
-   if(unique.value.find(i => i.name === o.name)) {
+gacha.value.filter((o:CardWStat) => {
+   if(unique.value.find((i:CardWStat) => i.name === o.name)) {
      return true
    } else {
+    // @ts-ignore
    unique.value.push(o)
    return false;
    }
 })
+unique.value.forEach((item:CardWStat) => { // get count of how many cards obtained
+    const amt = gacha.value.filter((card:CardWStat) => card.name === item.name)
+    // @ts-ignore
+    uniqueObtainedCount.value.push(amt.length)
 });
+}
+);
 
 </script>
+
+<style scoped>
+
+</style>

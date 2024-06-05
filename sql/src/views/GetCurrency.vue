@@ -47,8 +47,10 @@ import InputNumber from 'primevue/inputnumber';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
+// @ts-ignore
+import { useUserStore } from "@/db/pinia/stores/userStore"
+
 let disabled = ref(false)
-import { useUserStore } from '@/db/pinia/stores/userStore'
 
 // @ts-ignore
 import increaseCurrency from '/db/currency/increaseCurrency';
@@ -56,6 +58,7 @@ import increaseCurrency from '/db/currency/increaseCurrency';
 import getCurrency from '/db/currency/getCurrency';
 // @ts-ignore
 import checkIfHasCurrency from '/db/currency/checkIfHasCurrency';
+import type { CurrencyObj } from '@/lib/interfaces';
 
 const userStore = useUserStore()
 console.log(userStore.getUser)
@@ -105,7 +108,7 @@ function checkAns() {
   if (ans == value.value) {
     yn.value = 'you are correct!'
     severity.value = 'success';
-    increaseCurrency({golden_seagulls: 10});
+    increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
     setTimeout(randomize, 700)
     increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
     checkIfHasCurrency({ golden_seagulls: 0 })

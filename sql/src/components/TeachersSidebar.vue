@@ -1,9 +1,12 @@
 <template>
     <div class="card flex justify-content-center">
-        <FloatLabel>
-            <InputText id="username" v-model="value" />
-            <label for="filter">Filter</label>
-        </FloatLabel>
+        <InputGroup>
+    <InputGroupAddon>
+        <i class="pi pi-filter"></i>
+    </InputGroupAddon>
+            <InputText id="username" v-model="value" placeholder="filter"/>
+</InputGroup>
+        
     </div>
         <Card v-for="staff in staffs" :class="staff.subject" v-bind:key="staff.name" style="margin-top: 5%;">
     <template #title>{{ staff.name }}</template>
@@ -25,8 +28,8 @@
 import { ref, watch } from 'vue';
 import Card from 'primevue/card';
 import {teachers} from '../teachers/teachers.ts';
-
-import FloatLabel from 'primevue/floatlabel';
+import InputGroup from 'primevue/inputgroup';
+import InputGroupAddon from 'primevue/inputgroupaddon';
 import InputText from 'primevue/inputtext';
 
 let staffs = ref()

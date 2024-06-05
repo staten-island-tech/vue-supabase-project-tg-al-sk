@@ -1,7 +1,7 @@
 <template>
     <h1>Gacha</h1>
     <div>
-<p class="words">Pity Counter: {{ pullHist2 }}</p>
+<p class="words">Pity Counter: {{ userStore.user.pityCount }}</p>
     <div class="card flex">
         <Button icon="pi pi-info-circle" @click="dialogVisible = true" aria-label="info on gacha" />
         <Dialog v-model:visible="dialogVisible" modal header="Gacha Rates" :style="{ width: '50rem' }">
@@ -115,7 +115,8 @@ let pullvisible = ref(false)
 const cannotPull = ref(false)
 const currentpulls: Ref<Cards[]> = ref([]);
 const pullHist = ref(0) //history/pity for 4*
-const pullHist2 = ref(0) //history for 5*
+userStore.setPity(0, 'add');
+// const pullHist2 = userStore.user.pityCount //history for 5*
 const rate = ref(0.01) //when the pullhist2 reaches 80 this value will slowly increase to give a higehr rate of getting a 5*
 //the console logs are placeholders for the cards lmaooooo 
 const winlose:Ref<'lose'|'win'|'winwin'> = ref('lose');
@@ -143,42 +144,49 @@ function pull(pool:Cards[]){
         if(Math.random() < 0.009){ // up rate for whalen
             obtained = pool[0];
             rate.value = 0.01
-            pullHist2.value = 0
-        }else if(pullHist2.value == 89){ // full pity
+            // pullHist2.value = 0
+            userStore.setPity(0, 'clear')
+        }else if(userStore.user.pityCount >= 89){ // full pity
             obtained = pool[0];
             rate.value = 0.01
-            pullHist2.value = 0
+            // pullHist2.value = 0
+            userStore.setPity(0, 'clear')
         } else {
-            pullHist.value++
+            // pullHist.value++
+            userStore.setPity(1, 'add')
         obtained = studentCard;
-        pullHist2.value++
         }
     }
     else{
     if( Math.random() < 0.1 && Math.random() > 0.02) {
     obtained = fourstar[Math.floor(Math.random() * fourstar.length)];
     pullHist.value = 0 //random chance of getting 4* every pull and resets pity if you get it 
-    pullHist2.value++ 
+    // pullHist2.value++ 
+    userStore.setPity(1, 'add')
     } else if (pullHist.value == 9 ) {
         obtained = fourstar[Math.floor(Math.random() * fourstar.length)];
         pullHist.value = 0
-        pullHist2.value++ //if you already did 9 pulls, your next pull must be a 4* and resets pity  
+        // pullHist2.value++ //if you already did 9 pulls, your next pull must be a 4* and resets pity  
+        userStore.setPity(1, 'add')
     } else {
         pullHist.value++
         obtained = studentCard;
-        pullHist2.value++ //you got nothing and it increments :skull:
+        // pullHist2.value++ //you got nothing and it increments :skull:
+        userStore.setPity(1, 'add')
     };
     if( Math.random() < rate.value) {
         obtained = fivestar[Math.floor(Math.random() * fivestar.length)];
-        pullHist2.value = 0 //resets pity counter 
+        // pullHist2.value = 0 //resets pity counter 
+        userStore.setPity(0, 'clear')
         rate.value = 0.01
     }
-    if (pullHist2.value > 80) {
+    if (userStore.user.pityCount > 80) {
         rate.value = rate.value + 0.1
-    }else if (pullHist2.value == 89) {
+    }else if (userStore.user.pityCount == 89) {
         obtained = fivestar[Math.floor(Math.random() * fivestar.length)];
         rate.value = 0.01
-        pullHist2.value = 0 //you must get a chara every 90 pulls resets pity 
+        // pullHist2.value = 0 //you must get a chara every 90 pulls resets pity 
+        userStore.setPity(0, 'clear')
     }
 }
     return obtained
@@ -252,7 +260,10 @@ async function tenPull(pool:Cards[]) {
         winlose.value = 'winwin';
     }else if(winlosses.length > 0){
         winlose.value = 'win';
+    }else{
+        winlose.value = 'lose';
     }
+    winlosses = [];
 };
 
 const PhotoService = {
