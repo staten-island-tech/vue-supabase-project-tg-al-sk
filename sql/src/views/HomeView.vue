@@ -11,7 +11,7 @@
         <span class="text-900">Toolbar Navigation</span>
     </div>
     <div class="grid">
-        <div class="col-12 md:col-4 mb-4 px-5">
+        <div class="col-12 md:col-4 mb-4 px-5" style="background-color: #ffd466; border-radius: 20px;">
             <span class="p-3 shadow-2 mb-3 inline-block surface-card" style="border-radius: 10px">
                 <i class="pi pi-user-edit text-4xl text-green-500"></i>
             </span>
