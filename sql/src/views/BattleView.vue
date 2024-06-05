@@ -1,14 +1,17 @@
 <script setup lang="ts">
+// @ts-ignore
 import { useUserStore } from '@/db/pinia/stores/userStore'
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import Toolbar from 'primevue/toolbar';
 import { ref, watch } from 'vue';
+import type { Ref } from 'vue';
+import type { CardWStat } from '@/lib/interfaces';
 
 const userStore = useUserStore()
 const gachaPlusStudents = JSON.parse(userStore.getUser.gacha)
-const gacha = gachaPlusStudents.filter((unit) => (unit.star > 3))
-const gachaSorted = gacha.sort(function (a, b) {
+const gacha = gachaPlusStudents.filter((unit:CardWStat) => (unit.star > 3))
+const gachaSorted = gacha.sort(function (a:any, b:any) { // not used anywhere so type is any for now
   if (a.power < b.power) {
     return 1;
   }
@@ -20,7 +23,7 @@ const gachaSorted = gacha.sort(function (a, b) {
 
 console.log(gacha)
 
-function getKeyByValue(object: {}, value: String) {
+function getKeyByValue(object: {}, value: Number) {
   return Object.keys(object).find((key) => object[key] === value);
 }
 function capitalizeFirstLetter(string: String) {
@@ -42,7 +45,10 @@ watch(selected, () => {
     }
 })
 
-const battle = ref({}: {
+const battle:Ref<{
+    battle: {},
+    units: []
+}> = ref({
     battle: {},
     units: []
 })

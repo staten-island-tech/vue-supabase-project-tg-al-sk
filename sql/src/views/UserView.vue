@@ -71,7 +71,9 @@ getCurrentUser().then((item) => {
   })
 
 const cardAmt = ref(0);
-getGacha().then((item:any) => {cardAmt.value = JSON.parse(item).length});
+getGacha().then((item:string) => {
+  cardAmt.value = JSON.parse(item).length
+  });
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
     <h1>User Inventory</h1>
 <div class="card">
-        <DataView :value="unique" :layout="layout">
+        <DataView :value="unique" :layout="layout" :dataKey="'?'">
             <template #header>
         <div class="flex justify-content-end">
             <DataViewLayoutOptions v-model="layout" />
@@ -114,17 +114,33 @@ import getCurrentUser from '@/db/getCurrentUser'
 // @ts-ignore
 import getGacha from '@/db/gacha/getGacha'
 import type { Ref } from 'vue'
+import type { CardWStat } from '@/lib/interfaces';
 
 const layout: Ref<'grid'|'list'> = ref('grid');
 
 // @ts-ignore
-import { useUserStore } from '@/db/pinia/stores/userStore'
+// import { useUserStore } from '@/db/pinia/stores/userStore'
 
 const gacha = ref();
 const unique = ref([])
 const uniqueObtainedCount = ref([]);
 
-const stat = ref({})
+const stat:Ref<CardWStat> = ref({
+    subject: '',
+    star: 0,
+    power: 0,
+    name: '',
+    role: '',
+    image: '',
+    stats: {
+      charisma: 0,
+      coolness: 0,
+      dexterity: 0,
+      intelligence: 0,
+      knowledge: 0, 
+      strength: 0
+    }
+})
 
 const visible = ref(false)
 
@@ -142,8 +158,8 @@ onMounted(async() => {
     let inv = await getGacha(id)
     gacha.value = JSON.parse(inv)
 //finds duplicate values
-gacha.value.filter((o:any) => {
-   if(unique.value.find((i:any) => i.name === o.name)) {
+gacha.value.filter((o:CardWStat) => {
+   if(unique.value.find((i:CardWStat) => i.name === o.name)) {
      return true
    } else {
     // @ts-ignore
@@ -151,8 +167,8 @@ gacha.value.filter((o:any) => {
    return false;
    }
 })
-unique.value.forEach((item:any) => { // get count of how many cards obtained
-    const amt = gacha.value.filter((card:any) => card.name === item.name)
+unique.value.forEach((item:CardWStat) => { // get count of how many cards obtained
+    const amt = gacha.value.filter((card:CardWStat) => card.name === item.name)
     // @ts-ignore
     uniqueObtainedCount.value.push(amt.length)
 });
