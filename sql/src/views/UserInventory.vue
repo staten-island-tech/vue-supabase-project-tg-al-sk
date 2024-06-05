@@ -26,11 +26,23 @@
                                     <i class="pi pi-star-fill text-yellow-500"></i>
                                 </div>
                             </div>
-                        </div>
-                        <div class="flex flex-column md:align-items-end gap-5">
+                            <div class="flex flex-column md:align-items-end gap-5">
                             <div class="flex flex-row-reverse md:flex-row gap-2">
-                                <Button icon="pi pi-shopping-cart" label="Open Stats"  class="flex-auto white-space-nowrap"></Button>
+                                <Button label="Show Stats" @click="openStats(index)" />
+                                <Dialog v-model:visible="visible" :style="{ width: '50rem', height: '30rem' }">
+                                    <label>{{ stat.name }}</label>
+                                    <div class="flex align-items-center gap-3 mb-3">
+                                        <p>power: {{ stat.power }}</p>
+                                        <p>charisma: {{ stat.stats.charisma }}</p>
+                                        <p>coolness: {{ stat.stats.coolness }}</p>
+                                        <p>dexterity: {{ stat.stats.dexterity }}</p>
+                                        <p>intelligence: {{ stat.stats.intelligence }}</p>
+                                        <p>knowledge: {{ stat.stats.knowledge }}</p>
+                                        <p>strength: {{ stat.stats.strength }}</p>
+                                    </div>
+                             </Dialog>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -62,7 +74,21 @@
                         </div>
                         <div class="flex flex-column gap-4 mt-4">
                             <div class="flex gap-2">
-                                <Button icon="pi-box" label="Open Stats"  class="flex-auto white-space-nowrap" @click="openStats()"></Button>
+                                <div class="flex flex-row-reverse md:flex-row gap-2">
+                                <Button label="Show Stats" @click="openStats(index)" />
+                                <Dialog v-model:visible="visible" :style="{ width: '50rem', height: '30rem' }">
+                                    <header>{{ stat.name }}</header>
+                                    <div>
+                                        <li>power: {{ stat.power }}</li>
+                                        <li>charisma: {{ stat.stats.charisma }}</li>
+                                        <li>coolness: {{ stat.stats.coolness }}</li>
+                                        <li>dexterity: {{ stat.stats.dexterity }}</li>
+                                        <li>intelligence: {{ stat.stats.intelligence }}</li>
+                                        <li>knowledge: {{ stat.stats.knowledge }}</li>
+                                        <li>strength: {{ stat.stats.strength }}</li>
+                                    </div>
+                             </Dialog>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -79,6 +105,9 @@ import DataView from 'primevue/dataview';
 import DataViewLayoutOptions from 'primevue/dataviewlayoutoptions'
 import Tag from 'primevue/tag';
 import Button from 'primevue/button';
+
+import Dialog from 'primevue/dialog';
+
 import { onMounted, ref} from "vue";
 // @ts-ignore
 import getCurrentUser from '@/db/getCurrentUser'
@@ -94,6 +123,18 @@ import { useUserStore } from '@/db/pinia/stores/userStore'
 const gacha = ref();
 const unique = ref([])
 const uniqueObtainedCount = ref([]);
+
+const stat = ref({})
+
+const visible = ref(false)
+
+function openStats(index:number) {
+    visible.value = true
+    console.log(unique.value)
+    // @ts-ignore
+    stat.value = unique.value[index]
+    console.log(stat.value)
+}
 
 onMounted(async() => {
     const id = await (await getCurrentUser()).id
@@ -117,10 +158,6 @@ unique.value.forEach((item:any) => { // get count of how many cards obtained
 });
 }
 );
-
-function openStats() {
-    console.log('hello')
-};
 
 </script>
 
