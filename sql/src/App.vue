@@ -1,56 +1,65 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 // @ts-ignore
-import isSignedIn from '../db/auth/isSignedIn'
+// import isSignedIn from '../db/auth/isSignedIn'
 // @ts-ignore
-import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
+// import ifNotSignedInGoToPage from './lib/ifNotSignedInGoToPage'
 import { watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import TeachersSidebar from './components/TeachersSidebar.vue'
 import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
-import IconField from 'primevue/iconfield';
 import InputText from 'primevue/inputtext';
+import InputGroup from 'primevue/inputgroup';
+import InputGroupAddon from 'primevue/inputgroupaddon';
 import Sidebar from 'primevue/sidebar';
 // @ts-ignore
-import insertGacha from '../db/gacha/insertGacha'
+import getCurrency from '../db/currency/getCurrency'
+import type { CurrencyObj } from './lib/interfaces';
+// @ts-ignore
+// import insertGacha from '../db/gacha/insertGacha'
 // insertGacha({ name: 'testGacha'})
-import getCurrentUser from '../db/getCurrentUser'
+// @ts-ignore
+// import getCurrentUser from '../db/getCurrentUser'
 // @ts-ignore
 import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
+// @ts-ignore
 import { useUserStore } from '@/db/pinia/stores/userStore';
+import router from './router/index'
 
 const route = useRoute()
 const userStore = useUserStore()
-console.log(userStore.getUser)
+console.log('test2', userStore.getUser)
+checkIfHasCurrency({ golden_seagulls: 0 })
+getCurrency().then(function(item:CurrencyObj){
+    userStore.setCurrency(item.golden_seagulls)
+  });
 
-// @ts-ignore
-isSignedIn().then((signedIn) => {
-    if(signedIn) {
-        loggedin.value = true;
-    }
-})
 const loggedin = ref(false)
-watch(route, () => ifNotSignedInGoToPage(route)) 
+ 
 const sidebarVisible = ref(false);
-const currencyAmt = ref(0);
-// isSignedIn().then((signedIn: Boolean) => console.log(signedIn))
-</script>
+userStore.setPity(0, 'add');
 
+function detectLogin(){
+if(!userStore.user.user){
+    router.push('/login')
+    loggedin.value = false;
+    console.log('test not logged in', userStore.user)
+  }else{
+    loggedin.value=true;
+    console.log('test logged in', userStore.user)
+  }
+}
+detectLogin();
+  watch(route, () => detectLogin())
+</script>
 <template>
-  <!--<header>
-      <nav>
-        <RouterLink to="/login">Log In</RouterLink>
-        <RouterLink to="/currency" v-if="loggedin">Get Currency</RouterLink>
-        <RouterLink to="/gacha" v-if="loggedin">Gacha Pulls</RouterLink>
-      </nav>
-  </header>-->
   <RouterView />
   <div class="currency" v-if="loggedin">
-  <IconField>
-    <InputText disabled :placeholder="currencyAmt.toString()" style="width: 15vw;"/>
-    <RouterLink to="/currency" class="pi pi-plus"> </RouterLink>
-</IconField>
+<InputGroup>
+    <InputText :placeholder="userStore.user.currency" disabled :aria-label="`user has ${ userStore.user.currency } golden seagulls. `"/>
+    <InputGroupAddon><RouterLink to="/currency" class="pi pi-plus" aria-label="get more currency"> </RouterLink></InputGroupAddon>
+</InputGroup>
 </div>
   <div style="width: 100%;
   align-items: center;
@@ -161,4 +170,3 @@ nav a:first-of-type {
   top: 10px;
 }
 </style>
-../db/pinia/stores/userStore

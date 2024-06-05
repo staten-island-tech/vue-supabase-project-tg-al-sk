@@ -8,7 +8,7 @@ export const useUserStore = defineStore('user', {
       };
     },
     getters: {
-      getUser: (state) => (state.user),
+      getUser: (state) => (state.user)
     },
     actions: {
       setUser(user) {
@@ -25,13 +25,6 @@ export const useUserStore = defineStore('user', {
       },
       setGacha(gacha) {
         this.user.gacha = gacha
-      },
-      setPity(pity, change) {
-        if(change === 'add'){
-        this.user.pityCount = Number(this.user.pityCount)+pity
-        }else if(change === 'clear'){
-          this.user.pityCount = 0;
-        }
       },
       clearUser() {
         this.user = {}

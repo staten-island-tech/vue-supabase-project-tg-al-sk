@@ -1,23 +1,47 @@
 <template>
-        <Card v-for="teacher in teachers" :class="teacher.subject" v-bind:key="teacher.name">
-    <template #title>{{ teacher.name }}</template>
+    <div class="card flex justify-content-center">
+        <InputGroup>
+    <InputGroupAddon>
+        <i class="pi pi-filter"></i>
+    </InputGroupAddon>
+            <InputText id="username" v-model="value" placeholder="filter"/>
+</InputGroup>
+        
+    </div>
+        <Card v-for="staff in staffs" :class="staff.subject" v-bind:key="staff.name" style="margin-top: 5%;">
+    <template #title>{{ staff.name }}</template>
     <template #content>
         <div style="display:flex;">
-        <img :src="teacher.image" :alt="teacher.name" style="width: 10vw; height: 10vw;">
+        <img :src="staff.image" :alt="staff.name" style="width: 10vw; height: 10vw;">
         <p style="font-size: 12px;">
-            {{ teacher.role }}
+            {{ staff.role }}
         </p>
     </div>
     <div style="display: flex;">
-            <p v-for="index in teacher.star" :key="index">★</p>
+            <p v-for="index in staff.star" :key="index">★</p>
         </div>
     </template>
 </Card>
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue';
 import Card from 'primevue/card';
 import {teachers} from '../teachers/teachers.ts';
+import InputGroup from 'primevue/inputgroup';
+import InputGroupAddon from 'primevue/inputgroupaddon';
+import InputText from 'primevue/inputtext';
+
+let staffs = ref()
+
+staffs.value = teachers
+
+const value = ref('');
+
+watch(value, async() => {
+    staffs.value = teachers.filter((teacher) => (teacher.name).toLowerCase().includes(value.value.toLowerCase()))
+})
+
 </script>
 
 <style scoped>

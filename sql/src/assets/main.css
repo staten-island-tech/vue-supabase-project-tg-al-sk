@@ -23,31 +23,31 @@ a,
 
 
 .english{
-  background-color: rgb(255, 0, 0);
+  background-color: rgb(234, 130, 130);
 }
 .math{
-  background-color: rgb(68, 67, 0);
+  background-color: rgb(232, 196, 130);
 }
 .science{
-  background-color: rgb(0, 80, 16);
+  background-color: rgb(180, 235, 170);
 }
 .history{
-  background-color: rgb(0, 41, 77);
+  background-color: rgb(135, 167, 195);
 }
 .russian{
-  background-color: rgb(77, 51, 62);
+  background-color: rgb(165, 111, 134);
 }
 .physed{
-  background-color: rgb(102, 69, 8);
+  background-color: rgb(111, 111, 145);
 }
 .tech{
-  background-color: rgb(89, 0, 255);
+  background-color: rgb(177, 142, 241);
 }
 .nothing{
-  background-color: rgb(96, 57, 24);
+  background-color: rgb(123, 85, 54);
 }
 .principal{
-  background-color: rgb(8, 76, 194);
+  background-color: rgb(230, 209, 145);
 }
 .default{
   background-color: rgb(29, 34, 38);

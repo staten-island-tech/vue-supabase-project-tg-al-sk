@@ -1,16 +1,18 @@
 <script setup lang="ts">
+// @ts-ignore
 import { useUserStore } from '@/db/pinia/stores/userStore'
 import Card from 'primevue/card';
 import Button from 'primevue/button';
-import Toolbar from 'primevue/toolbar';
 import { ref, watch } from 'vue';
-
-import { Boss, Unit } from '../teachers/battleClasses'
+import type { Ref } from 'vue';
+import type { CardWStat, Stats } from '@/lib/interfaces';
+// @ts-ignore
+// import { Boss, Unit } from '../teachers/battleClasses' // chat idk if this import is working
 
 const userStore = useUserStore()
 const gachaPlusStudents = JSON.parse(userStore.getUser.gacha)
-const gacha = gachaPlusStudents.filter((unit) => (unit.star > 3))
-const gachaSorted = gacha.sort(function (a, b) {
+const gacha = gachaPlusStudents.filter((unit:CardWStat) => (unit.star > 3))
+const gachaSorted = gacha.sort(function (a:any, b:any) { // not used anywhere so type is any for now
   if (a.power < b.power) {
     return 1;
   }
@@ -22,10 +24,11 @@ const gachaSorted = gacha.sort(function (a, b) {
 
 console.log(gacha)
 
-function getKeyByValue(object: {}, value: String) {
-  return Object.keys(object).find((key) => object[key] === value);
+function getKeyByValue(object: Stats, value: number) {
+    // @ts-ignore
+  return Object.keys(object).find((key) => object[key] === value); // bro how do you type this mishmash of types
 }
-function capitalizeFirstLetter(string: String) {
+function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
@@ -44,7 +47,10 @@ watch(selected, () => {
     }
 })
 
-const battle = ref({})
+const battle:Ref = ref({
+    battle: {},
+    units: []
+}) // type BattleStats
 
 function generateBossName() {
     var adjectives = [
@@ -80,7 +86,7 @@ function startBattle() {
         const unit = new Unit(selected.value[i])
         units.push(unit)
     }
-    console.log(boss, units)
+    console.log(boss, units, battle)
 
     battle.value.units = units
     battle.value.boss = boss
@@ -90,13 +96,13 @@ function startBattle() {
 }
 
 class Boss {
-    health: Number
-    maxHealth: Number
-    damage: Number
-    resistance: Number
-    name: String
+    health: number
+    maxHealth: number
+    damage: number
+    resistance: number
+    name: string
 
-    constructor(difficulty: String) {
+    constructor(difficulty: string) {
         let difficultyMod
         switch (difficulty) {
             case 'easy':
@@ -123,7 +129,7 @@ class Boss {
         this.resistance = Math.round(this.generateStat(12) * difficultyMod)
         this.name = generateBossName()
     }
-    generateStat(max: Number) {
+    generateStat(max: number) {
         let num = 0
         for(let i = 0; i < 5; i++) {
             num += (Math.floor(Math.random() * max + 1))
@@ -132,31 +138,31 @@ class Boss {
         num = Math.round(num)
         return num
     }
-    heal(hp: Number) {
+    heal(hp: number) {
         this.health += hp
     }
-    hurt(hp: Number) {
+    hurt(hp: number) {
         this.health -= hp
     }
 }
 class Unit {
-    health: Number
-    damage: Number
-    resistance: Number
-    image: String
-    name: String
+    health: number
+    damage: number
+    resistance: number
+    image: string
+    name: string
 
-    constructor(obj) {
+    constructor(obj:CardWStat) {
         this.health = Math.round(obj.power + obj.stats.strength + obj.stats.coolness)
         this.damage = Math.round((obj.power + obj.stats.strength + obj.stats.dexterity) / 2)
         this.resistance = Math.round((obj.power + obj.stats.dexterity + obj.stats.intelligence) / 40)
         this.image = obj.image
         this.name = obj.name
     }
-    heal(hp: Number) {
+    heal(hp: number) {
         this.health += hp
     }
-    hurt(hp: Number) {
+    hurt(hp: number) {
         this.health -= hp
     }
 }
@@ -167,7 +173,7 @@ class Unit {
     <div v-if="isSelectingCards">
         <h1 class="text-center p-5">Select 5 Cards</h1>
         <div class="grid grid-cols-1 gap-5">
-            <Card style="width: 10rem; overflow: hidden" v-for="card in gacha">
+            <Card style="width: 10rem; overflow: hidden" v-for="card in gacha" :key="card">
                 <template #header>
                     <img alt="header" :src="card.image" style="width: 100%; height: 100%;" />
                 </template>
@@ -177,7 +183,7 @@ class Unit {
                 </template>
                 <template #subtitle>Power: {{ card.power }}</template>
                 <template #content>
-                    <li v-for="stat in card.stats">
+                    <li v-for="stat in card.stats" :key="stat">
                         {{ capitalizeFirstLetter(getKeyByValue(card.stats, stat)) }}: {{ stat }}
                     </li>
                 </template>
@@ -225,7 +231,7 @@ class Unit {
             </Card>
         </div>
         <div class="flex gap-5 justify-center items-center">
-            <Card style="width: 10rem; overflow: hidden" v-for="unit in battle.units" class="flex-grow-1">
+            <Card style="width: 10rem; overflow: hidden" v-for="unit in battle.units" class="flex-grow-1" :key="unit">
                 <template #header>
                     <img alt="header" :src="unit.image" style="width: 100%; height: 100%;" />
                 </template>
@@ -243,7 +249,7 @@ class Unit {
                     <li>
                         Resistance: {{ unit.resistance }}
                     </li>
-                    {{ Number(battle.units.indexOf(unit)), battle.turn }}
+                    {{ Number(battle.units.indexOf(unit))}}, {{ battle.turn }}
                 </template>
             </Card>
         </div>

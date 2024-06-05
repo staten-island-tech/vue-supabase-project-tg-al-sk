@@ -11,6 +11,5 @@ export default async function getGacha() {
         body: JSON.stringify({ id })
     })
     const data = await res.json()
-    console.log(data)
     return data
 }

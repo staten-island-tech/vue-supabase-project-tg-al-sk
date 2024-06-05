@@ -2,7 +2,7 @@
   
   <h1>Get currency by solving math problems</h1>
   
-  <Fieldset legend="Directions" :toggleable="true" :collapsed="collapsed" style="position: fixed; z-index: 999;">
+  <Fieldset legend="Directions" :toggleable="true" :collapsed="collapsed" style="position: fixed; z-index: 999; padding-bottom: 5vw;">
     <p class="m-0">
       You will be shown questions consisting of addition, subtraction, multiplication, and division.
       Solve them correctly to gain Golden Seagulls! You may increase the difficulty of the questions to gain more Golden Seagulls.
@@ -11,7 +11,7 @@
     <p>For division, please round to the nearest whole number.</p>
     <div class="card flex justify-content-center">
     </div>
-    <Button label="Got it!" @click="collapsed = true" v-if="collapsed === false"></Button>
+    <Button label="Got it!" @click="collapsed = true" v-if="collapsed === false" style="margin-top: 5vw;" aria-label="close directions"></Button>
   </Fieldset>
   <div style="display: flex; align-items: center; flex-direction: column;">
   <div class="flex px-5 py-5 gap-4" style="align-items: center; display: block; display: flex; margin-left: auto; margin-right: auto;">
@@ -23,19 +23,19 @@
     <span style="font-size: 1.5rem;">{{ num2 }}</span>
     
     <span style="font-size: 1.5rem;" class="pi pi-equals"></span>
-    <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 4rem">
+    <InputNumber v-model="value" showButtons buttonLayout="vertical" style="width: 4rem" :disabled="disabled" aria-label="input your answer">
 </InputNumber>
-<Button @click="checkAns()" label="Enter"/>
+<Button @click="checkAns()" label="Enter" aria-label="enter answer"/>
   </div>
   <Message :sticky="false" :life="3000" v-if="yn != ''" :severity="severity">{{ yn }}</Message>
   <div>
-  <Button label="Adjust Difficulty" @click="dialogVisible = true" />
+  <Button label="Adjust Difficulty" @click="dialogVisible = true" aria-label="open ajust difficulty panel"/>
         <Dialog v-model:visible="dialogVisible" modal header="Adjust Difficulty" :style="{ width: '50rem' }">
           <div class="flex-auto">
-            <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" @click="randomize()" />
+            <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="1" :max="4" @click="randomize()" aria-label="adjust difficulty"/>
         </div>
       </Dialog>
-  <Button @click="randomize()" label="Next Question"/>
+  <Button @click="randomize()" label="Next Question" aria-label="move onto next question"/>
 </div>
 </div>
 </template>
@@ -47,15 +47,18 @@ import InputNumber from 'primevue/inputnumber';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
+// @ts-ignore
+import { useUserStore } from "@/db/pinia/stores/userStore"
 
-import { useUserStore } from '@/db/pinia/stores/userStore'
+let disabled = ref(false)
 
 // @ts-ignore
 import increaseCurrency from '/db/currency/increaseCurrency';
 // @ts-ignore
-// import getCurrency from '/db/currency/getCurrency';
+import getCurrency from '/db/currency/getCurrency';
 // @ts-ignore
 import checkIfHasCurrency from '/db/currency/checkIfHasCurrency';
+import type { CurrencyObj } from '@/lib/interfaces';
 
 const userStore = useUserStore()
 console.log(userStore.getUser)
@@ -84,6 +87,12 @@ function randomize() {
   yn.value = ''
 }
 
+function reset() { 
+  yn.value = ''
+};
+function MakeTrue() { 
+  disabled.value = false 
+};
 function checkAns() {
   let ans = 0
   if (op.value == '+') {
@@ -100,11 +109,22 @@ function checkAns() {
     yn.value = 'you are correct!'
     severity.value = 'success';
     increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
+    setTimeout(randomize, 700)
+    increaseCurrency({golden_seagulls: 10, diamond_seagulls: 0});
     checkIfHasCurrency({ golden_seagulls: 0 })
+    getCurrency().then(function(item:CurrencyObj){
+    userStore.setCurrency(item.golden_seagulls)
+    setTimeout(randomize, 700)
+  });
+    disabled.value = true; 
+    
+    setTimeout(MakeTrue, 700)// cant type while loading next question 
+    //umm def a shorter way to write this but will fix later trust!! 
     // getCurrency();
   } else {
     yn.value = 'you are incorrect.'
     severity.value = 'error'
+    setTimeout(reset, 1000)
     checkIfHasCurrency({ golden_seagulls: 10 })
     // getCurrency();
   }
