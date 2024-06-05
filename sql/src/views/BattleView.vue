@@ -8,6 +8,8 @@ import { ref, watch } from 'vue';
 import type { Ref } from 'vue';
 import type { CardWStat } from '@/lib/interfaces';
 
+import { Boss, Unit } from '../teachers/battleClasses'
+
 const userStore = useUserStore()
 const gachaPlusStudents = JSON.parse(userStore.getUser.gacha)
 const gacha = gachaPlusStudents.filter((unit:CardWStat) => (unit.star > 3))
@@ -89,8 +91,9 @@ function startBattle() {
     }
     console.log(boss, units)
 
-    battle.units = units
-    battle.boss = boss
+    battle.value.units = units
+    battle.value.boss = boss
+    battle.value.turn = 0
 
 
 }
@@ -238,6 +241,7 @@ class Unit {
                 <template #title>
                     {{ unit.name }}
                 </template>
+                <template #subtitle>Power: {{ unit.power }}</template>
                 <template #content>
                     <li>
                         Health: {{ unit.health }}
@@ -248,6 +252,7 @@ class Unit {
                     <li>
                         Resistance: {{ unit.resistance }}
                     </li>
+                    {{ Number(battle.units.indexOf(unit)), battle.turn }}
                 </template>
             </Card>
         </div>
