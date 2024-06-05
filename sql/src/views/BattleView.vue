@@ -5,6 +5,8 @@ import Button from 'primevue/button';
 import Toolbar from 'primevue/toolbar';
 import { ref, watch } from 'vue';
 
+import { Boss, Unit } from '../teachers/battleClasses'
+
 const userStore = useUserStore()
 const gachaPlusStudents = JSON.parse(userStore.getUser.gacha)
 const gacha = gachaPlusStudents.filter((unit) => (unit.star > 3))
@@ -42,7 +44,7 @@ watch(selected, () => {
     }
 })
 
-const battle = {}
+const battle = ref({})
 
 function generateBossName() {
     var adjectives = [
@@ -80,8 +82,9 @@ function startBattle() {
     }
     console.log(boss, units)
 
-    battle.units = units
-    battle.boss = boss
+    battle.value.units = units
+    battle.value.boss = boss
+    battle.value.turn = 0
 
 
 }
@@ -240,6 +243,7 @@ class Unit {
                     <li>
                         Resistance: {{ unit.resistance }}
                     </li>
+                    {{ Number(battle.units.indexOf(unit)), battle.turn }}
                 </template>
             </Card>
         </div>
