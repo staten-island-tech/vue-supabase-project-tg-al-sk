@@ -29,7 +29,6 @@ import router from './router/index'
 
 const route = useRoute()
 const userStore = useUserStore()
-console.log('test2', userStore.getUser)
 checkIfHasCurrency({ golden_seagulls: 0 })
 getCurrency().then(function(item:CurrencyObj){
     userStore.setCurrency(item.golden_seagulls)

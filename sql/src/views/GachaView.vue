@@ -91,24 +91,7 @@ import increaseCurrency from '../../db/currency/increaseCurrency'
 import getCurrency from '../../db/currency/getCurrency'
 
 import type { Cards, CurrencyObj } from '@/lib/interfaces.ts';
-console.log(pools)
 
-//<img :src="loadBanner(pools[slotProps.data.index])">
-//<img :src="slotProps.data.image">
-
-/* /* function loadBanner(pool:{
-    subject: string,
-    star: number,
-    name: string,
-    role: string,
-    image: string,
-}[]) { 
-    let img = pool.filter((teacher) => teacher.star === 5)
-    //let fivestar = pool.filter((teacher) => teacher.star === 5);
-    //console.log(fivestar)
-    // let main = pool.filter((teacher) => teacher.star === 5)
-    // console.log(main)
-} */
 const userStore = useUserStore();
 const dialogVisible = ref(false); //differentiates the visibilies of the dialog components 
 let pullvisible = ref(false)
@@ -118,7 +101,6 @@ const pullHist = ref(0) //history/pity for 4*
 userStore.setPity(0, 'add');
 // const pullHist2 = userStore.user.pityCount //history for 5*
 const rate = ref(0.01) //when the pullhist2 reaches 80 this value will slowly increase to give a higehr rate of getting a 5*
-//the console logs are placeholders for the cards lmaooooo 
 const winlose:Ref<'lose'|'win'|'winwin'> = ref('lose');
 const studentCard = {subject: 'nothing', 
             star: 3, 
