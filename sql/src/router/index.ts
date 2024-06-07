@@ -38,12 +38,6 @@ const router = createRouter({
       name: 'Inventory',
       component: () => import('../views/UserInventory.vue'),
       meta: {requiresAuth: true}
-    },
-    {
-      path: '/battle',
-      name: 'Battle',
-      component: () => import('../views/BattleView.vue'),
-      meta: {requiresAuth: true}
     }
   ]
 })

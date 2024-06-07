@@ -78,9 +78,6 @@ detectLogin();
         <RouterLink to="/currency">
         <Button v-tooltip.top="'Do math for Golden Seagulls'" icon="pi pi-calculator" severity="secondary" rounded/>
       </RouterLink>
-      <RouterLink to="/battle" >
-          <Button v-tooltip.top="'Battle for Golden Seagulls'" icon="pi pi-hammer" severity="secondary" rounded/>
-        </RouterLink>
         <RouterLink to="/gacha" >
           <Button v-tooltip.top="'Gacha >:)'" icon="pi pi-money-bill" severity="secondary" rounded/>
         </RouterLink>
