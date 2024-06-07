@@ -20,13 +20,11 @@
   
   <script setup lang="ts">
 import { ref } from 'vue'
-import TabView from 'primevue/tabview'
-import TabPanel from 'primevue/tabpanel'
 import InputText from 'primevue/inputtext'
 import FloatLabel from 'primevue/floatlabel'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
-
+// @ts-ignore
 import signUpUser from '@/db/auth/signUpUser'
 
 const username = ref('')
