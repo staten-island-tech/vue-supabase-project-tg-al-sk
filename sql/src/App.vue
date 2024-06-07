@@ -26,6 +26,9 @@ import checkIfHasCurrency from '../db/currency/checkIfHasCurrency'
 // @ts-ignore
 import { useUserStore } from '@/db/pinia/stores/userStore';
 import router from './router/index'
+import {setPiniaValues} from '@/db/pinia/setPiniaValues'
+
+setPiniaValues()
 
 const route = useRoute()
 const userStore = useUserStore()
