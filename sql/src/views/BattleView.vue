@@ -183,9 +183,12 @@ class Unit {
                 </template>
                 <template #subtitle>Power: {{ card.power }}</template>
                 <template #content>
-                    <li v-for="stat in card.stats" :key="stat">
-                        {{ capitalizeFirstLetter(getKeyByValue(card.stats, stat)) }}: {{ stat }}
-                    </li>
+										<li>Charisma: {{card.stats.charisma}}</li>
+										<li>Coolness: {{card.stats.coolness}}</li>
+										<li>Dexterity: {{card.stats.dexterity}}</li>
+										<li>Intelligence: {{card.stats.intelligence}}</li>
+										<li>Knowledge: {{card.stats.knowledge}}</li>
+										<li>Strength: {{card.stats.strength}}</li>
                 </template>
             </Card>
         </div>
