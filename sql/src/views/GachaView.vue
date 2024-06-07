@@ -5,12 +5,12 @@
     <div class="card flex">
         <Button icon="pi pi-info-circle" @click="dialogVisible = true" aria-label="info on gacha" />
         <Dialog v-model:visible="dialogVisible" modal header="Gacha Rates" :style="{ width: '50rem' }">
-            <p>Standard Pity: You are guaranteed to get at least one 5* Teacher within 90 pulls and at least one 4* Teacher every 10 pulls.</p>
+            <p>Standard Pity: You are guaranteed to get at least one 5* Teacher within 50 pulls and at least one 4* Teacher every 10 pulls.</p>
             <br>
             <p>4★ Teacher drop rate : 10%</p>
             <p>5★ Teacher drop rate : 1%</p>
             <br>
-            <p>Soft Pity: Once you reach 80 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
+            <p>Soft Pity: Once you reach 40 pulls, your drop rates for a 5* Teacher will be increased by 10% every increment.</p>
         </Dialog>
     </div>
     <Dialog v-model:visible="cannotPull" modal header="Gacha Rates" :style="{ width: '50vw', backgroundColor: 'red'}">
@@ -93,22 +93,6 @@ import getCurrency from '../../db/currency/getCurrency'
 import type { Cards, CurrencyObj } from '@/lib/interfaces.ts';
 console.log(pools)
 
-//<img :src="loadBanner(pools[slotProps.data.index])">
-//<img :src="slotProps.data.image">
-
-/* /* function loadBanner(pool:{
-    subject: string,
-    star: number,
-    name: string,
-    role: string,
-    image: string,
-}[]) { 
-    let img = pool.filter((teacher) => teacher.star === 5)
-    //let fivestar = pool.filter((teacher) => teacher.star === 5);
-    //console.log(fivestar)
-    // let main = pool.filter((teacher) => teacher.star === 5)
-    // console.log(main)
-} */
 const userStore = useUserStore();
 const dialogVisible = ref(false); //differentiates the visibilies of the dialog components 
 let pullvisible = ref(false)
@@ -180,9 +164,9 @@ function pull(pool:Cards[]){
         userStore.setPity(0, 'clear')
         rate.value = 0.01
     }
-    if (userStore.user.pityCount > 80) {
+    if (userStore.user.pityCount > 40) {
         rate.value = rate.value + 0.1
-    }else if (userStore.user.pityCount == 89) {
+    }else if (userStore.user.pityCount == 49) {
         obtained = fivestar[Math.floor(Math.random() * fivestar.length)];
         rate.value = 0.01
         // pullHist2.value = 0 //you must get a chara every 90 pulls resets pity 
